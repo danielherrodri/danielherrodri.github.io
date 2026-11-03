@@ -134,6 +134,7 @@ h2{font:800 clamp(32px,4.6vw,52px)/1.05 var(--f-display);letter-spacing:-.035em;
 .final .btn.ghost{background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 35%,transparent)}
 .final .eyebrow{color:var(--accent-2)}
 .state.idea{color:var(--muted)}
+.soon-link{font:500 13px var(--f-mono);color:var(--muted)}
 .links{display:flex;gap:16px;flex-wrap:wrap;margin-top:6px}
 .links a,.inline{color:var(--accent);font-weight:600;text-decoration:none}
 .links a:hover,.inline:hover{text-decoration:underline}
@@ -280,16 +281,17 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
       <article class="proj reveal" style="--d:.2s" data-term="data">
         <div class="shot">
           <div class="ui code" aria-hidden="true">
-            <div class="ui-top"><b>DataToolkit · Pulir con IA</b><i>extensión</i></div>
+            <div class="ui-top"><b>Plumazo · Pulir con IA</b><i>extensión</i></div>
             <div><span class="k">entrada</span>: "no puedo ir a la junta"</div>
             <div><span class="k">tono</span>: corporativo</div>
             <div><span class="k">salida</span>: <span class="s">"Agradezco la invitación; esta vez no podré asistir."</span></div>
           </div>
         </div>
         <div class="proj-body">
-          <div class="proj-head"><h3>DataToolkit</h3><span class="state idea">prototipo</span></div>
+          <div class="proj-head"><h3>Plumazo</h3><span class="state idea">prototipo</span></div>
           <p>Extensión de navegador para el trabajo de oficina: ayuda a contestar correos, ajustar el tono de un mensaje y preparar reportes con apoyo de IA.</p>
           <div class="tags"><span>Python</span><span>MySQL</span><span>IA</span></div>
+          <div class="links"><span class="soon-link">Demo próximamente</span></div>
         </div>
       </article>
     </div>
@@ -425,10 +427,10 @@ const scripts = {
     ['$ ', 'npm run test:e2e'], ['ok', 'Playwright · recorridos y accesibilidad ✓'],
     ['$ ', 'open danielherrodri.github.io/shalom-plataforma'], ['dim', 'demo pública con datos ficticios'],
   ]},
-  data: { dir: '~/datatoolkit', lines: [
-    ['$ ', 'datatoolkit pulir --tono formal'], ['dim', 'entrada: "no puedo ir a la junta"'],
+  data: { dir: '~/plumazo', lines: [
+    ['$ ', 'plumazo pulir --tono formal'], ['dim', 'entrada: "no puedo ir a la junta"'],
     ['ok', '"Agradezco la invitación; esta vez no podré asistir."'],
-    ['$ ', 'datatoolkit reporte --semana'], ['dim', 'borrador listo para revisar'],
+    ['$ ', 'plumazo reporte --semana'], ['dim', 'borrador listo para revisar'],
   ]},
 };
 // Un reproductor por terminal: la grande del encabezado y la mini flotante
