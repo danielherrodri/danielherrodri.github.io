@@ -183,6 +183,20 @@ h1 .ch:hover{transform:translateY(-.12em) rotate(-6deg);color:var(--accent-2)}
 h1 .hl .ch{background:linear-gradient(100deg,var(--accent) 40%,var(--accent-2) 50%,var(--accent) 60%) 200% 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:drop .9s cubic-bezier(.2,1.4,.4,1) both,shine 5s ease-in-out 2.2s infinite;animation-delay:calc(var(--i) * 45ms + .15s),calc(var(--i) * 60ms + 2.2s)}
 @keyframes shine{0%,60%{background-position:200% 0}100%{background-position:-50% 0}}
 h1 .w{display:inline-block;white-space:nowrap}
+/* Avance de los proyectos */
+.progress{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 28px 22px}
+.pg-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:26px}
+.pg-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.pg-name{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em}
+.pg-val{font:600 22px var(--f-display);font-variant-numeric:tabular-nums;color:var(--accent)}
+.pg-track{position:relative;height:14px;margin-top:10px;border-radius:999px;background:var(--line);overflow:hidden}
+.pg-track i{position:absolute;inset:0 auto 0 0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 1.6s cubic-bezier(.2,.7,.2,1)}
+.progress.in .pg-track i{width:var(--v)}
+.pg-row:nth-child(2) .pg-track i{transition-delay:.15s}.pg-row:nth-child(3) .pg-track i{transition-delay:.3s}
+.pg-note{margin:8px 0 0;font-size:15px;color:var(--muted)}
+.pg-cap{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:var(--muted);max-width:80ch}
+@media (prefers-reduced-motion:reduce){.pg-track i{width:var(--v)}}
+@media (max-width:480px){.progress{padding:20px 18px}.pg-name,.pg-val{font-size:19px}}
 .mail{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px}
 .mail code{font:500 clamp(16px,2.4vw,22px) var(--f-mono);color:var(--bg);user-select:all;word-break:break-all}
 .mail .btn{border:0;cursor:pointer}
@@ -208,7 +222,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 <div class="wrap">
   <nav>
     <a class="logo" href="#inicio">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#proyectos">Proyectos</a><a href="#experiencia">Experiencia</a><a href="#stack">Stack</a><a href="#contacto">Contacto</a>
+    <div class="nav-links"><a href="#proyectos">Proyectos</a><a href="#avance">Avance</a><a href="#experiencia">Experiencia</a><a href="#stack">Stack</a><a href="#contacto">Contacto</a>
       <button type="button" id="theme" class="theme" aria-label="Cambiar tema" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><mask id="moon"><rect width="24" height="24" fill="#fff"/><circle class="bite" cx="24" cy="6" r="7" fill="#000"/></mask><circle class="core" cx="12" cy="12" r="5" mask="url(#moon)"/><g class="rays"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
       </button></div>
@@ -295,6 +309,31 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
         </div>
       </article>
     </div>
+  </section>
+
+  <section id="avance">
+    <p class="eyebrow reveal">Avance</p>
+    <h2 class="reveal" style="--d:.06s">Avance de los proyectos</h2>
+    <figure class="progress reveal" style="--d:.1s" aria-labelledby="avance-cap">
+      <ul class="pg-list">
+        <li class="pg-row">
+          <div class="pg-head"><span class="pg-name">Plumazo</span><span class="pg-val">70&nbsp;%</span></div>
+          <div class="pg-track" aria-hidden="true"><i style="--v:70%"></i></div>
+          <p class="pg-note">Los tres módulos están construidos; falta probarlos contra los sistemas reales.</p>
+        </li>
+        <li class="pg-row">
+          <div class="pg-head"><span class="pg-name">Shalom</span><span class="pg-val">45&nbsp;%</span></div>
+          <div class="pg-track" aria-hidden="true"><i style="--v:45%"></i></div>
+          <p class="pg-note">Demo pública, app y API en staging; varios requisitos esperan decisiones.</p>
+        </li>
+        <li class="pg-row">
+          <div class="pg-head"><span class="pg-name">Nexo</span><span class="pg-val">35&nbsp;%</span></div>
+          <div class="pg-track" aria-hidden="true"><i style="--v:35%"></i></div>
+          <p class="pg-note">Base del servidor lista; la mayoría de los requisitos sigue pendiente.</p>
+        </li>
+      </ul>
+      <figcaption id="avance-cap" class="pg-cap">Estimación aproximada al 3 de noviembre de 2026, medida hacia el uso real y no hacia la demo. Cada requisito cuenta 100&nbsp;% si está hecho, 50&nbsp;% si está parcial o solo en la demo, y 0&nbsp;% si está pendiente.</figcaption>
+    </figure>
   </section>
 
   <section id="experiencia">
