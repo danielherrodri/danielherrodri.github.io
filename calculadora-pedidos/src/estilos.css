@@ -1,0 +1,123 @@
+/* Estilos de la Calculadora de pedidos (Tailwind CSS 3 + tokens de Nexo).
+ * Se compila a ../estilos.css; ver tailwind.config.js. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg:#f8f8f3;--surface:#fff;--surface-alt:#eef2e9;--border:#dce3d9;--field:#7d8a83;
+    --text:#1d3a30;--muted:#56665d;--acento:#3a5f2b;--acento-hover:#1d3a30;--acento-fondo:#e3eedb;--acento-fuerte:#1d3a30;
+    --primario:#1d3a30;--primario-texto:#fff;--primario-hover:#2b4a2c;--banda:#1d3a30;--banda-texto:#eaf2e6;--banda-suave:#c9dfb4;
+    --lima:#d5f88a;--lima-texto:#1d3a30;--foco:#4a7633;
+    --ok-fg:#14684f;--ok-bg:#ddf2e8;--dif-fg:#7f5300;--dif-bg:#fbefd3;--info-fg:#1f5aa6;--info-bg:#e3edfb;--err-fg:#a3302a;--err-bg:#fbe4e2;
+    --sombra:0 1px 2px rgba(29,58,48,.06),0 8px 24px rgba(29,58,48,.06);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#141716;--surface:#1b1f1d;--surface-alt:#232825;--border:#343a37;--field:#6e7772;
+      --text:#e4e8e5;--muted:#a2aaa5;--acento:#bcd99a;--acento-hover:#d9ecc2;--acento-fondo:#252d22;--acento-fuerte:#d9ecc2;
+      --primario:#c8e3a0;--primario-texto:#141716;--primario-hover:#d6ecb8;--banda:#0f1211;--banda-texto:#e4e8e5;--banda-suave:#b8c2bc;
+      --lima:#c8e3a0;--lima-texto:#141716;--foco:#bcd99a;
+      --ok-fg:#7fd1b0;--ok-bg:#17302a;--dif-fg:#e3bb6a;--dif-bg:#33291b;--info-fg:#93b9ee;--info-bg:#1b2a40;--err-fg:#f09a92;--err-bg:#3a2224;
+      --sombra:none;
+      color-scheme: dark;
+    }
+  }
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply m-0 bg-fondo font-sans text-sm leading-normal text-texto pb-14 max-[899px]:pb-24; }
+  a { @apply text-acento hover:text-acento-hover; }
+  :focus-visible { outline: 2px solid var(--foco); outline-offset: 2px; }
+  button { -webkit-tap-highlight-color: transparent; }
+  input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type=number] { -moz-appearance: textfield; }
+  input::placeholder { @apply text-suave opacity-100; }
+  [hidden] { display: none !important; }
+}
+
+/* Piezas que el JavaScript pinta muchas veces (lista, pedido, opciones de voz). */
+@layer components {
+  .kicker { @apply m-0 text-[11px] font-semibold uppercase leading-snug tracking-[.1em] text-acento; }
+  .detalle { @apply text-xs text-suave; }
+  .ayuda { @apply m-0 text-xs leading-relaxed text-suave; }
+  .aviso { @apply mt-1 rounded-lg px-3 py-2 text-[13px] motion-safe:animate-aparece; }
+  .aviso.info { @apply bg-info-bg text-info-fg; }
+  .aviso.ok { @apply bg-ok-bg text-ok-fg; }
+  .aviso.dif { @apply bg-dif-bg text-dif-fg; }
+  .aviso.err { @apply bg-err-bg text-err-fg; }
+  .tarjeta { @apply flex min-w-0 flex-col gap-3 rounded-tarjeta border border-borde bg-superficie p-4 max-[899px]:-mx-4 max-[899px]:rounded-none max-[899px]:border-x-0; }
+
+  .btn-primario { @apply inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-primario bg-primario px-4 text-sm font-medium text-primario-texto no-underline hover:bg-primario-hover hover:text-primario-texto; }
+  .btn-borde { @apply inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-acento bg-transparent px-3.5 text-sm font-medium text-acento no-underline hover:bg-acento-fondo hover:text-acento-fuerte disabled:cursor-not-allowed disabled:opacity-45; }
+  .btn-fantasma { @apply min-h-[36px] cursor-pointer rounded-lg border border-transparent bg-transparent px-[11px] text-[13px] font-medium text-acento hover:bg-superficie-alt disabled:cursor-not-allowed disabled:opacity-45; }
+  .chip { @apply inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-lg border border-borde bg-superficie px-[11px] text-[13px] font-medium text-texto aria-pressed:border-acento-fondo aria-pressed:bg-acento-fondo aria-pressed:text-acento-fuerte; }
+  .chip span { @apply text-[11px] tabular-nums text-suave; }
+  .chip[aria-pressed=true] span { @apply text-acento-fuerte; }
+
+  .item { @apply flex flex-wrap items-center gap-x-3 gap-y-2.5 border-b border-borde bg-superficie px-3 py-2.5 transition-colors last:border-b-0; }
+  .item.top, .item.abierto { @apply bg-superficie-alt; }
+  .info { @apply flex min-w-0 flex-[1_1_200px] cursor-pointer items-center gap-3 border-0 bg-transparent p-0 text-left text-inherit; }
+  .info .txt { @apply flex min-w-0 flex-col gap-px; }
+  .mini { @apply block h-[60px] w-11 shrink-0 rounded bg-superficie-alt object-contain; }
+  .mini.chica { @apply h-[50px] w-9; }
+  .nombre { @apply text-sm font-medium leading-tight; }
+  .precio-fila { @apply flex flex-wrap items-baseline gap-2; }
+  .precio { @apply text-[15px] font-semibold tabular-nums; }
+  .badge { @apply inline-block whitespace-nowrap rounded-full bg-dif-bg px-2 text-[11px] font-semibold leading-relaxed text-dif-fg motion-safe:animate-brillo; }
+  .antes { @apply text-[11px] text-suave line-through; }
+  .enter { @apply rounded border border-borde px-1.5 text-[11px] text-suave; }
+
+  .paso { @apply ml-auto inline-flex h-9 items-center overflow-hidden rounded-full border border-borde bg-superficie; }
+  .paso.activo { @apply border-acento bg-acento-fondo; }
+  .paso button { @apply flex h-9 w-9 cursor-pointer items-center justify-center border-0 bg-transparent text-acento disabled:cursor-default disabled:text-campo motion-safe:transition-transform motion-safe:duration-100 motion-safe:active:scale-[.85]; }
+  .paso button.menos { @apply text-texto disabled:text-campo; }
+  .paso input { @apply h-9 w-[34px] border-0 bg-transparent text-center text-base font-medium tabular-nums text-texto; }
+  .paso.pop input { @apply motion-safe:animate-pop; }
+
+  .ficha { @apply flex flex-[1_1_100%] flex-wrap items-center gap-4 rounded-lg border border-borde bg-superficie p-3 motion-safe:animate-abre; }
+  .ficha .foto { @apply mx-auto h-[210px] w-[150px] shrink-0 object-contain; }
+  .ficha-txt { @apply flex min-w-0 flex-[1_1_200px] flex-col gap-1.5; }
+  .ficha .grande { @apply text-[28px] font-medium leading-tight tracking-[-.02em] tabular-nums; }
+  .ficha .titulo { @apply text-lg font-medium leading-tight; }
+  .vacio { @apply flex flex-col gap-1 px-4 py-6; }
+
+  .linea { @apply flex flex-col gap-2 border-b border-borde py-3; }
+  .linea.entra { @apply motion-safe:animate-entra; }
+  .linea-top { @apply flex items-start justify-between gap-3; }
+  .linea-acc { @apply flex flex-wrap items-center justify-between gap-2; }
+  .linea .paso { @apply ml-0 bg-superficie-alt; }
+  .sub { @apply whitespace-nowrap text-[15px] font-semibold tabular-nums; }
+  .bump { @apply motion-safe:animate-bump; }
+
+  .duda { @apply motion-safe:animate-entra; animation-delay: calc(var(--i, 0) * 60ms); }
+  .duda p { @apply mb-2 mt-0 text-[13px] font-medium; }
+  .duda-ops { @apply flex flex-wrap gap-2; }
+  .op { @apply flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg border border-borde bg-superficie px-2.5 py-1.5 text-left text-[13px] leading-tight text-texto hover:bg-superficie-alt motion-safe:animate-entra; animation-delay: calc(var(--j, 0) * 45ms + 80ms); }
+  .op b { @apply block font-medium; }
+  .op img { @apply h-[38px] w-7 shrink-0 object-contain; }
+
+  .previa { @apply flex flex-col gap-2.5 rounded-[10px] border border-borde bg-superficie p-3 motion-safe:animate-aparece; }
+  .previa h3 { @apply m-0 text-[15px] font-medium; }
+  .previa table { @apply w-full border-collapse text-xs; }
+  .previa th, .previa td { @apply border-b border-borde px-2 py-1.5 text-left align-top; }
+  .previa th { @apply font-medium text-suave; }
+  .previa td.num, .previa th.num { @apply text-right tabular-nums; }
+  .mapa { @apply flex flex-wrap gap-1.5; }
+  .mapa span { @apply rounded-full bg-superficie-alt px-2 py-0.5 text-xs text-texto; }
+  .mapa span.falta { @apply border border-dashed border-campo bg-superficie text-suave; }
+  .campo { @apply text-xs font-medium; }
+  .campo-texto { @apply flex flex-col gap-1; }
+  .campo-texto input { @apply h-11 rounded-lg border border-campo bg-superficie px-3 text-base text-texto; }
+  .acc-cat { @apply flex flex-wrap items-center gap-2; }
+  .tabla-caja { @apply overflow-x-auto rounded-lg border border-borde; }
+  .archivo-zona.encima { @apply border-acento bg-acento-fondo; }
+
+  .sr { @apply sr-only; }
+}
+
+@layer utilities {
+  .tap { @apply motion-safe:transition-transform motion-safe:duration-100 motion-safe:active:scale-[.93]; }
+  .sin-barra { scrollbar-width: none; }
+  .sin-barra::-webkit-scrollbar { display: none; }
+}

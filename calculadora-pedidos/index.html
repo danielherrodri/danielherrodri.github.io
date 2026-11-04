@@ -9,277 +9,101 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
-<style>
-:root{
-  --bg:#f8f8f3;--surface:#fff;--surface-alt:#eef2e9;--border:#dce3d9;--field:#7d8a83;
-  --text:#1d3a30;--muted:#56665d;--acento:#3a5f2b;--acento-hover:#1d3a30;--acento-fondo:#e3eedb;--acento-fuerte:#1d3a30;
-  --primario:#1d3a30;--primario-texto:#fff;--primario-hover:#2b4a2c;--banda:#1d3a30;--banda-texto:#eaf2e6;--banda-suave:#c9dfb4;
-  --lima:#d5f88a;--lima-texto:#1d3a30;--foco:#4a7633;
-  --ok-fg:#14684f;--ok-bg:#ddf2e8;--dif-fg:#7f5300;--dif-bg:#fbefd3;--info-fg:#1f5aa6;--info-bg:#e3edfb;--err-fg:#a3302a;--err-bg:#fbe4e2;
-  --sombra:0 1px 2px rgba(29,58,48,.06),0 8px 24px rgba(29,58,48,.06);
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --bg:#141716;--surface:#1b1f1d;--surface-alt:#232825;--border:#343a37;--field:#6e7772;
-    --text:#e4e8e5;--muted:#a2aaa5;--acento:#bcd99a;--acento-hover:#d9ecc2;--acento-fondo:#252d22;--acento-fuerte:#d9ecc2;
-    --primario:#c8e3a0;--primario-texto:#141716;--primario-hover:#d6ecb8;--banda:#0f1211;--banda-texto:#e4e8e5;--banda-suave:#b8c2bc;
-    --lima:#c8e3a0;--lima-texto:#141716;--foco:#bcd99a;
-    --ok-fg:#7fd1b0;--ok-bg:#17302a;--dif-fg:#e3bb6a;--dif-bg:#33291b;--info-fg:#93b9ee;--info-bg:#1b2a40;--err-fg:#f09a92;--err-bg:#3a2224;
-    --sombra:none;color-scheme:dark;
-  }
-}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.5;padding-bottom:56px}
-a{color:var(--acento)}a:hover{color:var(--acento-hover)}
-:focus-visible{outline:2px solid var(--foco);outline-offset:2px}
-button{font:inherit;-webkit-tap-highlight-color:transparent}
-input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-input[type=number]{-moz-appearance:textfield}
-input::placeholder{color:var(--muted);opacity:1}
-[hidden]{display:none!important}
-.wrap{max-width:1200px;margin:0 auto;padding:20px 16px 0;display:flex;flex-direction:column;gap:16px}
-.kicker{margin:0;font-size:11px;line-height:1.3;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--acento)}
-h1{margin:0;font-size:32px;line-height:1.15;font-weight:500;letter-spacing:-.02em}
-.meta{margin:0;font-size:13px;color:var(--muted)}
-.aviso{margin:4px 0 0;padding:8px 12px;border-radius:8px;font-size:13px}
-.aviso.dif{background:var(--dif-bg);color:var(--dif-fg)}
-.aviso.info{background:var(--info-bg);color:var(--info-fg)}
-.aviso.ok{background:var(--ok-bg);color:var(--ok-fg)}
-.aviso.err{background:var(--err-bg);color:var(--err-fg)}
-.cols{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
-.buscar{flex:999 1 560px}
-.pedido{flex:1 1 340px;box-shadow:var(--sombra)}
-label.campo{font-size:12px;font-weight:500}
-.fila-buscar{display:flex;gap:8px}
-.caja{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:8px;height:48px;padding:0 12px;border:1px solid var(--field);border-radius:8px;background:var(--surface)}
-.caja svg{color:var(--muted);flex:0 0 auto}
-.caja input{flex:1 1 auto;min-width:0;height:44px;border:0;outline:none;background:transparent;color:var(--text);font:inherit;font-size:16px}
-.mic{flex:0 0 auto;height:48px;min-width:48px;padding:0 14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;cursor:pointer;font-weight:500;background:var(--primario);color:var(--primario-texto);border:1px solid var(--primario)}
-.mic:hover{background:var(--primario-hover)}
-.mic[aria-pressed=true]{background:var(--lima);color:var(--lima-texto);border-color:var(--lima)}
-.ayuda{margin:0;font-size:12px;line-height:1.55;color:var(--muted)}
-.permiso{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:8px;background:var(--acento-fondo);color:var(--acento-fuerte)}
-.permiso svg{flex:0 0 auto;margin-top:2px}
-.permiso-cuerpo{display:flex;flex-direction:column;gap:8px;min-width:0}
-.permiso-cuerpo p{margin:0;font-size:13px;line-height:1.5}
-.permiso-acc{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.permiso-acc .btn-borde{margin-top:0;align-self:auto;background:var(--surface)}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;background:var(--surface);color:var(--text);border:1px solid var(--border);white-space:nowrap}
-.chip[aria-pressed=true]{background:var(--acento-fondo);color:var(--acento-fuerte);border-color:var(--acento-fondo)}
-.chip span{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-.chip[aria-pressed=true] span{color:var(--acento-fuerte)}
-.conteo{margin:0;font-size:11px;color:var(--muted)}
-.lista{list-style:none;margin:0;padding:0;border:1px solid var(--border);border-radius:8px;max-height:640px;overflow-y:auto}
-.item{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface)}
-.item:last-child{border-bottom:0}
-.item.top,.item.abierto{background:var(--surface-alt)}
-.info{flex:1 1 200px;min-width:0;display:flex;align-items:center;gap:12px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
-.info .txt{min-width:0;display:flex;flex-direction:column;gap:1px}
-.mini{width:44px;height:60px;object-fit:contain;flex:0 0 auto;border-radius:4px;background:var(--surface-alt);display:block}
-.mini.chica{width:36px;height:50px}
-.badge{display:inline-block;white-space:nowrap;font-size:11px;font-weight:600;line-height:1.6;color:var(--dif-fg);background:var(--dif-bg);border-radius:999px;padding:0 8px}
-.nombre{font-size:14px;font-weight:500;line-height:1.3}
-.detalle{font-size:12px;color:var(--muted)}
-.precio-fila{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.precio{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
-.antes{font-size:11px;color:var(--muted);text-decoration:line-through}
-.enter{font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:0 6px}
-.paso{display:inline-flex;align-items:center;height:36px;margin-left:auto;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--surface)}
-.paso.activo{border-color:var(--acento);background:var(--acento-fondo)}
-.paso button{width:36px;height:36px;border:0;background:transparent;color:var(--acento);cursor:pointer;display:flex;align-items:center;justify-content:center}
-.paso button:disabled{color:var(--field);cursor:default}
-.paso button.menos{color:var(--text)}
-.paso button.menos:disabled{color:var(--field)}
-.paso input{width:34px;height:36px;border:0;text-align:center;font:inherit;font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;background:transparent;color:var(--text)}
-.ficha{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--border)}
-.ficha .foto{width:150px;height:210px;object-fit:contain;flex:0 0 auto;margin:0 auto}
-.ficha-txt{flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.ficha .grande{font-size:28px;line-height:1.1;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.ficha .titulo{font-size:18px;font-weight:500;line-height:1.25}
-.btn-primario{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;border:1px solid var(--primario);border-radius:8px;background:var(--primario);color:var(--primario-texto);font-weight:500;font-size:14px;cursor:pointer;text-decoration:none}
-.btn-primario:hover{background:var(--primario-hover)}
-.btn-borde{align-self:flex-start;margin-top:4px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 14px;border:1px solid var(--acento);border-radius:8px;text-decoration:none;font-weight:500;font-size:14px;color:var(--acento);background:transparent;cursor:pointer}
-.btn-borde:hover{background:var(--acento-fondo);color:var(--acento-fuerte)}
-.btn-borde:disabled{opacity:.45;cursor:not-allowed}
-.btn-fantasma{min-height:36px;padding:0 11px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--acento);cursor:pointer;font-weight:500;font-size:13px}
-.btn-fantasma:hover{background:var(--surface-alt)}
-.btn-fantasma:disabled{opacity:.45;cursor:not-allowed}
-.vacio{padding:24px 16px;display:flex;flex-direction:column;gap:4px}
-.cab{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.cab h2{margin:0;font-size:15px;font-weight:500}
-.vacio-pedido{margin:0;padding:20px 12px;border-radius:8px;background:var(--surface-alt);color:var(--muted);font-size:13px;text-align:center}
-.lineas{list-style:none;margin:0;padding:0}
-.linea{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-bottom:1px solid var(--border)}
-.linea-top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
-.linea-acc{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.linea .paso{margin-left:0;background:var(--surface-alt)}
-.sub{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.resumen{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
-.resumen span:last-child{font-variant-numeric:tabular-nums}
-.total{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding:14px;border-radius:8px;background:var(--banda);color:var(--banda-texto)}
-.total .k{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--banda-suave)}
-.total .v{display:inline-block;transform-origin:right center;font-size:28px;line-height:1.1;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.acciones{display:flex;gap:8px;flex-wrap:wrap}
-.acciones .btn-borde{flex:1 1 auto;margin-top:0;align-self:auto}
-.barra{display:none;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--banda);color:var(--banda-texto)}
-.barra .k{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--banda-suave)}
-.barra .v{display:block;transform-origin:left center;font-size:24px;line-height:1.15;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.barra a{flex:0 0 auto;min-height:44px;display:inline-flex;align-items:center;padding:0 18px;border-radius:8px;background:var(--lima);color:var(--lima-texto);text-decoration:none;font-weight:500;font-size:15px}
-footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var(--muted)}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-/* catálogo */
-.catalogo .acc-cat{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.catalogo .acc-cat .btn-borde{margin-top:0;align-self:auto}
-.archivo-zona{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px 16px;border:1.5px dashed var(--field);border-radius:10px;background:var(--surface-alt);text-align:center;cursor:pointer}
-.archivo-zona.encima{border-color:var(--acento);background:var(--acento-fondo)}
-.archivo-zona b{font-size:15px;font-weight:500}
-.pasos{margin:0;padding:0 0 0 18px;display:flex;flex-direction:column;gap:4px;font-size:13px}
-.previa{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--surface)}
-.previa h3{margin:0;font-size:15px;font-weight:500}
-.previa table{width:100%;border-collapse:collapse;font-size:12px}
-.previa th,.previa td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top}
-.previa th{font-weight:500;color:var(--muted)}
-.previa td.num{text-align:right;font-variant-numeric:tabular-nums}
-.tabla-caja{overflow-x:auto;border:1px solid var(--border);border-radius:8px}
-.mapa{display:flex;flex-wrap:wrap;gap:6px}
-.mapa span{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--surface-alt);color:var(--text)}
-.mapa span.falta{background:var(--surface);border:1px dashed var(--field);color:var(--muted)}
-.campo-texto{display:flex;flex-direction:column;gap:4px}
-.campo-texto input{height:44px;padding:0 12px;border:1px solid var(--field);border-radius:8px;background:var(--surface);color:var(--text);font:inherit;font-size:16px}
-@media (max-width:899px){
-  body{padding-bottom:96px}
-  h1{font-size:24px}
-  .lista{max-height:none;overflow:visible}
-  .barra{display:flex}
-  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}
-  .chips::-webkit-scrollbar{display:none}
-  .card{border-radius:0;border-left:0;border-right:0;margin:0 -16px}
-}
-.dudas{display:flex;flex-direction:column;gap:12px}
-.duda p{margin:0 0 8px;font-size:13px;font-weight:500}
-.duda-ops{display:flex;flex-wrap:wrap;gap:8px}
-.op{display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);cursor:pointer;text-align:left;font-size:13px;line-height:1.3}
-.op:hover{background:var(--surface-alt)}
-.op b{display:block;font-weight:500}
-.op img{width:28px;height:38px;object-fit:contain;flex:0 0 auto}
-@media (prefers-reduced-motion:no-preference){
-  .linea.entra{animation:cp-entra .38s cubic-bezier(.2,.8,.2,1)}
-  .paso.pop input{animation:cp-pop .28s ease-out}
-  .bump{animation:cp-bump .4s cubic-bezier(.2,.8,.2,1)}
-  .mic[aria-pressed=true]{animation:cp-latido 1.3s ease-out infinite}
-  .ficha{animation:cp-abre .28s cubic-bezier(.2,.8,.2,1)}
-  .aviso,.permiso,.previa{animation:cp-aparece .3s ease-out}
-  .duda{animation:cp-entra .3s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 60ms)}
-  .op{animation:cp-entra .3s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--j,0) * 45ms + 80ms)}
-  .badge{animation:cp-brillo 1.6s ease-in-out 2}
-  .paso button,.chip,.mic,.op,.btn-borde,.btn-fantasma,.btn-primario,.barra a{transition:transform .12s ease,background-color .15s ease}
-  .paso button:active,.chip:active,.mic:active,.op:active,.btn-borde:active,.btn-fantasma:active,.btn-primario:active,.barra a:active{transform:scale(.93)}
-  .item,.archivo-zona{transition:background-color .2s ease,border-color .2s ease}
-}
-@keyframes cp-entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes cp-pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
-@keyframes cp-bump{0%{transform:scale(1)}35%{transform:scale(1.09)}100%{transform:scale(1)}}
-@keyframes cp-latido{0%{box-shadow:0 0 0 0 rgba(213,248,138,.75)}70%{box-shadow:0 0 0 14px rgba(213,248,138,0)}100%{box-shadow:0 0 0 0 rgba(213,248,138,0)}}
-@keyframes cp-abre{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-@keyframes cp-aparece{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-@keyframes cp-brillo{0%,100%{filter:none}50%{filter:brightness(1.08) saturate(1.2)}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+<link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-<div class="wrap">
-  <header>
+<div class="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-5">
+  <header class="flex flex-col gap-1">
     <p class="kicker">Tools for Pymes · Calculadora de pedidos</p>
-    <h1 id="titulo">Arma pedidos con tu catálogo</h1>
-    <p class="meta" id="meta-cat">Sube tu lista de productos en Excel y calcula pedidos en segundos, escribiendo o por voz.</p>
+    <h1 id="titulo" class="m-0 text-2xl font-medium leading-tight tracking-[-.02em] min-[900px]:text-[32px]">Arma pedidos con tu catálogo</h1>
+    <p class="m-0 text-[13px] text-suave" id="meta-cat">Sube tu lista de productos en Excel y calcula pedidos en segundos, escribiendo o por voz.</p>
     <p class="aviso dif" id="aviso-precios" role="status" hidden></p>
   </header>
 
-  <section class="card catalogo" id="catalogo" aria-labelledby="cat-titulo">
-    <div class="cab"><h2 id="cat-titulo">Tu catálogo</h2><span class="detalle" id="cat-estado">Sin catálogo</span></div>
+  <section class="tarjeta" id="catalogo" aria-labelledby="cat-titulo">
+    <div class="flex flex-wrap items-baseline justify-between gap-2"><h2 id="cat-titulo" class="m-0 text-[15px] font-medium">Tu catálogo</h2><span class="detalle" id="cat-estado">Sin catálogo</span></div>
     <div id="cat-vacio">
-      <ol class="pasos">
+      <ol class="m-0 flex list-decimal flex-col gap-1 pl-5 text-[13px]">
         <li>Descarga la plantilla de Excel.</li>
         <li>Escribe tus productos y precios (una fila por producto).</li>
         <li>Súbela aquí. Puedes volver a subirla cuando cambien tus precios.</li>
       </ol>
     </div>
-    <label class="archivo-zona" id="zona" for="archivo">
+    <label class="archivo-zona flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[10px] border-[1.5px] border-dashed border-campo bg-superficie-alt px-4 py-5 text-center transition-colors hover:border-acento" id="zona" for="archivo">
       <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M7 9l5-5 5 5"/><path d="M5 15v4a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-4"/></svg>
-      <b id="zona-txt">Subir Excel o CSV</b>
+      <b id="zona-txt" class="text-[15px] font-medium">Subir Excel o CSV</b>
       <span class="detalle">Toca para elegir el archivo o arrástralo aquí · .xlsx, .xls, .csv</span>
-      <input id="archivo" class="sr" type="file" accept=".xlsx,.xls,.csv,.ods,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv">
+      <input id="archivo" class="sr-only" type="file" accept=".xlsx,.xls,.csv,.ods,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv">
     </label>
     <div class="acc-cat">
-      <button type="button" class="btn-borde" id="plantilla">Descargar plantilla</button>
-      <button type="button" class="btn-fantasma" id="ejemplo">Probar con un ejemplo</button>
-      <button type="button" class="btn-fantasma" id="exportar" hidden>Descargar mi catálogo</button>
-      <button type="button" class="btn-fantasma" id="borrar-cat" hidden>Quitar catálogo</button>
+      <button type="button" class="btn-borde tap" id="plantilla">Descargar plantilla</button>
+      <button type="button" class="btn-fantasma tap" id="ejemplo">Probar con un ejemplo</button>
+      <button type="button" class="btn-fantasma tap" id="exportar" hidden>Descargar mi catálogo</button>
+      <button type="button" class="btn-fantasma tap" id="borrar-cat" hidden>Quitar catálogo</button>
     </div>
     <div role="status" aria-live="polite"><p class="aviso" id="msg-cat" hidden></p></div>
     <div id="previa" hidden></div>
     <p class="ayuda">Tu catálogo y tus pedidos se guardan solo en este navegador. No se suben a ningún servidor.</p>
   </section>
 
-  <div class="cols" id="calc" hidden>
-    <section class="card buscar" aria-label="Buscar productos">
+  <div class="flex flex-wrap items-start gap-4" id="calc" hidden>
+    <section class="tarjeta flex-[999_1_560px]" aria-label="Buscar productos">
       <label class="campo" for="buscar">Buscar producto</label>
-      <div class="fila-buscar">
-        <div class="caja">
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-          <input id="buscar" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribe abreviado o el código…">
+      <div class="flex gap-2">
+        <div class="flex h-12 min-w-0 flex-auto items-center gap-2 rounded-lg border border-campo bg-superficie px-3">
+          <svg aria-hidden="true" class="shrink-0 text-suave" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="buscar" class="h-11 min-w-0 flex-auto border-0 bg-transparent text-base text-texto outline-none" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribe abreviado o el código…">
         </div>
-        <button type="button" class="mic" id="mic" aria-pressed="false" aria-label="Dictar productos con el micrófono">
+        <button type="button" class="tap inline-flex h-12 min-w-[48px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-primario bg-primario px-3.5 font-medium text-primario-texto hover:bg-primario-hover aria-pressed:border-lima aria-pressed:bg-lima aria-pressed:text-lima-texto aria-pressed:motion-safe:animate-latido" id="mic" aria-pressed="false" aria-label="Dictar productos con el micrófono">
           <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
           <span id="mic-txt">Dictar</span>
         </button>
       </div>
       <p class="ayuda" id="ayuda-buscar">Escribe abreviado o dicta la cantidad y el producto. Puedes decir varios productos en una frase.</p>
-      <div class="permiso" id="permiso-mic" role="region" aria-label="Permiso del micrófono" hidden>
-        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
-        <div class="permiso-cuerpo">
-          <p id="permiso-txt"></p>
-          <div class="permiso-acc">
-            <button type="button" class="btn-borde" id="permiso-permitir">Permitir micrófono</button>
-            <button type="button" class="btn-fantasma" id="permiso-ahora">Ahora no</button>
+      <div class="flex items-start gap-3 rounded-lg bg-acento-fondo p-3 text-acento-fuerte motion-safe:animate-aparece" id="permiso-mic" role="region" aria-label="Permiso del micrófono" hidden>
+        <svg aria-hidden="true" class="mt-0.5 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
+        <div class="flex min-w-0 flex-col gap-2">
+          <p id="permiso-txt" class="m-0 text-[13px] leading-normal"></p>
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" class="btn-borde tap bg-superficie" id="permiso-permitir">Permitir micrófono</button>
+            <button type="button" class="btn-fantasma tap" id="permiso-ahora">Ahora no</button>
           </div>
         </div>
       </div>
       <div role="status" aria-live="polite"><p class="aviso info" id="msg-voz" hidden></p></div>
-      <div class="dudas" id="dudas-voz" hidden></div>
-      <div class="chips" id="chips" role="group" aria-label="Categorías"></div>
-      <p class="conteo" id="conteo"></p>
-      <ul class="lista" id="lista"></ul>
+      <div class="flex flex-col gap-3" id="dudas-voz" hidden></div>
+      <div class="sin-barra flex flex-wrap gap-2 max-[899px]:-mx-4 max-[899px]:flex-nowrap max-[899px]:overflow-x-auto max-[899px]:px-4 max-[899px]:pb-1" id="chips" role="group" aria-label="Categorías"></div>
+      <p class="m-0 text-[11px] text-suave" id="conteo"></p>
+      <ul class="m-0 max-h-[640px] list-none overflow-y-auto rounded-lg border border-borde p-0 max-[899px]:max-h-none max-[899px]:overflow-visible" id="lista"></ul>
     </section>
 
-    <aside class="card pedido" id="pedido" aria-label="Tu pedido">
-      <div class="cab"><h2>Tu pedido</h2><span class="detalle" id="piezas-lbl"></span></div>
-      <p class="vacio-pedido" id="vacio-pedido">Aún no agregas productos. Usa el + o dicta para empezar.</p>
-      <ul class="lineas" id="lineas"></ul>
+    <aside class="tarjeta flex-[1_1_340px] shadow-nexo" id="pedido" aria-label="Tu pedido">
+      <div class="flex flex-wrap items-baseline justify-between gap-2"><h2 class="m-0 text-[15px] font-medium">Tu pedido</h2><span class="detalle" id="piezas-lbl"></span></div>
+      <p class="m-0 rounded-lg bg-superficie-alt px-3 py-5 text-center text-[13px] text-suave" id="vacio-pedido">Aún no agregas productos. Usa el + o dicta para empezar.</p>
+      <ul class="m-0 list-none p-0" id="lineas"></ul>
       <div>
-        <div class="resumen"><span>Productos distintos</span><span id="n-lineas">0</span></div>
-        <div class="resumen"><span>Piezas</span><span id="n-piezas">0</span></div>
-        <div class="total"><span class="k">Total</span><span class="v" id="total">$0</span></div>
+        <div class="flex justify-between text-[13px] text-suave"><span>Productos distintos</span><span class="tabular-nums" id="n-lineas">0</span></div>
+        <div class="flex justify-between text-[13px] text-suave"><span>Piezas</span><span class="tabular-nums" id="n-piezas">0</span></div>
+        <div class="mt-2 flex items-baseline justify-between rounded-lg bg-banda p-3.5 text-banda-texto">
+          <span class="text-[11px] font-semibold uppercase tracking-[.1em] text-banda-suave">Total</span>
+          <span class="inline-block origin-right text-[28px] font-medium leading-tight tracking-[-.02em] tabular-nums" id="total">$0</span>
+        </div>
       </div>
-      <div class="acciones">
-        <button type="button" class="btn-borde" id="copiar">Copiar pedido</button>
-        <a class="btn-borde" id="whatsapp" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
-        <button type="button" class="btn-fantasma" id="vaciar">Vaciar</button>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" class="btn-borde tap flex-auto" id="copiar">Copiar pedido</button>
+        <a class="btn-borde tap flex-auto" id="whatsapp" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        <button type="button" class="btn-fantasma tap" id="vaciar">Vaciar</button>
       </div>
       <p class="aviso ok" id="msg-copia" role="status" hidden></p>
       <p class="ayuda">Calcula con los precios de tu catálogo. No hace cobros ni envía nada por su cuenta.</p>
     </aside>
   </div>
 </div>
-<footer>Tools for Pymes · hecho por <a href="https://danielherrodri.github.io/">Daniel Rodriguez</a>. Gratis para tu negocio. Tus datos no salen de tu dispositivo.</footer>
+<footer class="mx-auto max-w-[1200px] px-4 py-6 text-xs text-suave">Tools for Pymes · hecho por <a href="https://danielherrodri.github.io/">Daniel Rodriguez</a>. Gratis para tu negocio. Tus datos no salen de tu dispositivo.</footer>
 
-<div class="barra" id="barra" hidden>
-  <div><span class="k">Total · <span id="barra-piezas">0 piezas</span></span><span class="v" id="barra-total">$0</span></div>
-  <a href="#pedido">Ver pedido</a>
+<div class="fixed inset-x-0 bottom-0 z-20 hidden items-center justify-between gap-3 bg-banda px-4 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2.5 text-banda-texto max-[899px]:flex" id="barra" hidden>
+  <div><span class="text-[11px] font-semibold uppercase tracking-[.1em] text-banda-suave">Total · <span id="barra-piezas">0 piezas</span></span><span class="block origin-left text-2xl font-medium leading-tight tracking-[-.02em] tabular-nums" id="barra-total">$0</span></div>
+  <a href="#pedido" class="tap inline-flex min-h-[44px] shrink-0 items-center rounded-lg bg-lima px-[18px] text-[15px] font-medium text-lima-texto no-underline hover:text-lima-texto">Ver pedido</a>
 </div>
 
 <script src="buscador.js"></script>
@@ -475,12 +299,12 @@ function mostrarPrevia(r) {
     r.omitidas.slice(0, 4).map(function (o) { return 'fila ' + o.fila + ' (' + esc(o.motivo) + ')'; }).join(', ') + (r.omitidas.length > 4 ? '…' : '') + '.</p>' : '';
   $('previa').innerHTML = '<div class="previa">' +
     '<h3>Encontré ' + r.productos.length + ' productos en «' + esc(r.archivo) + '»</h3>' +
-    '<p class="detalle" style="margin:0">Hoja «' + esc(r.hoja) + '», encabezados en la fila ' + r.filaEncabezado + '.' +
+    '<p class="detalle m-0">Hoja «' + esc(r.hoja) + '», encabezados en la fila ' + r.filaEncabezado + '.' +
     (catalogo ? ' Respecto a tu catálogo actual: ' + cambian + (cambian === 1 ? ' precio cambia' : ' precios cambian') + ' y ' + nuevos + (nuevos === 1 ? ' producto es nuevo.' : ' productos son nuevos.') : '') + '</p>' +
     '<div class="mapa" aria-label="Columnas reconocidas">' + mapa + '</div>' + omit +
     '<div class="tabla-caja"><table><thead><tr><th>Producto</th><th>Presentación</th><th>Categoría</th><th class="num">Precio</th></tr></thead><tbody>' + muestra + '</tbody></table></div>' +
     '<label class="campo-texto"><span class="campo">Nombre de tu negocio (opcional)</span><input id="negocio" type="text" maxlength="60" autocomplete="organization" value="' + esc(catalogo && catalogo.negocio || '') + '" placeholder="Ej. Abarrotes Lupita"></label>' +
-    '<div class="acc-cat"><button type="button" class="btn-primario" id="confirmar">Usar este catálogo</button><button type="button" class="btn-fantasma" id="cancelar">Cancelar</button></div>' +
+    '<div class="acc-cat"><button type="button" class="btn-primario tap" id="confirmar">Usar este catálogo</button><button type="button" class="btn-fantasma tap" id="cancelar">Cancelar</button></div>' +
     '</div>';
   $('previa').hidden = false;
   vibrar(15);
@@ -642,7 +466,7 @@ function renderChips() {
   if (CATS.length < 2) { elChips.innerHTML = ''; return; }
   elChips.innerHTML = ['Todos'].concat(CATS).map(function (c) {
     var n = c === 'Todos' ? P.length : P.filter(function (p) { return p.c === c; }).length;
-    return '<button type="button" class="chip" data-cat="' + esc(c) + '" aria-pressed="' + (st.cat === c) + '">' + esc(c) + ' <span>' + n + '</span></button>';
+    return '<button type="button" class="chip tap" data-cat="' + esc(c) + '" aria-pressed="' + (st.cat === c) + '">' + esc(c) + ' <span>' + n + '</span></button>';
   }).join('');
 }
 function renderList() {
@@ -656,7 +480,7 @@ function renderList() {
       '<span class="titulo">' + esc(p.n) + '</span>' + (p.d ? '<span class="detalle">' + esc(p.d) + '</span>' : '') +
       '<span class="grande">' + money(p.p) + '</span>' +
       (qty > 0 ? '<span>En tu pedido: ' + qty + ' × ' + money(p.p) + ' = <strong>' + money(p.p * qty) + '</strong></span>' : '') +
-      (p.url ? '<a class="btn-borde" href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer">Ver producto</a>' : '') +
+      (p.url ? '<a class="btn-borde tap self-start" href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer">Ver producto</a>' : '') +
       '</div></div>' : '';
     return '<li class="item' + (top ? ' top' : '') + (open ? ' abierto' : '') + '">' +
       '<button type="button" class="info" data-act="toggle" data-id="' + id + '" aria-expanded="' + open + '">' +
@@ -688,11 +512,11 @@ function renderOrder() {
   elLineas.innerHTML = ls.map(function (l) {
     return '<li class="linea' + (nuevos[l.p.id] ? ' entra' : '') + '"><div class="linea-top">' +
       (l.p.img ? '<img class="mini chica" src="' + esc(l.p.img) + '" alt="" loading="lazy" width="36" height="50" referrerpolicy="no-referrer">' : '') +
-      '<div style="flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px"><span class="nombre">' + esc(l.p.n) + '</span>' +
+      '<div class="flex min-w-0 flex-auto flex-col gap-0.5"><span class="nombre">' + esc(l.p.n) + '</span>' +
       '<span class="detalle">' + esc(l.p.d) + (l.p.d ? ' · ' : '') + money(l.p.p) + ' c/u</span>' +
       (l.p.antes != null ? '<span><span class="badge">Precio modificado recientemente</span></span>' : '') + '</div>' +
       '<span class="sub">' + money(l.sub) + '</span></div>' +
-      '<div class="linea-acc">' + stepper(l.p, l.qty) + '<button type="button" class="btn-fantasma" data-act="remove" data-id="' + esc(l.p.id) + '">Quitar</button></div></li>';
+      '<div class="linea-acc">' + stepper(l.p, l.qty) + '<button type="button" class="btn-fantasma tap" data-act="remove" data-id="' + esc(l.p.id) + '">Quitar</button></div></li>';
   }).join('');
   $('vacio-pedido').hidden = ls.length > 0;
   $('n-lineas').textContent = ls.length;
@@ -791,7 +615,7 @@ function renderDudas() {
     return '<div class="duda" style="--i:' + i + '"><p>' + (x.tipo === 'dudoso' ? '¿Cuál quisiste decir con «' + esc(x.texto) + '»?' : 'No reconocí «' + esc(x.texto) + '». ¿Es alguno de estos?') +
       (x.qty > 1 ? ' <span class="detalle">(' + x.qty + ' piezas)</span>' : '') + '</p><div class="duda-ops">' +
       x.opciones.map(function (p, j) {
-        return '<button type="button" class="op" style="--j:' + j + '" data-duda="' + i + '" data-id="' + esc(p.id) + '">' +
+        return '<button type="button" class="op tap" style="--j:' + j + '" data-duda="' + i + '" data-id="' + esc(p.id) + '">' +
           (p.img ? '<img src="' + esc(p.img) + '" alt="" width="28" height="38" loading="lazy" referrerpolicy="no-referrer">' : '') +
           '<span><b>' + esc(p.n) + '</b><span class="detalle">' + esc([p.d, money(p.p)].filter(Boolean).join(' · ')) + '</span></span></button>';
       }).join('') + '<button type="button" class="btn-fantasma" data-duda="' + i + '" data-id="">Ninguno</button></div></div>';
