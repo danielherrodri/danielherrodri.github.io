@@ -28,3 +28,11 @@ npx tailwindcss@3.4.17 -c calculadora-precios/tailwind.config.js -i calculadora-
 - Animaciones: el logo entra al cargar y su tecla + se presiona cada vez que agregas un producto; los productos nuevos del pedido entran deslizándose, el total rebota al cambiar, la cantidad hace «pop», la ficha se despliega, la etiqueta «Precio modificado recientemente» brilla y el botón del micrófono late mientras escucha.
 - Con «reducir movimiento» activado en el teléfono, todo se muestra sin animar.
 - Las animaciones de Tailwind se aplican con `@apply`; el `safelist` de `tailwind.config.js` evita que Tailwind borre sus `@keyframes` al compilar.
+
+## Precio público y precio distribuidor
+
+- Al cargar un catálogo, la calculadora pregunta con qué porcentaje de descuento compras: 25%, 35%, 42%, 50%, otro porcentaje o sin descuento. Se puede cambiar cuando quieras con «Cambiar».
+- Cada producto muestra su precio público y su precio distribuidor. El pedido muestra el total público, el total distribuidor y tu ganancia.
+- Puedes elegir si el mensaje que copias o mandas por WhatsApp lleva el precio público o el de distribuidor.
+- Columna opcional «Precio distribuidor» en el Excel: si la llenas, ese precio exacto tiene prioridad sobre el porcentaje. También reconoce «Precio de mayoreo», «Precio socio» y «Precio con descuento».
+- El porcentaje se aplica directo al precio público, así que es una estimación. Algunas marcas calculan el descuento de otra forma; para cifras exactas, escribe el precio en la columna.

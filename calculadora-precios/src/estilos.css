@@ -161,3 +161,21 @@
 @keyframes lg-aro { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.5); } }
 @keyframes lg-ola { 0%, 100% { transform: none; } 45% { transform: translateY(-3px) scale(1.08); } }
 @keyframes lg-barra { from { transform: translateY(100%); } to { transform: none; } }
+
+/* Descuento de distribuidor */
+@layer components {
+  .desc-pregunta { @apply flex flex-col gap-2.5 rounded-[10px] border border-acento-fondo bg-acento-fondo p-3 text-texto motion-safe:animate-aparece; }
+  .desc-tit { @apply m-0 text-[15px] font-medium text-acento-fuerte; }
+  .desc-ops { @apply flex flex-wrap gap-2; }
+  .desc-op { @apply inline-flex min-h-[44px] min-w-[56px] cursor-pointer items-center justify-center rounded-lg border border-borde bg-superficie px-3 text-[15px] font-semibold tabular-nums text-texto hover:border-acento aria-pressed:border-primario aria-pressed:bg-primario aria-pressed:text-primario-texto; }
+  .desc-otro { @apply m-0 flex flex-wrap items-center gap-2; }
+  .desc-campo { @apply inline-flex h-11 items-center gap-1 rounded-lg border border-campo bg-superficie pr-3; }
+  .desc-campo input { @apply h-10 w-20 border-0 bg-transparent px-3 text-base tabular-nums text-texto outline-none; }
+  .desc-linea { @apply flex flex-wrap items-center justify-between gap-2 rounded-lg bg-acento-fondo px-3 py-1.5 text-[13px] text-acento-fuerte; }
+  .etq { @apply text-[11px] font-medium text-suave; }
+  .precio-dist { @apply text-[13px] font-semibold tabular-nums text-acento; }
+  .ficha-dist { @apply text-[13px] text-texto; }
+  .ficha-dist strong { @apply text-acento; }
+  .sub-dist { @apply block text-right text-[11px] font-medium text-acento; }
+  .msg-precio { @apply flex flex-wrap items-center gap-2; }
+}

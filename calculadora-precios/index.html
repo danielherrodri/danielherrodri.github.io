@@ -68,6 +68,7 @@
 
   <div class="flex flex-wrap items-start gap-4" id="calc" hidden>
     <section class="tarjeta flex-[999_1_560px]" aria-label="Buscar productos">
+      <div id="descuento" role="region" aria-label="Tu descuento de distribuidor"></div>
       <label class="campo" for="buscar">Buscar producto</label>
       <div class="flex gap-2">
         <div class="flex h-12 min-w-0 flex-auto items-center gap-2 rounded-lg border border-campo bg-superficie px-3">
@@ -104,10 +105,17 @@
       <div>
         <div class="flex justify-between text-[13px] text-suave"><span>Productos distintos</span><span class="tabular-nums" id="n-lineas">0</span></div>
         <div class="flex justify-between text-[13px] text-suave"><span>Piezas</span><span class="tabular-nums" id="n-piezas">0</span></div>
+        <div class="flex justify-between text-[13px] text-suave" id="fila-dist" hidden><span>Total distribuidor</span><span class="tabular-nums" id="total-dist">$0</span></div>
+        <div class="flex justify-between text-[13px] font-semibold text-acento" id="fila-gana" hidden><span>Tu ganancia</span><span class="tabular-nums" id="total-gana">$0</span></div>
         <div class="mt-2 flex items-baseline justify-between rounded-lg bg-banda p-3.5 text-banda-texto">
-          <span class="text-[11px] font-semibold uppercase tracking-[.1em] text-banda-suave">Total</span>
+          <span class="text-[11px] font-semibold uppercase tracking-[.1em] text-banda-suave" id="total-lbl">Total</span>
           <span class="inline-block origin-right text-[28px] font-medium leading-tight tracking-[-.02em] tabular-nums" id="total">$0</span>
         </div>
+      </div>
+      <div class="msg-precio" id="msg-precio" role="group" aria-label="Precio que lleva el mensaje" hidden>
+        <span class="detalle">El mensaje lleva:</span>
+        <button type="button" class="chip tap" data-ver="publico" aria-pressed="true">Precio público</button>
+        <button type="button" class="chip tap" data-ver="dist" aria-pressed="false">Precio distribuidor</button>
       </div>
       <div class="flex flex-wrap gap-2">
         <button type="button" class="btn-borde tap flex-auto" id="copiar">Copiar pedido</button>
@@ -122,7 +130,7 @@
 <footer class="mx-auto max-w-[1200px] px-4 py-6 text-xs text-suave">Tools for Pymes · hecho por <a href="https://danielherrodri.github.io/">Daniel Rodriguez</a>. Gratis para tu negocio. Tus datos no salen de tu dispositivo.</footer>
 
 <div class="fixed inset-x-0 bottom-0 z-20 hidden items-center justify-between gap-3 bg-banda px-4 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2.5 text-banda-texto max-[899px]:flex" id="barra" hidden>
-  <div><span class="text-[11px] font-semibold uppercase tracking-[.1em] text-banda-suave">Total · <span id="barra-piezas">0 piezas</span></span><span class="block origin-left text-2xl font-medium leading-tight tracking-[-.02em] tabular-nums" id="barra-total">$0</span></div>
+  <div><span class="text-[11px] font-semibold uppercase tracking-[.1em] text-banda-suave"><span id="barra-lbl">Total</span> · <span id="barra-piezas">0 piezas</span></span><span class="block origin-left text-2xl font-medium leading-tight tracking-[-.02em] tabular-nums" id="barra-total">$0</span><span class="block text-xs text-banda-suave tabular-nums" id="barra-dist" hidden></span></div>
   <a href="#pedido" class="tap inline-flex min-h-[44px] shrink-0 items-center rounded-lg bg-lima px-[18px] text-[15px] font-medium text-lima-texto no-underline hover:text-lima-texto">Ver pedido</a>
 </div>
 
@@ -131,7 +139,8 @@
 (function () {
 'use strict';
 var BUS = window.CPBuscador;
-var KEY_CAT = 'cp-catalogo-v1', KEY_PED = 'cp-pedido-v1';
+var KEY_CAT = 'cp-catalogo-v1', KEY_PED = 'cp-pedido-v1', KEY_DESC = 'cp-descuento-v1';
+var DESCUENTOS = [25, 35, 42, 50];
 var XLSX_URL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
 var MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 var ICON_MENOS = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14"/></svg>';
@@ -167,6 +176,7 @@ function usarCatalogo(cat) {
     var p = {
       id: String(r.id), s: limpio(r.s, 40), n: limpio(r.n, 160), d: limpio(r.d, 160), p: Number(r.p) || 0,
       c: limpio(r.c, 60) || 'Sin categoría', k: limpio(r.k, 300), img: urlSegura(r.img), url: urlSegura(r.url),
+      pd: (typeof r.pd === 'number' && isFinite(r.pd) && r.pd >= 0) ? r.pd : null,
       antes: (typeof r.a === 'number' && r.a !== r.p && diasDesde(r.f) <= 14) ? r.a : null
     };
     return BUS.indexar(p);
@@ -222,22 +232,28 @@ function cargarXLSX() {
 var COLUMNAS = {
   n: ['producto', 'nombre', 'nombre del producto', 'descripcion', 'articulo', 'item', 'concepto'],
   d: ['presentacion', 'variante', 'sabor', 'tamano', 'contenido', 'detalle', 'medida', 'sabor tamano', 'presentacion sabor tamano'],
-  p: ['precio', 'precio venta', 'precio de venta', 'precio publico', 'precio al publico', 'pvp', 'importe', 'precio unitario', 'precio mxn', 'costo'],
+  p: ['precio', 'precio venta', 'precio de venta', 'precio publico', 'precio al publico', 'precio publico sugerido', 'precio sugerido', 'precio sugerido al publico', 'precio de lista', 'precio lista', 'pvp', 'importe', 'precio unitario', 'precio mxn', 'costo'],
+  pd: ['precio distribuidor', 'precio de distribuidor', 'precio del distribuidor', 'precio distribuidor opcional', 'precio mayoreo', 'precio de mayoreo', 'precio mayorista', 'precio socio', 'precio de socio', 'precio con descuento', 'precio neto'],
   c: ['categoria', 'linea', 'familia', 'departamento', 'grupo', 'tipo', 'seccion'],
   s: ['sku', 'clave', 'codigo', 'cod', 'id', 'codigo de barras', 'clave sku'],
   k: ['abreviaturas', 'alias', 'palabras clave', 'sinonimos', 'apodos', 'como lo piden', 'abreviaturas o apodos'],
   img: ['imagen', 'foto', 'url imagen', 'imagen url', 'url de la imagen'],
   url: ['enlace', 'link', 'url', 'pagina', 'url producto', 'enlace del producto']
 };
-var NOMBRES_COL = { n: 'Producto', d: 'Presentación', p: 'Precio', c: 'Categoría', s: 'Clave', k: 'Abreviaturas', img: 'Imagen', url: 'Enlace' };
+var NOMBRES_COL = { n: 'Producto', d: 'Presentación', p: 'Precio público', pd: 'Precio distribuidor', c: 'Categoría', s: 'Clave', k: 'Abreviaturas', img: 'Imagen', url: 'Enlace' };
 function campoDeEncabezado(h) {
   var t = norm(String(h || '').replace(/\(.*?\)|\*/g, ' '));
   if (!t) return null;
   for (var campo in COLUMNAS) if (COLUMNAS[campo].indexOf(t) >= 0) return campo;
+  // Si ninguno coincide exacto, gana el alias más largo con el que empieza («precio distribuidor 50» → distribuidor, no «precio»).
+  var mejor = null, largo = 0;
   for (var campo2 in COLUMNAS) {
-    for (var i = 0; i < COLUMNAS[campo2].length; i++) if (t.indexOf(COLUMNAS[campo2][i]) === 0) return campo2;
+    for (var i = 0; i < COLUMNAS[campo2].length; i++) {
+      var a = COLUMNAS[campo2][i];
+      if (a.length > largo && t.indexOf(a) === 0 && (t.length === a.length || t.charAt(a.length) === ' ')) { mejor = campo2; largo = a.length; }
+    }
   }
-  return null;
+  return mejor;
 }
 function leerPrecio(v) {
   if (typeof v === 'number') return isFinite(v) ? v : NaN;
@@ -268,8 +284,10 @@ function interpretarHoja(filas) {
     if (!n) { omitidas.push({ fila: f + 1, motivo: 'no tiene nombre de producto' }); continue; }
     var precio = leerPrecio(precioCrudo);
     if (!isFinite(precio) || precio < 0) { omitidas.push({ fila: f + 1, motivo: '«' + n + '» no tiene un precio válido' }); continue; }
+    var pdCrudo = val('pd'), pd = (pdCrudo === '' || pdCrudo == null) ? NaN : leerPrecio(pdCrudo);
     var prod = {
       n: n, d: limpio(val('d'), 160), p: Math.round(precio * 100) / 100,
+      pd: isFinite(pd) && pd >= 0 ? Math.round(pd * 100) / 100 : null,
       c: limpio(val('c'), 60) || 'Sin categoría', s: limpio(val('s'), 40),
       k: limpio(val('k'), 300), img: urlSegura(val('img')), url: urlSegura(val('url'))
     };
@@ -320,8 +338,9 @@ function mostrarPrevia(r) {
   var mapa = Object.keys(NOMBRES_COL).map(function (c) {
     return r.mapa[c] != null ? '<span>' + NOMBRES_COL[c] + '</span>' : '<span class="falta">' + NOMBRES_COL[c] + ' (no viene)</span>';
   }).join('');
+  var conDist = r.mapa.pd != null;
   var muestra = r.productos.slice(0, 5).map(function (p) {
-    return '<tr><td>' + esc(p.n) + '</td><td>' + esc(p.d) + '</td><td>' + esc(p.c) + '</td><td class="num">' + money(p.p) + '</td></tr>';
+    return '<tr><td>' + esc(p.n) + '</td><td>' + esc(p.d) + '</td><td>' + esc(p.c) + '</td><td class="num">' + money(p.p) + '</td>' + (conDist ? '<td class="num">' + (p.pd != null ? money(p.pd) : '—') + '</td>' : '') + '</tr>';
   }).join('');
   var omit = r.omitidas.length ? '<p class="aviso dif">Omití ' + r.omitidas.length + (r.omitidas.length === 1 ? ' fila' : ' filas') + ': ' +
     r.omitidas.slice(0, 4).map(function (o) { return 'fila ' + o.fila + ' (' + esc(o.motivo) + ')'; }).join(', ') + (r.omitidas.length > 4 ? '…' : '') + '.</p>' : '';
@@ -330,7 +349,7 @@ function mostrarPrevia(r) {
     '<p class="detalle m-0">Hoja «' + esc(r.hoja) + '», encabezados en la fila ' + r.filaEncabezado + '.' +
     (catalogo ? ' Respecto a tu catálogo actual: ' + cambian + (cambian === 1 ? ' precio cambia' : ' precios cambian') + ' y ' + nuevos + (nuevos === 1 ? ' producto es nuevo.' : ' productos son nuevos.') : '') + '</p>' +
     '<div class="mapa" aria-label="Columnas reconocidas">' + mapa + '</div>' + omit +
-    '<div class="tabla-caja"><table><thead><tr><th>Producto</th><th>Presentación</th><th>Categoría</th><th class="num">Precio</th></tr></thead><tbody>' + muestra + '</tbody></table></div>' +
+    '<div class="tabla-caja"><table><thead><tr><th>Producto</th><th>Presentación</th><th>Categoría</th><th class="num">Precio público</th>' + (conDist ? '<th class="num">Precio distribuidor</th>' : '') + '</tr></thead><tbody>' + muestra + '</tbody></table></div>' +
     '<label class="campo-texto"><span class="campo">Nombre de tu negocio (opcional)</span><input id="negocio" type="text" maxlength="60" autocomplete="organization" value="' + esc(catalogo && catalogo.negocio || '') + '" placeholder="Ej. Abarrotes Lupita"></label>' +
     '<div class="acc-cat"><button type="button" class="btn-primario tap" id="confirmar">Usar este catálogo</button><button type="button" class="btn-fantasma tap" id="cancelar">Cancelar</button></div>' +
     '</div>';
@@ -361,38 +380,39 @@ function confirmarCatalogo() {
 }
 
 /* ---------- plantilla, ejemplo y exportar ---------- */
-var ENCABEZADOS = ['Producto', 'Presentación (sabor, tamaño)', 'Precio', 'Categoría', 'Clave o SKU', 'Abreviaturas o apodos', 'Imagen (URL)', 'Enlace (URL)'];
+var ENCABEZADOS = ['Producto', 'Presentación (sabor, tamaño)', 'Precio público', 'Precio distribuidor (opcional)', 'Categoría', 'Clave o SKU', 'Abreviaturas o apodos', 'Imagen (URL)', 'Enlace (URL)'];
 var EJEMPLO = [
-  ['Cuaderno profesional', 'Cuadro chico · 100 hojas', 58, 'Cuadernos', 'CU-100C', 'cuaderno profesional cuadros', '', ''],
-  ['Cuaderno profesional', 'Raya · 100 hojas', 58, 'Cuadernos', 'CU-100R', 'cuaderno profesional rayas', '', ''],
-  ['Cuaderno francés', 'Cuadro grande · 100 hojas', 42, 'Cuadernos', 'CF-100G', 'frances cuadro', '', ''],
-  ['Lápiz del 2', 'Pieza', 6, 'Escritura', 'LA-2', 'lapiz', '', ''],
-  ['Pluma de gel', 'Negra', 18, 'Escritura', 'PG-N', 'boligrafo pluma gel', '', ''],
-  ['Pluma de gel', 'Azul', 18, 'Escritura', 'PG-A', 'boligrafo pluma gel', '', ''],
-  ['Marcatextos', 'Amarillo', 16, 'Escritura', 'MT-AM', 'resaltador marcador', '', ''],
-  ['Borrador blanco', 'Pieza', 7, 'Escritura', 'BO-1', 'goma borrador', '', ''],
-  ['Sacapuntas metálico', 'Pieza', 9, 'Escritura', 'SP-1', 'sacapuntas tajador', '', ''],
-  ['Hojas blancas', 'Paquete de 500 · tamaño carta', 129, 'Papel', 'HB-500', 'resma papel bond', '', ''],
-  ['Cartulina', 'Blanca', 9, 'Papel', 'CA-BL', 'cartulina', '', ''],
-  ['Pegamento en barra', '21 g', 26, 'Manualidades', 'PB-21', 'resistol adhesivo', '', ''],
-  ['Tijeras escolares', 'Punta roma', 32, 'Manualidades', 'TI-1', 'tijera', '', ''],
-  ['Colores', 'Caja de 12', 65, 'Manualidades', 'CO-12', 'lapices de colores crayones', '', ''],
-  ['Copia', 'Blanco y negro · carta', 1.5, 'Servicios', 'SV-BN', 'copia fotocopia', '', ''],
-  ['Impresión', 'A color · carta', 6, 'Servicios', 'SV-COL', 'impresion color', '', '']
+  ['Cuaderno profesional', 'Cuadro chico · 100 hojas', 58, '', 'Cuadernos', 'CU-100C', 'cuaderno profesional cuadros', '', ''],
+  ['Cuaderno profesional', 'Raya · 100 hojas', 58, '', 'Cuadernos', 'CU-100R', 'cuaderno profesional rayas', '', ''],
+  ['Cuaderno francés', 'Cuadro grande · 100 hojas', 42, '', 'Cuadernos', 'CF-100G', 'frances cuadro', '', ''],
+  ['Lápiz del 2', 'Pieza', 6, '', 'Escritura', 'LA-2', 'lapiz', '', ''],
+  ['Pluma de gel', 'Negra', 18, '', 'Escritura', 'PG-N', 'boligrafo pluma gel', '', ''],
+  ['Pluma de gel', 'Azul', 18, '', 'Escritura', 'PG-A', 'boligrafo pluma gel', '', ''],
+  ['Marcatextos', 'Amarillo', 16, '', 'Escritura', 'MT-AM', 'resaltador marcador', '', ''],
+  ['Borrador blanco', 'Pieza', 7, '', 'Escritura', 'BO-1', 'goma borrador', '', ''],
+  ['Sacapuntas metálico', 'Pieza', 9, '', 'Escritura', 'SP-1', 'sacapuntas tajador', '', ''],
+  ['Hojas blancas', 'Paquete de 500 · tamaño carta', 129, '', 'Papel', 'HB-500', 'resma papel bond', '', ''],
+  ['Cartulina', 'Blanca', 9, '', 'Papel', 'CA-BL', 'cartulina', '', ''],
+  ['Pegamento en barra', '21 g', 26, '', 'Manualidades', 'PB-21', 'resistol adhesivo', '', ''],
+  ['Tijeras escolares', 'Punta roma', 32, '', 'Manualidades', 'TI-1', 'tijera', '', ''],
+  ['Colores', 'Caja de 12', 65, '', 'Manualidades', 'CO-12', 'lapices de colores crayones', '', ''],
+  ['Copia', 'Blanco y negro · carta', 1.5, '', 'Servicios', 'SV-BN', 'copia fotocopia', '', ''],
+  ['Impresión', 'A color · carta', 6, '', 'Servicios', 'SV-COL', 'impresion color', '', '']
 ];
 function descargar(nombre, filas, negocio) {
   return cargarXLSX().then(function (XLSX) {
     var wb = XLSX.utils.book_new();
     var hoja = XLSX.utils.aoa_to_sheet([ENCABEZADOS].concat(filas.map(function (f) { return f.map(celda); })));
-    hoja['!cols'] = [{ wch: 32 }, { wch: 30 }, { wch: 10 }, { wch: 18 }, { wch: 14 }, { wch: 34 }, { wch: 28 }, { wch: 28 }];
-    hoja['!autofilter'] = { ref: 'A1:H' + (filas.length + 1) };
-    for (var i = 0; i < filas.length; i++) { var c = hoja['C' + (i + 2)]; if (c && typeof c.v === 'number') c.z = '"$"#,##0.00'; }
+    hoja['!cols'] = [{ wch: 32 }, { wch: 30 }, { wch: 14 }, { wch: 18 }, { wch: 18 }, { wch: 14 }, { wch: 34 }, { wch: 28 }, { wch: 28 }];
+    hoja['!autofilter'] = { ref: 'A1:I' + (filas.length + 1) };
+    for (var i = 0; i < filas.length; i++) ['C', 'D'].forEach(function (col) { var c = hoja[col + (i + 2)]; if (c && typeof c.v === 'number') c.z = '"$"#,##0.00'; });
     XLSX.utils.book_append_sheet(wb, hoja, 'Productos');
     var instr = XLSX.utils.aoa_to_sheet([
       ['Cómo llenar tu catálogo' + (negocio ? ' · ' + negocio : '')],
       [''],
       ['1. Escribe un producto por fila en la hoja «Productos». No cambies los títulos de la primera fila.'],
-      ['2. Obligatorios: Producto y Precio. El precio va sin signo de pesos o con él, como prefieras.'],
+      ['2. Obligatorios: Producto y Precio público. El precio va sin signo de pesos o con él, como prefieras.'],
+      ['   Precio distribuidor: opcional. Si lo dejas vacío, la calculadora lo calcula con el porcentaje de descuento que elijas (25%, 35%, 42%, 50% u otro). Si lo escribes, usa ese precio exacto.'],
       ['3. Presentación: sabor, color, tamaño o contenido. Sirve para distinguir productos con el mismo nombre.'],
       ['4. Categoría: agrupa tus productos (por ejemplo «Bebidas», «Limpieza»). Aparecen como filtros.'],
       ['5. Clave o SKU: opcional. Si la pones, puedes buscar por clave y los cambios de precio se detectan mejor.'],
@@ -414,7 +434,7 @@ $('plantilla').addEventListener('click', function () {
 $('ejemplo').addEventListener('click', function () {
   vibrar(10);
   var productos = EJEMPLO.map(function (r) {
-    var p = { n: r[0], d: r[1], p: r[2], c: r[3], s: r[4], k: r[5], img: '', url: '' };
+    var p = { n: r[0], d: r[1], p: r[2], pd: null, c: r[4], s: r[5], k: r[6], img: '', url: '' };
     p.id = claveProducto(p); return p;
   });
   var cat = { negocio: 'Papelería de ejemplo', fecha: hoyISO(), archivo: 'ejemplo', productos: productos };
@@ -424,7 +444,7 @@ $('ejemplo').addEventListener('click', function () {
 });
 $('exportar').addEventListener('click', function () {
   if (!catalogo) return;
-  var filas = catalogo.productos.map(function (p) { return [p.n, p.d, p.p, p.c, p.s, p.k, p.img, p.url]; });
+  var filas = catalogo.productos.map(function (p) { return [p.n, p.d, p.p, typeof p.pd === 'number' ? p.pd : '', p.c, p.s, p.k, p.img, p.url]; });
   var nombre = 'catalogo-' + (norm(catalogo.negocio || 'mi-negocio').replace(/ /g, '-') || 'mi-negocio') + '-' + hoyISO() + '.xlsx';
   descargar(nombre, filas, catalogo.negocio).then(function () { msgCat('Descargué «' + nombre + '».', 'ok'); }, function (e) { msgCat(e.message, 'err'); });
 });
@@ -449,7 +469,21 @@ archivo.addEventListener('change', function () { leerArchivo(archivo.files && ar
 zona.addEventListener('drop', function (e) { var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; leerArchivo(f); });
 
 /* ---------- pedido ---------- */
-var st = { query: '', cat: 'Todos', cart: {}, order: [], open: '', listening: false, dudas: [] };
+var st = { query: '', cat: 'Todos', cart: {}, order: [], open: '', listening: false, dudas: [], desc: null, ver: 'publico', descEditar: false };
+(function () {
+  var d = load(KEY_DESC);
+  if (d && typeof d.p === 'number' && isFinite(d.p) && d.p >= 0 && d.p <= 90) st.desc = d.p;
+  if (d && (d.ver === 'publico' || d.ver === 'dist')) st.ver = d.ver;
+})();
+function guardarDesc() { store(KEY_DESC, { p: st.desc, ver: st.ver }); }
+// Precio de distribuidor: el del Excel si viene; si no, el precio público menos tu porcentaje.
+function precioDist(p) {
+  if (p.pd != null) return p.pd;
+  if (st.desc > 0) return Math.round(p.p * (100 - st.desc)) / 100;
+  return null;
+}
+function hayDist() { return st.desc > 0 || P.some(function (p) { return p.pd != null; }); }
+function pct(n) { return (Math.round(n * 10) / 10).toLocaleString('es-MX') + '%'; }
 (function () {
   var o = load(KEY_PED);
   if (o && o.cart && Array.isArray(o.order)) {
@@ -504,13 +538,15 @@ function renderList() {
   var r = currentList();
   var html = r.list.map(function (p, i) {
     var qty = st.cart[p.id] || 0, top = r.hasQuery && i === 0, open = st.open === p.id, id = esc(p.id);
+    var dist = precioDist(p);
     var antes = p.antes != null ? '<span class="badge">Precio modificado recientemente</span><span class="antes">antes ' + money(p.antes) + '</span>' : '';
     var ficha = open ? '<div class="ficha">' +
       (p.img ? '<img class="foto" src="' + esc(p.img) + '" alt="' + esc(etiqueta(p)) + '" width="150" height="210" referrerpolicy="no-referrer">' : '') +
       '<div class="ficha-txt"><span class="kicker">' + esc(p.c) + (p.s ? ' · ' + esc(p.s) : '') + '</span>' +
       '<span class="titulo">' + esc(p.n) + '</span>' + (p.d ? '<span class="detalle">' + esc(p.d) + '</span>' : '') +
-      '<span class="grande">' + money(p.p) + '</span>' +
-      (qty > 0 ? '<span>En tu pedido: ' + qty + ' × ' + money(p.p) + ' = <strong>' + money(p.p * qty) + '</strong></span>' : '') +
+      '<span class="grande">' + (dist != null ? '<span class="etq">Público</span> ' : '') + money(p.p) + '</span>' +
+      (dist != null ? '<span class="ficha-dist">Distribuidor <strong>' + money(dist) + '</strong>' + (p.pd == null ? ' (' + pct(st.desc) + ' menos)' : '') + ' · ganas ' + money(p.p - dist) + ' por pieza</span>' : '') +
+      (qty > 0 ? '<span>En tu pedido: ' + qty + ' × ' + money(p.p) + ' = <strong>' + money(p.p * qty) + '</strong>' + (dist != null ? ' · distribuidor ' + money(dist * qty) : '') + '</span>' : '') +
       (p.url ? '<a class="btn-borde tap self-start" href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer">Ver producto</a>' : '') +
       '</div></div>' : '';
     return '<li class="item' + (top ? ' top' : '') + (open ? ' abierto' : '') + '">' +
@@ -518,7 +554,7 @@ function renderList() {
       (p.img ? '<img class="mini" src="' + esc(p.img) + '" alt="" loading="lazy" width="44" height="60" referrerpolicy="no-referrer">' : '') +
       '<span class="txt"><span class="nombre">' + esc(p.n) + '</span>' +
       '<span class="detalle">' + esc([p.d, p.s].filter(Boolean).join(' · ')) + '</span>' +
-      '<span class="precio-fila"><span class="precio">' + money(p.p) + '</span>' + antes + (top ? '<span class="enter">Enter</span>' : '') + '</span>' +
+      '<span class="precio-fila">' + (dist != null ? '<span class="precio"><span class="etq">Público</span> ' + money(p.p) + '</span><span class="precio-dist"><span class="etq">Distribuidor</span> ' + money(dist) + '</span>' : '<span class="precio">' + money(p.p) + '</span>') + antes + (top ? '<span class="enter">Enter</span>' : '') + '</span>' +
       '</span></button>' + stepper(p, qty) + ficha + '</li>';
   }).join('');
   if (!r.list.length && r.hasQuery) html = '<li class="vacio"><strong>No encontré «' + esc(st.query) + '».</strong><span class="detalle">Prueba con menos letras, la presentación o la clave.</span></li>';
@@ -528,12 +564,18 @@ function renderList() {
     : n + ' productos' + (st.cat !== 'Todos' ? ' en ' + st.cat : '') + ' · toca uno para ver su ficha';
 }
 function lines() {
-  return st.order.filter(function (s) { return st.cart[s] > 0 && BY[s]; }).map(function (s) { var p = BY[s], q = st.cart[s]; return { p: p, qty: q, sub: p.p * q }; });
+  return st.order.filter(function (s) { return st.cart[s] > 0 && BY[s]; }).map(function (s) {
+    var p = BY[s], q = st.cart[s], d = precioDist(p);
+    return { p: p, qty: q, sub: p.p * q, dist: d, subDist: d != null ? d * q : null };
+  });
 }
 function textoPedido(ls, total) {
-  return 'Pedido' + (catalogo && catalogo.negocio ? ' · ' + catalogo.negocio : '') + '\n' + ls.map(function (l) {
-    return l.qty + ' × ' + etiqueta(l.p) + ' (' + money(l.p.p) + ' c/u) = ' + money(l.sub);
-  }).join('\n') + '\nTotal: ' + money(total);
+  var conDist = st.ver === 'dist' && hayDist();
+  var tot = conDist ? ls.reduce(function (a, l) { return a + (l.subDist != null ? l.subDist : l.sub); }, 0) : total;
+  return 'Pedido' + (catalogo && catalogo.negocio ? ' · ' + catalogo.negocio : '') + (conDist ? ' · precio distribuidor' : '') + '\n' + ls.map(function (l) {
+    var u = conDist && l.dist != null ? l.dist : l.p.p, sub = conDist && l.subDist != null ? l.subDist : l.sub;
+    return l.qty + ' × ' + etiqueta(l.p) + ' (' + money(u) + ' c/u) = ' + money(sub);
+  }).join('\n') + '\nTotal' + (conDist ? ' distribuidor' : '') + ': ' + money(tot);
 }
 function renderOrder() {
   var ls = lines();
@@ -544,9 +586,9 @@ function renderOrder() {
     return '<li class="linea' + (nuevos[l.p.id] ? ' entra' : '') + '"><div class="linea-top">' +
       (l.p.img ? '<img class="mini chica" src="' + esc(l.p.img) + '" alt="" loading="lazy" width="36" height="50" referrerpolicy="no-referrer">' : '') +
       '<div class="flex min-w-0 flex-auto flex-col gap-0.5"><span class="nombre">' + esc(l.p.n) + '</span>' +
-      '<span class="detalle">' + esc(l.p.d) + (l.p.d ? ' · ' : '') + money(l.p.p) + ' c/u</span>' +
+      '<span class="detalle">' + esc(l.p.d) + (l.p.d ? ' · ' : '') + money(l.p.p) + ' c/u' + (l.dist != null ? ' · distribuidor ' + money(l.dist) : '') + '</span>' +
       (l.p.antes != null ? '<span><span class="badge">Precio modificado recientemente</span></span>' : '') + '</div>' +
-      '<span class="sub">' + money(l.sub) + '</span></div>' +
+      '<span class="sub">' + money(l.sub) + (l.subDist != null ? '<span class="sub-dist">dist. ' + money(l.subDist) + '</span>' : '') + '</span></div>' +
       '<div class="linea-acc">' + stepper(l.p, l.qty) + '<button type="button" class="btn-fantasma tap" data-act="remove" data-id="' + esc(l.p.id) + '">Quitar</button></div></li>';
   }).join('');
   $('vacio-pedido').hidden = ls.length > 0;
@@ -555,6 +597,16 @@ function renderOrder() {
   $('piezas-lbl').textContent = pLbl;
   $('total').textContent = money(total);
   $('barra-total').textContent = money(total);
+  var conDist = hayDist() && ls.length > 0;
+  var totalDist = ls.reduce(function (a, l) { return a + (l.subDist != null ? l.subDist : l.sub); }, 0);
+  $('fila-dist').hidden = !conDist; $('fila-gana').hidden = !conDist;
+  $('total-dist').textContent = money(totalDist);
+  $('total-gana').textContent = money(total - totalDist);
+  $('total-lbl').textContent = hayDist() ? 'Total público' : 'Total';
+  $('barra-lbl').textContent = hayDist() ? 'Total público' : 'Total';
+  $('barra-dist').hidden = !conDist; $('barra-dist').textContent = 'Distribuidor ' + money(totalDist) + ' · ganas ' + money(total - totalDist);
+  $('msg-precio').hidden = !conDist;
+  $('msg-precio').querySelectorAll('[data-ver]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-ver') === st.ver)); });
   $('barra-piezas').textContent = pLbl;
   $('copiar').disabled = !ls.length;
   $('vaciar').disabled = !ls.length;
@@ -564,7 +616,48 @@ function renderOrder() {
   if (totalAnterior !== null && totalAnterior !== total) { rebotar($('total')); rebotar($('barra-total')); }
   totalAnterior = total; nuevos = {}; ultimo = '';
 }
-function render() { renderChips(); renderList(); renderOrder(); }
+function renderDescuento() {
+  var el = $('descuento');
+  if (!P.length) { el.innerHTML = ''; return; }
+  var conExcel = P.filter(function (p) { return p.pd != null; }).length;
+  var notaExcel = conExcel ? '<p class="detalle m-0">' + (conExcel === P.length ? 'Todos tus productos traen' : conExcel + (conExcel === 1 ? ' producto trae' : ' productos traen')) + ' su precio distribuidor en el Excel: ahí uso ese precio exacto.</p>' : '';
+  if (st.desc === null || st.descEditar) {
+    var otro = st.desc > 0 && DESCUENTOS.indexOf(st.desc) < 0;
+    el.innerHTML = '<div class="desc-pregunta">' +
+      '<p class="desc-tit">¿Con qué porcentaje de descuento compras?</p>' +
+      '<p class="detalle m-0">Con él calculo tu precio de distribuidor y cuánto ganas al vender a precio público.</p>' +
+      '<div class="desc-ops" role="group" aria-label="Porcentaje de descuento">' +
+      DESCUENTOS.map(function (d) { return '<button type="button" class="desc-op tap" data-desc="' + d + '" aria-pressed="' + (st.desc === d) + '">' + d + '%</button>'; }).join('') +
+      '<button type="button" class="desc-op tap" data-desc="0" aria-pressed="' + (st.desc === 0) + '">Sin descuento</button></div>' +
+      '<form class="desc-otro" id="desc-form"><label class="campo" for="desc-otro">Otro porcentaje</label>' +
+      '<span class="desc-campo"><input id="desc-otro" type="number" inputmode="decimal" min="1" max="90" step="0.5" placeholder="Ej. 30" value="' + (otro ? st.desc : '') + '"><span aria-hidden="true">%</span></span>' +
+      '<button type="submit" class="btn-borde tap">Usar</button></form>' +
+      '<p class="aviso err" id="desc-error" role="alert" hidden></p>' + notaExcel + '</div>';
+    return;
+  }
+  var txt = st.desc > 0 ? 'Precio distribuidor con <strong>' + pct(st.desc) + ' de descuento</strong>' : (conExcel ? 'Precio distribuidor del Excel' : 'Sin descuento de distribuidor');
+  el.innerHTML = '<div class="desc-linea"><span>' + txt + '</span><button type="button" class="btn-fantasma tap" data-desc-cambiar="1">' + (st.desc > 0 || conExcel ? 'Cambiar' : 'Agregar descuento') + '</button></div>' + (st.desc > 0 ? notaExcel : '');
+}
+function elegirDesc(n) {
+  st.desc = n; st.descEditar = false; guardarDesc(); vibrar(15); render();
+  var el = $('descuento'); if (el) el.querySelector('button') && el.querySelector('button').focus();
+}
+$('descuento').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-desc]');
+  if (b) { elegirDesc(Number(b.getAttribute('data-desc'))); return; }
+  if (e.target.closest('[data-desc-cambiar]')) { st.descEditar = true; vibrar(8); renderDescuento(); var f = $('descuento').querySelector('[aria-pressed="true"]') || $('descuento').querySelector('.desc-op'); if (f) f.focus(); }
+});
+$('descuento').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var v = parseFloat(String($('desc-otro').value).replace(',', '.'));
+  if (!isFinite(v) || v <= 0 || v > 90) { var er = $('desc-error'); er.textContent = 'Escribe un porcentaje entre 1 y 90.'; er.hidden = false; vibrar([60, 40, 60]); return; }
+  elegirDesc(Math.round(v * 10) / 10);
+});
+$('msg-precio').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-ver]'); if (!b) return;
+  st.ver = b.getAttribute('data-ver'); guardarDesc(); vibrar(8); hideCopy(); renderOrder();
+});
+function render() { renderDescuento(); renderChips(); renderList(); renderOrder(); }
 
 function onAction(e) {
   var t = e.target.closest('[data-act]');
