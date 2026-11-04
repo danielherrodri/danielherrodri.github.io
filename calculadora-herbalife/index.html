@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculadora Herbalife</title>
+<meta name="description" content="Calculadora de pedido con precios públicos de Herbalife México: busca con abreviaturas o por voz, elige cantidades y ve el total.">
+<meta name="theme-color" content="#1d3a30">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f8f8f3;--surface:#fff;--surface-alt:#eef2e9;--border:#dce3d9;--field:#7d8a83;
+  --text:#1d3a30;--muted:#56665d;--acento:#3a5f2b;--acento-hover:#1d3a30;--acento-fondo:#e3eedb;--acento-fuerte:#1d3a30;
+  --primario:#1d3a30;--primario-texto:#fff;--primario-hover:#2b4a2c;--banda:#1d3a30;--banda-texto:#eaf2e6;--banda-suave:#c9dfb4;
+  --lima:#d5f88a;--lima-texto:#1d3a30;--foco:#4a7633;
+  --ok-fg:#14684f;--ok-bg:#ddf2e8;--dif-fg:#7f5300;--dif-bg:#fbefd3;--info-fg:#1f5aa6;--info-bg:#e3edfb;
+  --sombra:0 1px 2px rgba(29,58,48,.06),0 8px 24px rgba(29,58,48,.06);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#141716;--surface:#1b1f1d;--surface-alt:#232825;--border:#343a37;--field:#6e7772;
+    --text:#e4e8e5;--muted:#a2aaa5;--acento:#bcd99a;--acento-hover:#d9ecc2;--acento-fondo:#252d22;--acento-fuerte:#d9ecc2;
+    --primario:#c8e3a0;--primario-texto:#141716;--primario-hover:#d6ecb8;--banda:#0f1211;--banda-texto:#e4e8e5;--banda-suave:#b8c2bc;
+    --lima:#c8e3a0;--lima-texto:#141716;--foco:#bcd99a;
+    --ok-fg:#7fd1b0;--ok-bg:#17302a;--dif-fg:#e3bb6a;--dif-bg:#33291b;--info-fg:#93b9ee;--info-bg:#1b2a40;
+    --sombra:none;color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.5;padding-bottom:56px}
+a{color:var(--acento)}a:hover{color:var(--acento-hover)}
+:focus-visible{outline:2px solid var(--foco);outline-offset:2px}
+button{font:inherit;-webkit-tap-highlight-color:transparent}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+input::placeholder{color:var(--muted);opacity:1}
+.wrap{max-width:1200px;margin:0 auto;padding:20px 16px 0;display:flex;flex-direction:column;gap:16px}
+.kicker{margin:0;font-size:11px;line-height:1.3;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--acento)}
+h1{margin:0;font-size:32px;line-height:1.15;font-weight:500;letter-spacing:-.02em}
+.meta{margin:0;font-size:13px;color:var(--muted)}
+.aviso{margin:4px 0 0;padding:8px 12px;border-radius:8px;font-size:13px}
+.aviso.dif{background:var(--dif-bg);color:var(--dif-fg)}
+.aviso.info{background:var(--info-bg);color:var(--info-fg)}
+.aviso.ok{background:var(--ok-bg);color:var(--ok-fg)}
+.cols{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.buscar{flex:999 1 560px}
+.pedido{flex:1 1 340px;box-shadow:var(--sombra)}
+label.campo{font-size:12px;font-weight:500}
+.fila-buscar{display:flex;gap:8px}
+.caja{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:8px;height:48px;padding:0 12px;border:1px solid var(--field);border-radius:8px;background:var(--surface)}
+.caja svg{color:var(--muted);flex:0 0 auto}
+.caja input{flex:1 1 auto;min-width:0;height:44px;border:0;outline:none;background:transparent;color:var(--text);font:inherit;font-size:16px}
+.mic{flex:0 0 auto;height:48px;min-width:48px;padding:0 14px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;cursor:pointer;font-weight:500;background:var(--primario);color:var(--primario-texto);border:1px solid var(--primario)}
+.mic:hover{background:var(--primario-hover)}
+.mic[aria-pressed=true]{background:var(--lima);color:var(--lima-texto);border-color:var(--lima)}
+.ayuda{margin:0;font-size:12px;line-height:1.55;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;background:var(--surface);color:var(--text);border:1px solid var(--border);white-space:nowrap}
+.chip[aria-pressed=true]{background:var(--acento-fondo);color:var(--acento-fuerte);border-color:var(--acento-fondo)}
+.chip span{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.chip[aria-pressed=true] span{color:var(--acento-fuerte)}
+.conteo{margin:0;font-size:11px;color:var(--muted)}
+.lista{list-style:none;margin:0;padding:0;border:1px solid var(--border);border-radius:8px;max-height:640px;overflow-y:auto}
+.item{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface)}
+.item:last-child{border-bottom:0}
+.item.top,.item.abierto{background:var(--surface-alt)}
+.info{flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:1px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.nombre{font-size:14px;font-weight:500;line-height:1.3}
+.detalle{font-size:12px;color:var(--muted)}
+.precio-fila{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.precio{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.antes{font-size:11px;color:var(--dif-fg);background:var(--dif-bg);border-radius:999px;padding:0 8px}
+.enter{font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:0 6px}
+.paso{display:inline-flex;align-items:center;height:36px;margin-left:auto;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--surface)}
+.paso.activo{border-color:var(--acento);background:var(--acento-fondo)}
+.paso button{width:36px;height:36px;border:0;background:transparent;color:var(--acento);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.paso button:disabled{color:var(--field);cursor:default}
+.paso button.menos{color:var(--text)}
+.paso button.menos:disabled{color:var(--field)}
+.paso input{width:34px;height:36px;border:0;text-align:center;font:inherit;font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;background:transparent;color:var(--text)}
+.ficha{flex:1 1 100%;display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--border)}
+.ficha .grande{font-size:28px;line-height:1.1;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ficha .titulo{font-size:18px;font-weight:500;line-height:1.25}
+.btn-borde{align-self:flex-start;margin-top:4px;min-height:44px;display:inline-flex;align-items:center;padding:0 14px;border:1px solid var(--acento);border-radius:8px;text-decoration:none;font-weight:500;font-size:14px;color:var(--acento);background:transparent;cursor:pointer}
+.btn-borde:hover{background:var(--acento-fondo);color:var(--acento-fuerte)}
+.btn-borde:disabled{opacity:.45;cursor:not-allowed}
+.btn-fantasma{min-height:36px;padding:0 11px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--acento);cursor:pointer;font-weight:500;font-size:13px}
+.btn-fantasma:hover{background:var(--surface-alt)}
+.btn-fantasma:disabled{opacity:.45;cursor:not-allowed}
+.vacio{padding:24px 16px;display:flex;flex-direction:column;gap:4px}
+.cab{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.cab h2{margin:0;font-size:15px;font-weight:500}
+.vacio-pedido{margin:0;padding:20px 12px;border-radius:8px;background:var(--surface-alt);color:var(--muted);font-size:13px;text-align:center}
+.lineas{list-style:none;margin:0;padding:0}
+.linea{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-bottom:1px solid var(--border)}
+.linea-top{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.linea-acc{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.linea .paso{margin-left:0;background:var(--surface-alt)}
+.sub{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.resumen{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.resumen span:last-child{font-variant-numeric:tabular-nums}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding:14px;border-radius:8px;background:var(--banda);color:var(--banda-texto)}
+.total .k{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--banda-suave)}
+.total .v{font-size:28px;line-height:1.1;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.acciones{display:flex;gap:8px;flex-wrap:wrap}
+.acciones .btn-borde{flex:1 1 auto;justify-content:center;margin-top:0;align-self:auto}
+.barra{display:none;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--banda);color:var(--banda-texto)}
+.barra .k{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--banda-suave)}
+.barra .v{display:block;font-size:24px;line-height:1.15;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.barra a{flex:0 0 auto;min-height:44px;display:inline-flex;align-items:center;padding:0 18px;border-radius:8px;background:var(--lima);color:var(--lima-texto);text-decoration:none;font-weight:500;font-size:15px}
+footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:899px){
+  body{padding-bottom:96px}
+  h1{font-size:24px}
+  .lista{max-height:none;overflow:visible}
+  .barra{display:flex}
+  .chips{flex-wrap:nowrap;overflow-x:auto;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .card{border-radius:0;border-left:0;border-right:0;margin:0 -16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">Calculadora Herbalife · México</p>
+    <h1>Arma tu pedido y ve el total</h1>
+    <p class="meta">Precio público con IVA de herbalife.com/es-mx · actualizado el <span id="fecha"></span> · <span id="nprod"></span> productos</p>
+    <p class="aviso dif" id="aviso-precios" role="status" hidden></p>
+  </header>
+
+  <div class="cols">
+    <section class="card buscar" aria-label="Buscar productos">
+      <label class="campo" for="buscar">Buscar producto</label>
+      <div class="fila-buscar">
+        <div class="caja">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="buscar" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="f1 vai, aloe mang, pp…">
+        </div>
+        <button type="button" class="mic" id="mic" aria-pressed="false" aria-label="Dictar productos con el micrófono">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
+          <span id="mic-txt">Dictar</span>
+        </button>
+      </div>
+      <p class="ayuda">Escribe abreviado o dicta: «dos fórmula uno vainilla y un aloe mango». Toca un producto para ver su ficha.</p>
+      <div role="status" aria-live="polite"><p class="aviso info" id="msg-voz" hidden></p></div>
+      <div class="chips" id="chips" role="group" aria-label="Categorías"></div>
+      <p class="conteo" id="conteo"></p>
+      <ul class="lista" id="lista"></ul>
+    </section>
+
+    <aside class="card pedido" id="pedido" aria-label="Tu pedido">
+      <div class="cab"><h2>Tu pedido</h2><span class="detalle" id="piezas-lbl"></span></div>
+      <p class="vacio-pedido" id="vacio-pedido">Aún no agregas productos. Usa el + o dicta para empezar.</p>
+      <ul class="lineas" id="lineas"></ul>
+      <div>
+        <div class="resumen"><span>Productos distintos</span><span id="n-lineas">0</span></div>
+        <div class="resumen"><span>Piezas</span><span id="n-piezas">0</span></div>
+        <div class="total"><span class="k">Total con IVA</span><span class="v" id="total">$0</span></div>
+      </div>
+      <div class="acciones">
+        <button type="button" class="btn-borde" id="copiar">Copiar pedido</button>
+        <button type="button" class="btn-fantasma" id="vaciar">Vaciar</button>
+      </div>
+      <p class="aviso ok" id="msg-copia" role="status" hidden></p>
+      <p class="ayuda">Solo es una calculadora: no hace pedidos ni cobra. Confirma el precio final en herbalife.com/es-mx antes de comprar.</p>
+    </aside>
+  </div>
+</div>
+<footer>Proyecto independiente, sin relación con Herbalife. Precios tomados de <a href="https://www.herbalife.com/es-mx/u/category/all-products" rel="noopener">herbalife.com/es-mx</a>; pueden cambiar sin aviso.</footer>
+
+<div class="barra" aria-hidden="false">
+  <div><span class="k">Total · <span id="barra-piezas">0 piezas</span></span><span class="v" id="barra-total">$0</span></div>
+  <a href="#pedido">Ver pedido</a>
+</div>
+
+<script>
+(function () {
+'use strict';
+var FECHA = '2026-11-04';
+var FECHA_TXT = '4 nov 2026';
+var DATA = [
+["030K","Herbalife Número 1 Batido","Arroz con leche · 550 g",934,"Batidos","herbalife-numero-1-arroz-con-leche-550g-030k","f1 n1 formula 1 batido"],
+["0884","Herbalife Número 1 Batido","Choco-avellana · 572 g",934,"Batidos","herbalife-numero-1-a-choco-avellana-572g-0884","f1 n1 formula 1 batido chocolate"],
+["049K","Herbalife Número 1 Batido","Coco · 550 g",934,"Batidos","herbalife-numero-1-coco-550g-049k","f1 n1 formula 1 batido"],
+["2060","Herbalife Número 1 Batido","Cookies & cream · 550 g",934,"Batidos","herbalife-numero-1-cookies-and-cream-550g-2060","f1 n1 formula 1 batido galleta"],
+["2056","Herbalife Número 1 Batido","Dulce de leche · 550 g",934,"Batidos","herbalife-numero-1-dulce-de-leche-550g-2056","f1 n1 formula 1 batido"],
+["2059","Herbalife Número 1 Batido","Fresa · 550 g",934,"Batidos","herbalife-numero-1-fresa-550g-2059","f1 n1 formula 1 batido"],
+["2154","Herbalife Número 1 Batido","Frutas tropicales · 550 g",934,"Batidos","herbalife-numero-1-frutas-tropicales-550g-2154","f1 n1 formula 1 batido"],
+["2158","Herbalife Número 1 Batido","Piña colada · 550 g",934,"Batidos","herbalife-numero-1-pi%C3%B1a-colada-550g-2158","f1 n1 formula 1 batido"],
+["2555","Herbalife Número 1 Batido","Plátano · 550 g",934,"Batidos","herbalife-numero-1-platano-550g-2555","f1 n1 formula 1 batido"],
+["2057","Herbalife Número 1 Batido","Vainilla · 550 g",934,"Batidos","herbalife-numero-1-vainilla-550g-2057","f1 n1 formula 1 batido"],
+["2644","Xtra Shake","Nuez · 420 g",992,"Batidos","xtra-shake-a-nuez-420g-2644","xs batido espeso"],
+["2641","Xtra Shake","Original · 420 g",992,"Batidos","xtra-shake-original-420g-2641","xs batido espeso"],
+["494K","Café Instantáneo","200 g",301,"Aloe y tés","cafe-instantaneo-200g-494k","cafe"],
+["1189","Herbal Aloe Concentrado","Arándano · 473 ml",672,"Aloe y tés","herbal-aloe-concentrado-arandano-473-ml-1189","aloe sabila"],
+["442K","Herbal Aloe Concentrado","Mandarina · 450 g",816,"Aloe y tés","herbal-aloe-concentrado-mandarina-450g-442k","aloe sabila polvo"],
+["2631","Herbal Aloe Concentrado","Mandarina · 473 ml",672,"Aloe y tés","herbal-aloe-concentrado-mandarina-473-ml-2631","aloe sabila"],
+["1188","Herbal Aloe Concentrado","Mango · 1.892 L",2434,"Aloe y tés","herbal-aloe-concentrado-mango-1892-l-1188","aloe sabila galon grande"],
+["1065","Herbal Aloe Concentrado","Mango · 473 ml",672,"Aloe y tés","herbal-aloe-concentrado-mango-473ml-1065","aloe sabila"],
+["0006","Herbal Aloe Concentrado","Original · 473 ml",666,"Aloe y tés","herbal-aloe-concentrado-original-473ml-0006","aloe sabila"],
+["1610","Herbal Aloe Concentrado","Uva · 473 ml",672,"Aloe y tés","herbal-aloe-concentrado-uva-473ml-1610","aloe sabila"],
+["044K","Infusión Herbal","Menta · 48 g",995,"Aloe y tés","infusion-herbal-menta-48g-044k","te infusion"],
+["2131","N-R-G","Manzana verde · 60 g",383,"Aloe y tés","nrg-manzana-verde-60g-2131","nrg te energia"],
+["491K","N-R-G","Original · 15 g",129,"Aloe y tés","n-r-g-original-15g-491k","nrg te energia chico"],
+["0085","N-R-G","Pekoe naranja y guaraná · 60 g",383,"Aloe y tés","nrg-60g-0085","nrg te energia"],
+["1638","Thermojetics Concentrado de Hierbas","Chai · 51 g",516,"Aloe y tés","thermojetics-concentrado-de-hierbas-chai-51g-1638","te thermo tj termo"],
+["540K","Thermojetics Concentrado de Hierbas","Jamaica pitaya · 51 g",516,"Aloe y tés","thermojetics-concentrado-de-hierbas-jamaica-pitaya-51g-540k","te thermo tj termo"],
+["0922","Thermojetics Concentrado de Hierbas","Limón · 51 g",516,"Aloe y tés","thermojetics-concentrado-de-hierbas-limon-51g-0922","te thermo tj termo"],
+["0964","Thermojetics Concentrado de Hierbas","Original · 102 g",942,"Aloe y tés","thermojetics-concentrado-de-hierbas-original-102g-0964","te thermo tj termo grande"],
+["483K","Thermojetics Concentrado de Hierbas","Original · 25.5 g",286,"Aloe y tés","thermojetics-concentrado-de-hierbas-original-25-5g-483k","te thermo tj termo chico"],
+["0963","Thermojetics Concentrado de Hierbas","Original · 51 g",516,"Aloe y tés","thermojetics-concentrado-de-hierbas-original-51g-0963","te thermo tj termo"],
+["1428","Té Verde","Granada · 48 g",801,"Aloe y tés","te-verde-granada-48g-1428","te verde"],
+["3525","Barra con Proteína","Chocolate · 40 g",538,"Proteína y snacks","barra-con-proteina-chocolate-40g-3525","barra proteina"],
+["0366","Barra con Proteína Deluxe","Limón · 35 g",667,"Proteína y snacks","barra-con-proteina-deluxe-limon-35g-0366","barra proteina"],
+["0364","Barra con Proteína Deluxe","Vainilla con almendras · 35 g",667,"Proteína y snacks","barra-con-proteina-deluxe-vainilla-con-almendras-35g-0364","barra proteina"],
+["289K","Gold","Cacahuate · 504 g",1273,"Proteína y snacks","gold-cacahuate-504g-289k","gold proteina"],
+["2147","Gold","Chocolate · 552 g",1366,"Proteína y snacks","gold-chocolate-552g-2147","gold proteina"],
+["2146","Gold","Vainilla · 504 g",1273,"Proteína y snacks","gold-vainilla-504g-2146","gold proteina"],
+["2648","Personalized Protein Powder","Frutos rojos · 240 g",636,"Proteína y snacks","personalized-protein-powder-frutos-rojos-240g-2648","pp ppp proteina polvo"],
+["0242","Personalized Protein Powder","Natural · 240 g",619,"Proteína y snacks","personalized-protein-powder-240g-0242","pp ppp proteina polvo"],
+["396K","Protein Chips","Barbecue · 37 g",547,"Proteína y snacks","protein-chips-barbecue-37g-396k","chips papas proteina"],
+["385K","Protein Crunch","Chocolate · 150 g",480,"Proteína y snacks","protein-crunch-chocolate-150g-385k","proteina crunch cereal"],
+["3121","Protein Mix","Durazno mango · 273 g",728,"Proteína y snacks","protein-mix-durazno-mango-273g-3121","proteina mix"],
+["3119","Protein Mix","Ponche de frutas · 280 g",728,"Proteína y snacks","protein-mix-ponche-de-frutas-280g-3119","proteina mix"],
+["610K","Herbalife24 Achieve Barra con Proteína","Chocolate cacahuate caramelo",506,"Deporte","herbalife24-achieve-barra-con-proteina-sabor-chocolate-cacahuate-caramelo-610k","h24 achieve barra proteina"],
+["615K","Herbalife24 Achieve Barra con Proteína","Galleta con chispas de chocolate · 6 barras",506,"Deporte","herbalife24-achieve-barra-con-proteina-sabor-galleta-con-chispas-de-chocolate-6-barras-615k","h24 achieve barra proteina"],
+["024K","Herbalife24 BCAAs","Manzana verde · 203 g",1347,"Deporte","herbalife-24-bcaas-manzana-verde-203g-024k","h24 bcaa aminoacidos"],
+["1473","Herbalife24 CR7 Drive","Açaí · 810 g",887,"Deporte","herbalife-24-cr7-drive-acai-810g-1473","h24 cr7 drive hidratacion"],
+["386K","Herbalife24 Creatina","Natural · 150 g",405,"Deporte","herbalife-24-creatina-natural-150g-386k","h24 creatina"],
+["1120","Herbalife24 Enhanced Protein Powder","Natural · 640 g",2423,"Deporte","herbalife-24-enhanced-protein-powder-natural-640g-1120","h24 proteina"],
+["3492","Herbalife24 Número 1 Sport","Vainilla · 780 g",1539,"Deporte","herbalife-numero-1-vainilla-780g-3492","f1 sport n1 h24 formula 1 batido"],
+["3490","Herbalife24 Strength","Chocolate · 1.01 kg",2598,"Deporte","herbalife-24-strength-a-chocolate-1-01kg-3490","h24 strength fuerza"],
+["207K","Liftoff","Frutas tropicales · 30 sobres",960,"Deporte","liftoff-frutas-tropicales-30sobres-207k","lo liftoff energia"],
+["208K","Liftoff","Granada · 30 sobres",960,"Deporte","liftoff-granada-30sobres-208k","lo liftoff energia"],
+["132K","Liftoff","Moras · 150 g",960,"Deporte","liftoff-moras-150g-132k","lo liftoff energia"],
+["205K","Liftoff","Naranja · 30 sobres",960,"Deporte","liftoff-naranja-30sobres-205k","lo liftoff energia"],
+["2864","Active Fiber Complex","Manzana · 210 g",776,"Suplementos","active-fiber-complex-manzana-210g-2864","afc fibra"],
+["103K","Active Fiber Complex Select","Piña-coco · 270 g",873,"Suplementos","active-fiber-complex-pina-coco-270g-103k","afc fibra"],
+["0064","Arándano con Minerales, Vitaminas y Luteína","30 tabletas",600,"Suplementos","arandano-con-minerales-vitaminas-y-luteina-30tabletas-22-5-g-0064","arandano luteina vista"],
+["101K","Balance M","30 cápsulas",903,"Suplementos","balance-m-30capsulas-101k","balance m"],
+["0267","Betaglucanos","Vainilla · 228 g",1399,"Suplementos","beta-heart-vainilla-228g-0267","beta heart betaglucanos"],
+["323K","Colágeno","Limonada de fresa · 15 sobres",731,"Suplementos","colageno-limonada-de-fresa-15-sobres-323k","colageno sobres"],
+["0831","Colágeno en polvo","Limonada de fresa · 171 g",1330,"Suplementos","colageno-limonada-de-fresa-171g-0831","colageno"],
+["343K","Fito Complex","63 g",502,"Suplementos","fito-complex-63g-343k","fito complex"],
+["0032","Garlic Plus","30 tabletas",476,"Suplementos","garlic-plus-30tabletas-0032","ajo garlic"],
+["2364","Herbalife Número 2 Polvo","12 vitaminas y 10 minerales · 128 g",820,"Suplementos","herbalife-numero-2-128g-2364","f2 n2 formula 2 multivitaminico vitaminas"],
+["3115","Herbalife Número 2 Tabletas","Multivitamínico · 90 tabletas",724,"Suplementos","herbalife-numero-2-90tabletas-3115","f2 n2 formula 2 multivitaminico vitaminas"],
+["345K","Herbalife Número 3","33 g",822,"Suplementos","numero-3-33g-345k","f3 n3 formula 3"],
+["2374","Herbalife Pro","Miel-limón y jengibre · 112.5 g",1040,"Suplementos","herbalife-pro-miel-limon-y-jengibre-1120-5-g-2374","pro miel limon jengibre"],
+["0065","Herbalifeline","Aceite de pescado · 60 cápsulas",920,"Suplementos","herbalifeline-60capsulas-0065","omega 3 herbalifeline"],
+["344K","Natural G","50 g",761,"Suplementos","natural-g-50g-344K","natural g"],
+["3150","Niteworks","Limón · 150 g",1794,"Suplementos","niteworks-limon-150g-3150","niteworks nw"],
+["3146","Niteworks","Naranja-mango · 150 g",1794,"Suplementos","niteworks-naranja-mango-150g-3146","niteworks nw"],
+["0039","Prelox Azul","60 cápsulas",1730,"Suplementos","prelox-azul-60tabletas-0039","prelox"],
+["1829","Probiotic Advantage","Lactobacilos · 30 g",765,"Suplementos","probiotic-advantage-30g-1829","probiotico"],
+["1095","Prolessa Duo","74.2 g",890,"Suplementos","prolessa-duo-74g-1095","prolessa"],
+["1094","Schizandra Plus","60 tabletas",476,"Suplementos","schizandra-plus-60tabletas-1094","schizandra"],
+["440K","Sleep Armor Bisglicinato de Magnesio + Azafrán","Manzana canela · 174 g",1024,"Suplementos","bisglicinato-de-magnesio-azafran-manzana-canela-174g-440k","sleep magnesio dormir"],
+["0077","TC Formula","Té verde y té negro · 90 tabletas",1106,"Suplementos","tc-formula-90tabletas-0077","tc formula total control"],
+["0103","Thermo-Bond","180 hexangletas",495,"Suplementos","fiberbond-180tabletas-0103","thermo bond fiber bond fibra"],
+["1061","Woman's Choice","30 tabletas",1037,"Suplementos","womans-choice-30tabletas-1061","womans choice mujer"],
+["0565","Xtra-Cal Advanced","90 tabletas",358,"Suplementos","xtra-cal-advanced-90tabletas-0565","calcio xtracal"],
+["0413","Herbal Aloe Gel corporal","200 ml",313,"Cuidado personal","herbal-aloe-200ml-0413","aloe gel"],
+["0771","Herbalife Skin Crema Hidratante Contorno de Ojos","15 ml",794,"Cuidado personal","herbalife-skin-crema-hidratante-para-contorno-de-ojos-15ml-0771","skin ojos crema"],
+["0774","Herbalife Skin Crema Hidratante de Noche","30 ml",857,"Cuidado personal","herbalife-skin-crema-hidratante-de-noche-30ml-0774","skin crema noche"],
+["0899","Herbalife Skin Crema Humectante FPS 30","30 ml",782,"Cuidado personal","herbalife-skin-crema-humectante-fps30-30ml-0899","skin bloqueador fps"],
+["0772","Herbalife Skin Exfoliante con Arándanos","120 ml",360,"Cuidado personal","herbalife-skin-exfoliante-con-arandanos-para-el-cutis-120ml-0772","skin exfoliante"],
+["0765","Herbalife Skin Gel Limpiador de Sábila","150 ml",451,"Cuidado personal","herbalife-skin-gel-limpiador-de-sabila-150ml-0765","skin limpiador sabila"],
+["0770","Herbalife Skin Gel Reafirmante Contorno de Ojos","15 ml",794,"Cuidado personal","herbalife-skin-gel-reafirmante-para-contorno-de-ojos-15ml-0770","skin ojos gel"],
+["0766","Herbalife Skin Limpiador Cítrico","150 ml",467,"Cuidado personal","herbalife-skin-limpiador-citrico-para-la-piel-150ml-0766","skin limpiador citrico"],
+["0773","Herbalife Skin Mascarilla de Arcilla con Menta","120 ml",444,"Cuidado personal","herbalife-skin-mascarilla-limpiadora-de-arcilla-con-menta-120ml-0773","skin mascarilla"],
+["1498","Herbalife Skin Programa Avanzado","Normal a graso · 9 productos",5253,"Cuidado personal","herbalife-skin-programa-avanzado-normal-a-graso-9productos-1498","skin programa kit"],
+["1494","Herbalife Skin Programa Avanzado","Normal a seco · 9 productos",4786,"Cuidado personal","herbalife-skin-programa-avanzado-normal-a-seco-9productos-1494","skin programa kit"],
+["1496","Herbalife Skin Programa Básico","Normal a graso · 4 productos",2523,"Cuidado personal","herbalife-skin-programa-basico-normal-a-graso-4productos-1496","skin programa kit"],
+["1492","Herbalife Skin Programa Básico","Normal a seco · 4 productos",2056,"Cuidado personal","herbalife-skin-programa-basico-normal-a-seco-4productos-1492","skin programa kit"],
+["1497","Herbalife Skin Programa Intermedio","Normal a graso · 7 productos",4450,"Cuidado personal","herbalife-skin-programa-intermedio-normal-a-graso-7productos-1497","skin programa kit"],
+["1493","Herbalife Skin Programa Intermedio","Normal a seco · 7 productos",3984,"Cuidado personal","herbalife-skin-programa-intermedio-normal-a-seco-7productos-1493","skin programa kit"],
+["0768","Herbalife Skin Serum Reductor de Líneas","30 ml",1135,"Cuidado personal","herbalife-skin-serum-reductor-de-lineas-de-expresion-30ml-0768","skin serum"],
+["0767","Herbalife Skin Tonificador de Hierbas","50 ml",418,"Cuidado personal","herbalife-skin-tonificador-energizante-de-hierbas-50ml-0767","skin tonico tonificador"]
+];
+
+var CATS = ['Batidos', 'Aloe y tés', 'Proteína y snacks', 'Deporte', 'Suplementos', 'Cuidado personal'];
+var KEY = 'hlf-calculadora-v1';
+var PRICE_KEY = 'hlf-precios-v1';
+var STOP = { de: 1, del: 1, la: 1, el: 1, los: 1, las: 1, con: 1, sabor: 1, y: 1, and: 1, a: 1, en: 1, para: 1, por: 1, favor: 1 };
+var NUM = { un: 1, uno: 1, una: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6, siete: 7, ocho: 8, nueve: 9, diez: 10, once: 11, doce: 12, quince: 15, veinte: 20 };
+var FILLER = { agrega: 1, agregar: 1, agregame: 1, pon: 1, ponme: 1, quiero: 1, dame: 1, mas: 1, tambien: 1, otro: 1, otra: 1 };
+var ICON_MENOS = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14"/></svg>';
+var ICON_MAS = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+
+function norm(s) {
+  return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+function money(n) {
+  var frac = Math.round(n * 100) % 100 !== 0;
+  return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: frac ? 2 : 0, maximumFractionDigits: 2 });
+}
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+}
+function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function load(k) { try { var r = localStorage.getItem(k); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
+
+var P = DATA.map(function (r) {
+  return {
+    s: r[0], n: r[1], d: r[2], p: r[3], c: r[4],
+    u: 'https://www.herbalife.com/es-mx/u/products/' + r[5],
+    words: norm(r[1] + ' ' + r[2] + ' ' + r[6] + ' ' + r[4]).split(' '),
+    ini: norm(r[1]).split(' ').map(function (w) { return w.charAt(0); }).join(''),
+    sk: r[0].toLowerCase()
+  };
+});
+var BY = {};
+P.forEach(function (p) { BY[p.s] = p; });
+
+function subseq(t, w) {
+  if (t.charAt(0) !== w.charAt(0)) return false;
+  var j = 0;
+  for (var i = 0; i < w.length && j < t.length; i++) if (w.charAt(i) === t.charAt(j)) j++;
+  return j === t.length;
+}
+function tokens(q) {
+  return norm(q).split(' ').filter(function (t) { return t && !STOP[t]; }).map(function (t) { return NUM[t] != null ? String(NUM[t]) : t; });
+}
+function tokenScore(t, p) {
+  if (p.sk === t) return 6;
+  var best = 0;
+  for (var i = 0; i < p.words.length; i++) {
+    var w = p.words[i];
+    if (w === t) { best = 3; break; }
+    if (w.indexOf(t) === 0) best = Math.max(best, 2);
+    else if (t.length >= 2 && subseq(t, w)) best = Math.max(best, 1);
+  }
+  if (t.length >= 2 && p.ini.indexOf(t) === 0) best = Math.max(best, 2);
+  return best;
+}
+function search(q, cat) {
+  var toks = tokens(q);
+  if (!toks.length) return [];
+  var out = [];
+  P.forEach(function (p) {
+    if (cat && cat !== 'Todos' && p.c !== cat) return;
+    var sum = 0;
+    for (var i = 0; i < toks.length; i++) { var sc = tokenScore(toks[i], p); if (!sc) return; sum += sc; }
+    out.push({ p: p, score: sum - p.words.length * 0.01 });
+  });
+  out.sort(function (a, b) { return b.score - a.score; });
+  return out;
+}
+
+/* ---------- estado ---------- */
+var st = { query: '', cat: 'Todos', cart: {}, order: [], open: '', prev: {}, listening: false };
+(function init() {
+  var o = load(KEY);
+  if (o && o.cart && Array.isArray(o.order)) {
+    st.order = o.order.filter(function (s) { return BY[s] && o.cart[s] > 0; });
+    st.order.forEach(function (s) { st.cart[s] = Math.floor(o.cart[s]); });
+  }
+  var op = load(PRICE_KEY);
+  if (op && op.p && op.fecha !== FECHA) {
+    P.forEach(function (p) { var old = op.p[p.s]; if (typeof old === 'number' && old !== p.p) st.prev[p.s] = old; });
+  } else if (op && op.prev && op.fecha === FECHA) {
+    st.prev = op.prev;
+  }
+  var snap = {};
+  P.forEach(function (p) { snap[p.s] = p.p; });
+  store(PRICE_KEY, { fecha: FECHA, p: snap, prev: st.prev });
+})();
+
+function save() { store(KEY, { cart: st.cart, order: st.order }); }
+function setQty(s, q) {
+  q = Math.max(0, Math.min(999, Math.floor(q || 0)));
+  if (q <= 0) { delete st.cart[s]; st.order = st.order.filter(function (x) { return x !== s; }); }
+  else { st.cart[s] = q; if (st.order.indexOf(s) < 0) st.order.push(s); }
+  save(); hideCopy(); render();
+}
+function add(s, q) { setQty(s, (st.cart[s] || 0) + (q || 1)); }
+
+/* ---------- elementos ---------- */
+var $ = function (id) { return document.getElementById(id); };
+var elBuscar = $('buscar'), elLista = $('lista'), elChips = $('chips'), elConteo = $('conteo');
+var elLineas = $('lineas'), elMsgVoz = $('msg-voz'), elMsgCopia = $('msg-copia');
+
+function showVoz(t) { elMsgVoz.textContent = t || ''; elMsgVoz.hidden = !t; }
+function hideCopy() { elMsgCopia.hidden = true; }
+
+function stepper(p, qty, cls) {
+  var label = esc(p.n + ' ' + p.d);
+  return '<div class="paso' + (qty > 0 ? ' activo' : '') + (cls ? ' ' + cls : '') + '">' +
+    '<button type="button" class="menos" data-act="dec" data-sku="' + p.s + '" aria-label="Quitar una pieza de ' + label + '"' + (qty > 0 ? '' : ' disabled') + '>' + ICON_MENOS + '</button>' +
+    '<input type="number" min="0" inputmode="numeric" data-act="qty" data-sku="' + p.s + '" value="' + qty + '" aria-label="Cantidad de ' + label + '">' +
+    '<button type="button" data-act="inc" data-sku="' + p.s + '" aria-label="Agregar una pieza de ' + label + '">' + ICON_MAS + '</button>' +
+    '</div>';
+}
+
+function currentList() {
+  var hasQuery = tokens(st.query).length > 0;
+  var list = hasQuery ? search(st.query, st.cat).map(function (r) { return r.p; })
+    : P.filter(function (p) { return st.cat === 'Todos' || p.c === st.cat; });
+  return { hasQuery: hasQuery, list: list };
+}
+
+function renderChips() {
+  elChips.innerHTML = ['Todos'].concat(CATS).map(function (c) {
+    var n = c === 'Todos' ? P.length : P.filter(function (p) { return p.c === c; }).length;
+    return '<button type="button" class="chip" data-cat="' + esc(c) + '" aria-pressed="' + (st.cat === c) + '">' + esc(c) + ' <span>' + n + '</span></button>';
+  }).join('');
+}
+
+function renderList() {
+  var r = currentList();
+  var html = r.list.map(function (p, i) {
+    var qty = st.cart[p.s] || 0;
+    var top = r.hasQuery && i === 0;
+    var open = st.open === p.s;
+    var antes = st.prev[p.s] != null ? '<span class="antes">antes ' + money(st.prev[p.s]) + '</span>' : '';
+    var ficha = open ? '<div class="ficha">' +
+      '<span class="kicker">' + esc(p.c) + ' · SKU ' + p.s + '</span>' +
+      '<span class="titulo">' + esc(p.n) + '</span>' +
+      '<span class="detalle">' + esc(p.d) + '</span>' +
+      '<span class="grande">' + money(p.p) + '</span>' +
+      '<span class="detalle">Precio público con IVA · herbalife.com al ' + FECHA_TXT + '</span>' +
+      (qty > 0 ? '<span>En tu pedido: ' + qty + ' × ' + money(p.p) + ' = <strong>' + money(p.p * qty) + '</strong></span>' : '') +
+      '<a class="btn-borde" href="' + esc(p.u) + '" target="_blank" rel="noopener">Ver foto y precio en herbalife.com</a>' +
+      '</div>' : '';
+    return '<li class="item' + (top ? ' top' : '') + (open ? ' abierto' : '') + '">' +
+      '<button type="button" class="info" data-act="toggle" data-sku="' + p.s + '" aria-expanded="' + open + '">' +
+      '<span class="nombre">' + esc(p.n) + '</span>' +
+      '<span class="detalle">' + esc(p.d) + ' · SKU ' + p.s + '</span>' +
+      '<span class="precio-fila"><span class="precio">' + money(p.p) + '</span>' + antes + (top ? '<span class="enter">Enter</span>' : '') + '</span>' +
+      '</button>' + stepper(p, qty) + ficha + '</li>';
+  }).join('');
+  if (!r.list.length && r.hasQuery) {
+    html = '<li class="vacio"><strong>No encontré «' + esc(st.query) + '».</strong><span class="detalle">Prueba con menos letras, el sabor o el SKU, por ejemplo «aloe», «vai» o «2057».</span></li>';
+  }
+  elLista.innerHTML = html;
+  var n = r.list.length;
+  elConteo.textContent = r.hasQuery
+    ? (n === 1 ? '1 resultado' : n + ' resultados') + (st.cat !== 'Todos' ? ' en ' + st.cat : '')
+    : n + ' productos' + (st.cat !== 'Todos' ? ' en ' + st.cat : '') + ' · toca uno para ver su ficha';
+}
+
+function lines() {
+  return st.order.filter(function (s) { return st.cart[s] > 0 && BY[s]; }).map(function (s) {
+    var p = BY[s]; var q = st.cart[s];
+    return { p: p, qty: q, sub: p.p * q };
+  });
+}
+
+function renderOrder() {
+  var ls = lines();
+  var total = ls.reduce(function (a, l) { return a + l.sub; }, 0);
+  var pieces = ls.reduce(function (a, l) { return a + l.qty; }, 0);
+  var pLbl = pieces === 1 ? '1 pieza' : pieces + ' piezas';
+  elLineas.innerHTML = ls.map(function (l) {
+    return '<li class="linea"><div class="linea-top"><div style="min-width:0;display:flex;flex-direction:column;gap:2px">' +
+      '<span class="nombre">' + esc(l.p.n) + '</span><span class="detalle">' + esc(l.p.d) + ' · ' + money(l.p.p) + ' c/u</span></div>' +
+      '<span class="sub">' + money(l.sub) + '</span></div>' +
+      '<div class="linea-acc">' + stepper(l.p, l.qty) +
+      '<button type="button" class="btn-fantasma" data-act="remove" data-sku="' + l.p.s + '">Quitar</button></div></li>';
+  }).join('');
+  $('vacio-pedido').hidden = ls.length > 0;
+  $('n-lineas').textContent = ls.length;
+  $('n-piezas').textContent = pieces;
+  $('piezas-lbl').textContent = pLbl;
+  $('total').textContent = money(total);
+  $('barra-total').textContent = money(total);
+  $('barra-piezas').textContent = pLbl;
+  $('copiar').disabled = !ls.length;
+  $('vaciar').disabled = !ls.length;
+}
+
+function render() { renderChips(); renderList(); renderOrder(); }
+
+/* ---------- eventos ---------- */
+function onAction(e) {
+  var t = e.target.closest('[data-act]');
+  if (!t || t.tagName === 'INPUT') return;
+  var s = t.getAttribute('data-sku'); var act = t.getAttribute('data-act');
+  if (act === 'inc') add(s, 1);
+  else if (act === 'dec') setQty(s, (st.cart[s] || 0) - 1);
+  else if (act === 'remove') setQty(s, 0);
+  else if (act === 'toggle') { st.open = st.open === s ? '' : s; renderList(); }
+}
+function onQtyChange(e) {
+  var t = e.target;
+  if (t.getAttribute('data-act') !== 'qty') return;
+  var v = parseInt(t.value, 10);
+  if (!isNaN(v)) setQty(t.getAttribute('data-sku'), v);
+}
+elLista.addEventListener('click', onAction);
+elLineas.addEventListener('click', onAction);
+elLista.addEventListener('change', onQtyChange);
+elLineas.addEventListener('change', onQtyChange);
+elChips.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-cat]');
+  if (!b) return;
+  st.cat = b.getAttribute('data-cat'); renderChips(); renderList();
+});
+elBuscar.addEventListener('input', function () { st.query = elBuscar.value; showVoz(''); renderList(); });
+elBuscar.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') {
+    var r = currentList();
+    if (r.hasQuery && r.list.length) {
+      e.preventDefault();
+      var first = r.list[0];
+      st.query = ''; elBuscar.value = '';
+      add(first.s, 1);
+      showVoz('Agregué 1 × ' + first.n + ' · ' + first.d + '.');
+      elBuscar.blur();
+    }
+  } else if (e.key === 'Escape') {
+    st.query = ''; elBuscar.value = ''; showVoz(''); renderList();
+  }
+});
+$('vaciar').addEventListener('click', function () { st.cart = {}; st.order = []; save(); hideCopy(); showVoz(''); render(); });
+$('copiar').addEventListener('click', function () {
+  var ls = lines();
+  var total = ls.reduce(function (a, l) { return a + l.sub; }, 0);
+  var text = 'Pedido Herbalife\n' + ls.map(function (l) {
+    return l.qty + ' × ' + l.p.n + ' · ' + l.p.d + ' (' + money(l.p.p) + ' c/u) = ' + money(l.sub);
+  }).join('\n') + '\nTotal con IVA: ' + money(total) + '\nPrecios de herbalife.com/es-mx al ' + FECHA_TXT + '.';
+  var done = function (ok) {
+    elMsgCopia.textContent = ok ? 'Pedido copiado. No se envió a nadie: pégalo donde lo necesites.' : 'No pude copiar. Mantén presionado el resumen para copiarlo a mano.';
+    elMsgCopia.hidden = false;
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+  else done(false);
+});
+
+/* ---------- voz ---------- */
+var micBtn = $('mic'), micTxt = $('mic-txt'), rec = null;
+function setListening(on) {
+  st.listening = on;
+  micBtn.setAttribute('aria-pressed', String(on));
+  micBtn.setAttribute('aria-label', on ? 'Detener el dictado' : 'Dictar productos con el micrófono');
+  micTxt.textContent = on ? 'Escuchando' : 'Dictar';
+}
+function handleVoice(text) {
+  var parts = norm(text).split(/\s+(?:y|mas)\s+(?=(?:\d+|un|uno|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|quince|veinte)\b)/);
+  var added = [], pending = '', pendingCount = 0;
+  parts.forEach(function (part) {
+    var toks = part.split(' ').filter(function (t) { return t && !FILLER[t]; });
+    var qty = 1;
+    if (toks.length > 1) {
+      if (/^\d+$/.test(toks[0])) { qty = parseInt(toks[0], 10); toks.shift(); }
+      else if (NUM[toks[0]] != null) { qty = NUM[toks[0]]; toks.shift(); }
+    }
+    var rest = toks.join(' ');
+    if (!rest) return;
+    var res = search(rest, 'Todos');
+    if (res.length && (res.length === 1 || res[0].score > res[1].score + 0.001)) {
+      added.push({ s: res[0].p.s, q: qty, label: qty + ' × ' + res[0].p.n + ' · ' + res[0].p.d });
+    } else if (!pending) { pending = rest; pendingCount = res.length; }
+  });
+  added.forEach(function (a) {
+    st.cart[a.s] = Math.min(999, (st.cart[a.s] || 0) + a.q);
+    if (st.order.indexOf(a.s) < 0) st.order.push(a.s);
+  });
+  if (added.length) save();
+  var msg = added.length ? 'Agregué ' + added.map(function (a) { return a.label; }).join(', ') + '.' : '';
+  if (pending) msg += (msg ? ' ' : '') + (pendingCount ? 'Para «' + pending + '» hay ' + pendingCount + ' opciones: elige una abajo.' : 'No encontré «' + pending + '». Intenta con otras palabras.');
+  if (!msg) msg = 'No entendí el producto. Intenta de nuevo, por ejemplo «dos aloe mango».';
+  st.query = pending; elBuscar.value = pending;
+  if (pending) st.cat = 'Todos';
+  showVoz(msg); hideCopy(); render();
+}
+micBtn.addEventListener('click', function () {
+  if (st.listening) { try { rec && rec.stop(); } catch (e) {} return; }
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { showVoz('Este navegador no tiene dictado por voz. Prueba en Chrome, o usa el micrófono del teclado del celular.'); return; }
+  try { rec = new SR(); } catch (e) { showVoz('No pude abrir el micrófono. Usa el micrófono del teclado del celular.'); return; }
+  rec.lang = 'es-MX'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
+  var finalText = '';
+  rec.onresult = function (ev) {
+    var interim = '';
+    for (var i = ev.resultIndex; i < ev.results.length; i++) {
+      if (ev.results[i].isFinal) finalText += ev.results[i][0].transcript + ' ';
+      else interim += ev.results[i][0].transcript;
+    }
+    elBuscar.value = (finalText + interim).trim();
+  };
+  rec.onerror = function (ev) {
+    var m = 'No pude escucharte. Intenta de nuevo.';
+    if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') m = 'El micrófono está bloqueado. Permítelo en el navegador o usa el micrófono del teclado del celular.';
+    else if (ev.error === 'no-speech') m = 'No escuché nada. Toca el micrófono y habla cerca del teléfono.';
+    else if (ev.error === 'network') m = 'El dictado necesita internet. Revisa tu conexión.';
+    setListening(false); elBuscar.value = st.query; showVoz(m);
+  };
+  rec.onend = function () {
+    setListening(false);
+    var text = finalText.trim();
+    if (text) handleVoice(text); else elBuscar.value = st.query;
+  };
+  try { rec.start(); setListening(true); showVoz('Escuchando… di la cantidad y el producto.'); }
+  catch (e) { setListening(false); showVoz('No pude abrir el micrófono. Usa el micrófono del teclado del celular.'); }
+});
+
+/* ---------- arranque ---------- */
+$('fecha').textContent = FECHA_TXT;
+$('nprod').textContent = P.length;
+var nCambios = Object.keys(st.prev).length;
+if (nCambios) {
+  var aviso = $('aviso-precios');
+  aviso.textContent = (nCambios === 1 ? '1 precio cambió' : nCambios + ' precios cambiaron') + ' desde tu última visita: los marqué con «antes».';
+  aviso.hidden = false;
+}
+render();
+})();
+</script>
+</body>
+</html>
