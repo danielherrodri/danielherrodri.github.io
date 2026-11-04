@@ -222,7 +222,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 <div class="wrap">
   <nav>
     <a class="logo" href="#inicio">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#proyectos">Proyectos</a><a href="#avance">Avance</a><a href="#experiencia">Experiencia</a><a href="#stack">Stack</a><a href="#contacto">Contacto</a>
+    <div class="nav-links"><a href="#proyectos">Proyectos</a><a href="#tools-pymes">Tools for Pymes</a><a href="#avance">Avance</a><a href="#experiencia">Experiencia</a><a href="#stack">Stack</a><a href="#contacto">Contacto</a>
       <button type="button" id="theme" class="theme" aria-label="Cambiar tema" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><mask id="moon"><rect width="24" height="24" fill="#fff"/><circle class="bite" cx="24" cy="6" r="7" fill="#000"/></mask><circle class="core" cx="12" cy="12" r="5" mask="url(#moon)"/><g class="rays"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
       </button></div>
@@ -306,6 +306,28 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
           <p>Extensión de navegador para escribir mejor y más rápido en el trabajo. «Transformar mensaje» pasa un texto a tono corporativo con reglas y un botón «Pulir con IA»; «Generar speech» prepara lo que vas a decir.</p>
           <div class="tags"><span>JavaScript</span><span>Python</span><span>FastAPI</span><span>MySQL</span><span>pytest</span><span>Playwright</span></div>
           <div class="links"><a href="https://danielherrodri.github.io/Plumazo/">Ver demo →</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="tools-pymes">
+    <p class="eyebrow reveal">Tools for Pymes</p>
+    <h2 class="reveal" style="--d:.06s">Herramientas gratuitas para pequeños negocios</h2>
+    <div class="projects">
+      <article class="proj reveal" style="--d:.1s" data-term="pymes">
+        <div class="shot">
+          <div class="ui" aria-hidden="true">
+            <div class="ui-top"><b>Calculadora Herbalife · Pedido</b><i>total con IVA</i></div>
+            <div class="row"><div><div>2 × Número 1 Batido · Vainilla</div><div class="bar"><i style="--w:78%"></i></div></div><span class="pill g">$1,868</span></div>
+            <div class="row"><div><div>1 × Herbal Aloe · Mango</div><div class="bar"><i style="--w:40%"></i></div></div><span class="pill">$672</span></div>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-head"><h3>Calculadora Herbalife</h3><span class="state ok">disponible</span></div>
+          <p>Arma un pedido con los precios públicos de Herbalife México y ve el total al instante. Busca con abreviaturas o por voz y elige cantidades con + y −. Los precios se revisan cada mañana y la calculadora marca los que cambiaron.</p>
+          <div class="tags"><span>HTML</span><span>JavaScript</span><span>Python</span><span>Web Speech API</span></div>
+          <div class="links"><a href="https://danielherrodri.github.io/calculadora-herbalife/">Abrir calculadora →</a></div>
         </div>
       </article>
     </div>
@@ -465,6 +487,11 @@ const scripts = {
     ['$ ', 'python manage.py test'], ['ok', 'Ran 222 tests · OK'],
     ['$ ', 'npm run test:e2e'], ['ok', 'Playwright · recorridos y accesibilidad ✓'],
     ['$ ', 'open danielherrodri.github.io/shalom-plataforma'], ['dim', 'demo pública con datos ficticios'],
+  ]},
+  pymes: { dir: '~/calculadora-herbalife', lines: [
+    ['$ ', 'python3 actualizar.py'], ['dim', '98 productos revisados en herbalife.com/es-mx'],
+    ['ok', 'precios al día ✓'],
+    ['$ ', 'open danielherrodri.github.io/calculadora-herbalife'], ['dim', 'pedido y total con IVA'],
   ]},
   data: { dir: '~/plumazo', lines: [
     ['$ ', 'plumazo pulir --tono formal'], ['dim', 'entrada: "no puedo ir a la junta"'],

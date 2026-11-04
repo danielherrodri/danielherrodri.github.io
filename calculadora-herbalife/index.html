@@ -69,12 +69,16 @@ label.campo{font-size:12px;font-weight:500}
 .item{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface)}
 .item:last-child{border-bottom:0}
 .item.top,.item.abierto{background:var(--surface-alt)}
-.info{flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:1px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.info{flex:1 1 200px;min-width:0;display:flex;align-items:center;gap:12px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.info .txt{min-width:0;display:flex;flex-direction:column;gap:1px}
+.mini{width:44px;height:60px;object-fit:contain;flex:0 0 auto;border-radius:4px;background:var(--surface-alt);display:block}
+.mini.chica{width:36px;height:50px}
+.badge{display:inline-block;white-space:nowrap;font-size:11px;font-weight:600;line-height:1.6;color:var(--dif-fg);background:var(--dif-bg);border-radius:999px;padding:0 8px}
 .nombre{font-size:14px;font-weight:500;line-height:1.3}
 .detalle{font-size:12px;color:var(--muted)}
 .precio-fila{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .precio{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
-.antes{font-size:11px;color:var(--dif-fg);background:var(--dif-bg);border-radius:999px;padding:0 8px}
+.antes{font-size:11px;color:var(--muted);text-decoration:line-through}
 .enter{font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:0 6px}
 .paso{display:inline-flex;align-items:center;height:36px;margin-left:auto;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--surface)}
 .paso.activo{border-color:var(--acento);background:var(--acento-fondo)}
@@ -83,7 +87,9 @@ label.campo{font-size:12px;font-weight:500}
 .paso button.menos{color:var(--text)}
 .paso button.menos:disabled{color:var(--field)}
 .paso input{width:34px;height:36px;border:0;text-align:center;font:inherit;font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;background:transparent;color:var(--text)}
-.ficha{flex:1 1 100%;display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--border)}
+.ficha{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--border)}
+.ficha .foto{width:150px;height:210px;object-fit:contain;flex:0 0 auto;margin:0 auto}
+.ficha-txt{flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:6px}
 .ficha .grande{font-size:28px;line-height:1.1;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .ficha .titulo{font-size:18px;font-weight:500;line-height:1.25}
 .btn-borde{align-self:flex-start;margin-top:4px;min-height:44px;display:inline-flex;align-items:center;padding:0 14px;border:1px solid var(--acento);border-radius:8px;text-decoration:none;font-weight:500;font-size:14px;color:var(--acento);background:transparent;cursor:pointer}
@@ -132,7 +138,7 @@ footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var
   <header>
     <p class="kicker">Calculadora Herbalife · México</p>
     <h1>Arma tu pedido y ve el total</h1>
-    <p class="meta">Precio público con IVA de herbalife.com/es-mx · actualizado el <span id="fecha"></span> · <span id="nprod"></span> productos</p>
+    <p class="meta">Precio público con IVA de herbalife.com/es-mx · se revisa cada mañana · último cambio: <span id="fecha"></span> · <span id="nprod"></span> productos</p>
     <p class="aviso dif" id="aviso-precios" role="status" hidden></p>
   </header>
 
@@ -149,7 +155,7 @@ footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var
           <span id="mic-txt">Dictar</span>
         </button>
       </div>
-      <p class="ayuda">Escribe abreviado o dicta: «dos fórmula uno vainilla y un aloe mango». Toca un producto para ver su ficha.</p>
+      <p class="ayuda">Escribe abreviado o dicta: «dos fórmula uno vainilla y un aloe mango». Toca un producto para ver su foto.</p>
       <div role="status" aria-live="polite"><p class="aviso info" id="msg-voz" hidden></p></div>
       <div class="chips" id="chips" role="group" aria-label="Categorías"></div>
       <p class="conteo" id="conteo"></p>
@@ -184,108 +190,16 @@ footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var
 <script>
 (function () {
 'use strict';
-var FECHA = '2026-11-04';
-var FECHA_TXT = '4 nov 2026';
-var DATA = [
-["030K","Herbalife Número 1 Batido","Arroz con leche · 550 g",934,"Batidos","herbalife-numero-1-arroz-con-leche-550g-030k","f1 n1 formula 1 batido"],
-["0884","Herbalife Número 1 Batido","Choco-avellana · 572 g",934,"Batidos","herbalife-numero-1-a-choco-avellana-572g-0884","f1 n1 formula 1 batido chocolate"],
-["049K","Herbalife Número 1 Batido","Coco · 550 g",934,"Batidos","herbalife-numero-1-coco-550g-049k","f1 n1 formula 1 batido"],
-["2060","Herbalife Número 1 Batido","Cookies & cream · 550 g",934,"Batidos","herbalife-numero-1-cookies-and-cream-550g-2060","f1 n1 formula 1 batido galleta"],
-["2056","Herbalife Número 1 Batido","Dulce de leche · 550 g",934,"Batidos","herbalife-numero-1-dulce-de-leche-550g-2056","f1 n1 formula 1 batido"],
-["2059","Herbalife Número 1 Batido","Fresa · 550 g",934,"Batidos","herbalife-numero-1-fresa-550g-2059","f1 n1 formula 1 batido"],
-["2154","Herbalife Número 1 Batido","Frutas tropicales · 550 g",934,"Batidos","herbalife-numero-1-frutas-tropicales-550g-2154","f1 n1 formula 1 batido"],
-["2158","Herbalife Número 1 Batido","Piña colada · 550 g",934,"Batidos","herbalife-numero-1-pi%C3%B1a-colada-550g-2158","f1 n1 formula 1 batido"],
-["2555","Herbalife Número 1 Batido","Plátano · 550 g",934,"Batidos","herbalife-numero-1-platano-550g-2555","f1 n1 formula 1 batido"],
-["2057","Herbalife Número 1 Batido","Vainilla · 550 g",934,"Batidos","herbalife-numero-1-vainilla-550g-2057","f1 n1 formula 1 batido"],
-["2644","Xtra Shake","Nuez · 420 g",992,"Batidos","xtra-shake-a-nuez-420g-2644","xs batido espeso"],
-["2641","Xtra Shake","Original · 420 g",992,"Batidos","xtra-shake-original-420g-2641","xs batido espeso"],
-["494K","Café Instantáneo","200 g",301,"Aloe y tés","cafe-instantaneo-200g-494k","cafe"],
-["1189","Herbal Aloe Concentrado","Arándano · 473 ml",672,"Aloe y tés","herbal-aloe-concentrado-arandano-473-ml-1189","aloe sabila"],
-["442K","Herbal Aloe Concentrado","Mandarina · 450 g",816,"Aloe y tés","herbal-aloe-concentrado-mandarina-450g-442k","aloe sabila polvo"],
-["2631","Herbal Aloe Concentrado","Mandarina · 473 ml",672,"Aloe y tés","herbal-aloe-concentrado-mandarina-473-ml-2631","aloe sabila"],
-["1188","Herbal Aloe Concentrado","Mango · 1.892 L",2434,"Aloe y tés","herbal-aloe-concentrado-mango-1892-l-1188","aloe sabila galon grande"],
-["1065","Herbal Aloe Concentrado","Mango · 473 ml",672,"Aloe y tés","herbal-aloe-concentrado-mango-473ml-1065","aloe sabila"],
-["0006","Herbal Aloe Concentrado","Original · 473 ml",666,"Aloe y tés","herbal-aloe-concentrado-original-473ml-0006","aloe sabila"],
-["1610","Herbal Aloe Concentrado","Uva · 473 ml",672,"Aloe y tés","herbal-aloe-concentrado-uva-473ml-1610","aloe sabila"],
-["044K","Infusión Herbal","Menta · 48 g",995,"Aloe y tés","infusion-herbal-menta-48g-044k","te infusion"],
-["2131","N-R-G","Manzana verde · 60 g",383,"Aloe y tés","nrg-manzana-verde-60g-2131","nrg te energia"],
-["491K","N-R-G","Original · 15 g",129,"Aloe y tés","n-r-g-original-15g-491k","nrg te energia chico"],
-["0085","N-R-G","Pekoe naranja y guaraná · 60 g",383,"Aloe y tés","nrg-60g-0085","nrg te energia"],
-["1638","Thermojetics Concentrado de Hierbas","Chai · 51 g",516,"Aloe y tés","thermojetics-concentrado-de-hierbas-chai-51g-1638","te thermo tj termo"],
-["540K","Thermojetics Concentrado de Hierbas","Jamaica pitaya · 51 g",516,"Aloe y tés","thermojetics-concentrado-de-hierbas-jamaica-pitaya-51g-540k","te thermo tj termo"],
-["0922","Thermojetics Concentrado de Hierbas","Limón · 51 g",516,"Aloe y tés","thermojetics-concentrado-de-hierbas-limon-51g-0922","te thermo tj termo"],
-["0964","Thermojetics Concentrado de Hierbas","Original · 102 g",942,"Aloe y tés","thermojetics-concentrado-de-hierbas-original-102g-0964","te thermo tj termo grande"],
-["483K","Thermojetics Concentrado de Hierbas","Original · 25.5 g",286,"Aloe y tés","thermojetics-concentrado-de-hierbas-original-25-5g-483k","te thermo tj termo chico"],
-["0963","Thermojetics Concentrado de Hierbas","Original · 51 g",516,"Aloe y tés","thermojetics-concentrado-de-hierbas-original-51g-0963","te thermo tj termo"],
-["1428","Té Verde","Granada · 48 g",801,"Aloe y tés","te-verde-granada-48g-1428","te verde"],
-["3525","Barra con Proteína","Chocolate · 40 g",538,"Proteína y snacks","barra-con-proteina-chocolate-40g-3525","barra proteina"],
-["0366","Barra con Proteína Deluxe","Limón · 35 g",667,"Proteína y snacks","barra-con-proteina-deluxe-limon-35g-0366","barra proteina"],
-["0364","Barra con Proteína Deluxe","Vainilla con almendras · 35 g",667,"Proteína y snacks","barra-con-proteina-deluxe-vainilla-con-almendras-35g-0364","barra proteina"],
-["289K","Gold","Cacahuate · 504 g",1273,"Proteína y snacks","gold-cacahuate-504g-289k","gold proteina"],
-["2147","Gold","Chocolate · 552 g",1366,"Proteína y snacks","gold-chocolate-552g-2147","gold proteina"],
-["2146","Gold","Vainilla · 504 g",1273,"Proteína y snacks","gold-vainilla-504g-2146","gold proteina"],
-["2648","Personalized Protein Powder","Frutos rojos · 240 g",636,"Proteína y snacks","personalized-protein-powder-frutos-rojos-240g-2648","pp ppp proteina polvo"],
-["0242","Personalized Protein Powder","Natural · 240 g",619,"Proteína y snacks","personalized-protein-powder-240g-0242","pp ppp proteina polvo"],
-["396K","Protein Chips","Barbecue · 37 g",547,"Proteína y snacks","protein-chips-barbecue-37g-396k","chips papas proteina"],
-["385K","Protein Crunch","Chocolate · 150 g",480,"Proteína y snacks","protein-crunch-chocolate-150g-385k","proteina crunch cereal"],
-["3121","Protein Mix","Durazno mango · 273 g",728,"Proteína y snacks","protein-mix-durazno-mango-273g-3121","proteina mix"],
-["3119","Protein Mix","Ponche de frutas · 280 g",728,"Proteína y snacks","protein-mix-ponche-de-frutas-280g-3119","proteina mix"],
-["610K","Herbalife24 Achieve Barra con Proteína","Chocolate cacahuate caramelo",506,"Deporte","herbalife24-achieve-barra-con-proteina-sabor-chocolate-cacahuate-caramelo-610k","h24 achieve barra proteina"],
-["615K","Herbalife24 Achieve Barra con Proteína","Galleta con chispas de chocolate · 6 barras",506,"Deporte","herbalife24-achieve-barra-con-proteina-sabor-galleta-con-chispas-de-chocolate-6-barras-615k","h24 achieve barra proteina"],
-["024K","Herbalife24 BCAAs","Manzana verde · 203 g",1347,"Deporte","herbalife-24-bcaas-manzana-verde-203g-024k","h24 bcaa aminoacidos"],
-["1473","Herbalife24 CR7 Drive","Açaí · 810 g",887,"Deporte","herbalife-24-cr7-drive-acai-810g-1473","h24 cr7 drive hidratacion"],
-["386K","Herbalife24 Creatina","Natural · 150 g",405,"Deporte","herbalife-24-creatina-natural-150g-386k","h24 creatina"],
-["1120","Herbalife24 Enhanced Protein Powder","Natural · 640 g",2423,"Deporte","herbalife-24-enhanced-protein-powder-natural-640g-1120","h24 proteina"],
-["3492","Herbalife24 Número 1 Sport","Vainilla · 780 g",1539,"Deporte","herbalife-numero-1-vainilla-780g-3492","f1 sport n1 h24 formula 1 batido"],
-["3490","Herbalife24 Strength","Chocolate · 1.01 kg",2598,"Deporte","herbalife-24-strength-a-chocolate-1-01kg-3490","h24 strength fuerza"],
-["207K","Liftoff","Frutas tropicales · 30 sobres",960,"Deporte","liftoff-frutas-tropicales-30sobres-207k","lo liftoff energia"],
-["208K","Liftoff","Granada · 30 sobres",960,"Deporte","liftoff-granada-30sobres-208k","lo liftoff energia"],
-["132K","Liftoff","Moras · 150 g",960,"Deporte","liftoff-moras-150g-132k","lo liftoff energia"],
-["205K","Liftoff","Naranja · 30 sobres",960,"Deporte","liftoff-naranja-30sobres-205k","lo liftoff energia"],
-["2864","Active Fiber Complex","Manzana · 210 g",776,"Suplementos","active-fiber-complex-manzana-210g-2864","afc fibra"],
-["103K","Active Fiber Complex Select","Piña-coco · 270 g",873,"Suplementos","active-fiber-complex-pina-coco-270g-103k","afc fibra"],
-["0064","Arándano con Minerales, Vitaminas y Luteína","30 tabletas",600,"Suplementos","arandano-con-minerales-vitaminas-y-luteina-30tabletas-22-5-g-0064","arandano luteina vista"],
-["101K","Balance M","30 cápsulas",903,"Suplementos","balance-m-30capsulas-101k","balance m"],
-["0267","Betaglucanos","Vainilla · 228 g",1399,"Suplementos","beta-heart-vainilla-228g-0267","beta heart betaglucanos"],
-["323K","Colágeno","Limonada de fresa · 15 sobres",731,"Suplementos","colageno-limonada-de-fresa-15-sobres-323k","colageno sobres"],
-["0831","Colágeno en polvo","Limonada de fresa · 171 g",1330,"Suplementos","colageno-limonada-de-fresa-171g-0831","colageno"],
-["343K","Fito Complex","63 g",502,"Suplementos","fito-complex-63g-343k","fito complex"],
-["0032","Garlic Plus","30 tabletas",476,"Suplementos","garlic-plus-30tabletas-0032","ajo garlic"],
-["2364","Herbalife Número 2 Polvo","12 vitaminas y 10 minerales · 128 g",820,"Suplementos","herbalife-numero-2-128g-2364","f2 n2 formula 2 multivitaminico vitaminas"],
-["3115","Herbalife Número 2 Tabletas","Multivitamínico · 90 tabletas",724,"Suplementos","herbalife-numero-2-90tabletas-3115","f2 n2 formula 2 multivitaminico vitaminas"],
-["345K","Herbalife Número 3","33 g",822,"Suplementos","numero-3-33g-345k","f3 n3 formula 3"],
-["2374","Herbalife Pro","Miel-limón y jengibre · 112.5 g",1040,"Suplementos","herbalife-pro-miel-limon-y-jengibre-1120-5-g-2374","pro miel limon jengibre"],
-["0065","Herbalifeline","Aceite de pescado · 60 cápsulas",920,"Suplementos","herbalifeline-60capsulas-0065","omega 3 herbalifeline"],
-["344K","Natural G","50 g",761,"Suplementos","natural-g-50g-344K","natural g"],
-["3150","Niteworks","Limón · 150 g",1794,"Suplementos","niteworks-limon-150g-3150","niteworks nw"],
-["3146","Niteworks","Naranja-mango · 150 g",1794,"Suplementos","niteworks-naranja-mango-150g-3146","niteworks nw"],
-["0039","Prelox Azul","60 cápsulas",1730,"Suplementos","prelox-azul-60tabletas-0039","prelox"],
-["1829","Probiotic Advantage","Lactobacilos · 30 g",765,"Suplementos","probiotic-advantage-30g-1829","probiotico"],
-["1095","Prolessa Duo","74.2 g",890,"Suplementos","prolessa-duo-74g-1095","prolessa"],
-["1094","Schizandra Plus","60 tabletas",476,"Suplementos","schizandra-plus-60tabletas-1094","schizandra"],
-["440K","Sleep Armor Bisglicinato de Magnesio + Azafrán","Manzana canela · 174 g",1024,"Suplementos","bisglicinato-de-magnesio-azafran-manzana-canela-174g-440k","sleep magnesio dormir"],
-["0077","TC Formula","Té verde y té negro · 90 tabletas",1106,"Suplementos","tc-formula-90tabletas-0077","tc formula total control"],
-["0103","Thermo-Bond","180 hexangletas",495,"Suplementos","fiberbond-180tabletas-0103","thermo bond fiber bond fibra"],
-["1061","Woman's Choice","30 tabletas",1037,"Suplementos","womans-choice-30tabletas-1061","womans choice mujer"],
-["0565","Xtra-Cal Advanced","90 tabletas",358,"Suplementos","xtra-cal-advanced-90tabletas-0565","calcio xtracal"],
-["0413","Herbal Aloe Gel corporal","200 ml",313,"Cuidado personal","herbal-aloe-200ml-0413","aloe gel"],
-["0771","Herbalife Skin Crema Hidratante Contorno de Ojos","15 ml",794,"Cuidado personal","herbalife-skin-crema-hidratante-para-contorno-de-ojos-15ml-0771","skin ojos crema"],
-["0774","Herbalife Skin Crema Hidratante de Noche","30 ml",857,"Cuidado personal","herbalife-skin-crema-hidratante-de-noche-30ml-0774","skin crema noche"],
-["0899","Herbalife Skin Crema Humectante FPS 30","30 ml",782,"Cuidado personal","herbalife-skin-crema-humectante-fps30-30ml-0899","skin bloqueador fps"],
-["0772","Herbalife Skin Exfoliante con Arándanos","120 ml",360,"Cuidado personal","herbalife-skin-exfoliante-con-arandanos-para-el-cutis-120ml-0772","skin exfoliante"],
-["0765","Herbalife Skin Gel Limpiador de Sábila","150 ml",451,"Cuidado personal","herbalife-skin-gel-limpiador-de-sabila-150ml-0765","skin limpiador sabila"],
-["0770","Herbalife Skin Gel Reafirmante Contorno de Ojos","15 ml",794,"Cuidado personal","herbalife-skin-gel-reafirmante-para-contorno-de-ojos-15ml-0770","skin ojos gel"],
-["0766","Herbalife Skin Limpiador Cítrico","150 ml",467,"Cuidado personal","herbalife-skin-limpiador-citrico-para-la-piel-150ml-0766","skin limpiador citrico"],
-["0773","Herbalife Skin Mascarilla de Arcilla con Menta","120 ml",444,"Cuidado personal","herbalife-skin-mascarilla-limpiadora-de-arcilla-con-menta-120ml-0773","skin mascarilla"],
-["1498","Herbalife Skin Programa Avanzado","Normal a graso · 9 productos",5253,"Cuidado personal","herbalife-skin-programa-avanzado-normal-a-graso-9productos-1498","skin programa kit"],
-["1494","Herbalife Skin Programa Avanzado","Normal a seco · 9 productos",4786,"Cuidado personal","herbalife-skin-programa-avanzado-normal-a-seco-9productos-1494","skin programa kit"],
-["1496","Herbalife Skin Programa Básico","Normal a graso · 4 productos",2523,"Cuidado personal","herbalife-skin-programa-basico-normal-a-graso-4productos-1496","skin programa kit"],
-["1492","Herbalife Skin Programa Básico","Normal a seco · 4 productos",2056,"Cuidado personal","herbalife-skin-programa-basico-normal-a-seco-4productos-1492","skin programa kit"],
-["1497","Herbalife Skin Programa Intermedio","Normal a graso · 7 productos",4450,"Cuidado personal","herbalife-skin-programa-intermedio-normal-a-graso-7productos-1497","skin programa kit"],
-["1493","Herbalife Skin Programa Intermedio","Normal a seco · 7 productos",3984,"Cuidado personal","herbalife-skin-programa-intermedio-normal-a-seco-7productos-1493","skin programa kit"],
-["0768","Herbalife Skin Serum Reductor de Líneas","30 ml",1135,"Cuidado personal","herbalife-skin-serum-reductor-de-lineas-de-expresion-30ml-0768","skin serum"],
-["0767","Herbalife Skin Tonificador de Hierbas","50 ml",418,"Cuidado personal","herbalife-skin-tonificador-energizante-de-hierbas-50ml-0767","skin tonico tonificador"]
-];
+var FECHA = '', FECHA_TXT = '', P = [], BY = {};
+var MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+function fechaTxt(iso) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  return m ? parseInt(m[3], 10) + ' ' + MESES[parseInt(m[2], 10) - 1] + ' ' + m[1] : '';
+}
+function diasDesde(iso) {
+  var t = Date.parse((iso || '') + 'T12:00:00');
+  return isNaN(t) ? 9999 : (Date.now() - t) / 86400000;
+}
 
 var CATS = ['Batidos', 'Aloe y tés', 'Proteína y snacks', 'Deporte', 'Suplementos', 'Cuidado personal'];
 var KEY = 'hlf-calculadora-v1';
@@ -309,17 +223,23 @@ function esc(s) {
 function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function load(k) { try { var r = localStorage.getItem(k); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
 
-var P = DATA.map(function (r) {
-  return {
-    s: r[0], n: r[1], d: r[2], p: r[3], c: r[4],
-    u: 'https://www.herbalife.com/es-mx/u/products/' + r[5],
-    words: norm(r[1] + ' ' + r[2] + ' ' + r[6] + ' ' + r[4]).split(' '),
-    ini: norm(r[1]).split(' ').map(function (w) { return w.charAt(0); }).join(''),
-    sk: r[0].toLowerCase()
-  };
-});
-var BY = {};
-P.forEach(function (p) { BY[p.s] = p; });
+function build(data) {
+  FECHA = data.fecha || '';
+  FECHA_TXT = fechaTxt(FECHA);
+  P = (data.productos || []).filter(function (r) { return r && r.s && typeof r.p === 'number'; }).map(function (r) {
+    return {
+      s: String(r.s), n: String(r.n || ''), d: String(r.d || ''), p: r.p, c: String(r.c || 'Suplementos'),
+      u: 'https://www.herbalife.com/es-mx/u/products/' + encodeURI(String(r.u || '')).replace(/%25/g, '%'),
+      img: r.img ? 'img/' + encodeURIComponent(String(r.s).toLowerCase()) + '.webp' : '',
+      antes: (typeof r.a === 'number' && r.a !== r.p && diasDesde(r.f) <= 14) ? r.a : null,
+      words: norm(r.n + ' ' + (r.d || '') + ' ' + (r.k || '') + ' ' + r.c).split(' '),
+      ini: norm(r.n).split(' ').map(function (w) { return w.charAt(0); }).join(''),
+      sk: String(r.s).toLowerCase()
+    };
+  });
+  BY = {};
+  P.forEach(function (p) { BY[p.s] = p; });
+}
 
 function subseq(t, w) {
   if (t.charAt(0) !== w.charAt(0)) return false;
@@ -358,7 +278,7 @@ function search(q, cat) {
 
 /* ---------- estado ---------- */
 var st = { query: '', cat: 'Todos', cart: {}, order: [], open: '', prev: {}, listening: false };
-(function init() {
+function init() {
   var o = load(KEY);
   if (o && o.cart && Array.isArray(o.order)) {
     st.order = o.order.filter(function (s) { return BY[s] && o.cart[s] > 0; });
@@ -372,8 +292,9 @@ var st = { query: '', cat: 'Todos', cart: {}, order: [], open: '', prev: {}, lis
   }
   var snap = {};
   P.forEach(function (p) { snap[p.s] = p.p; });
+  P.forEach(function (p) { if (p.antes != null && st.prev[p.s] == null) st.prev[p.s] = p.antes; });
   store(PRICE_KEY, { fecha: FECHA, p: snap, prev: st.prev });
-})();
+}
 
 function save() { store(KEY, { cart: st.cart, order: st.order }); }
 function setQty(s, q) {
@@ -421,22 +342,26 @@ function renderList() {
     var qty = st.cart[p.s] || 0;
     var top = r.hasQuery && i === 0;
     var open = st.open === p.s;
-    var antes = st.prev[p.s] != null ? '<span class="antes">antes ' + money(st.prev[p.s]) + '</span>' : '';
+    var antes = st.prev[p.s] != null ? '<span class="badge">Precio modificado recientemente</span><span class="antes">antes ' + money(st.prev[p.s]) + '</span>' : '';
     var ficha = open ? '<div class="ficha">' +
-      '<span class="kicker">' + esc(p.c) + ' · SKU ' + p.s + '</span>' +
+      (p.img ? '<img class="foto" src="' + p.img + '" alt="' + esc(p.n + ' ' + p.d) + '" width="150" height="210">' : '') +
+      '<div class="ficha-txt">' +
+      '<span class="kicker">' + esc(p.c) + ' · SKU ' + esc(p.s) + '</span>' +
       '<span class="titulo">' + esc(p.n) + '</span>' +
       '<span class="detalle">' + esc(p.d) + '</span>' +
       '<span class="grande">' + money(p.p) + '</span>' +
-      '<span class="detalle">Precio público con IVA · herbalife.com al ' + FECHA_TXT + '</span>' +
+      '<span class="detalle">Precio público con IVA de herbalife.com/es-mx</span>' +
       (qty > 0 ? '<span>En tu pedido: ' + qty + ' × ' + money(p.p) + ' = <strong>' + money(p.p * qty) + '</strong></span>' : '') +
-      '<a class="btn-borde" href="' + esc(p.u) + '" target="_blank" rel="noopener">Ver foto y precio en herbalife.com</a>' +
-      '</div>' : '';
+      '<a class="btn-borde" href="' + esc(p.u) + '" target="_blank" rel="noopener">Ver en herbalife.com</a>' +
+      '</div></div>' : '';
     return '<li class="item' + (top ? ' top' : '') + (open ? ' abierto' : '') + '">' +
-      '<button type="button" class="info" data-act="toggle" data-sku="' + p.s + '" aria-expanded="' + open + '">' +
+      '<button type="button" class="info" data-act="toggle" data-sku="' + esc(p.s) + '" aria-expanded="' + open + '">' +
+      (p.img ? '<img class="mini" src="' + p.img + '" alt="" loading="lazy" width="44" height="60">' : '<span class="mini" aria-hidden="true"></span>') +
+      '<span class="txt">' +
       '<span class="nombre">' + esc(p.n) + '</span>' +
-      '<span class="detalle">' + esc(p.d) + ' · SKU ' + p.s + '</span>' +
+      '<span class="detalle">' + esc(p.d) + (p.d ? ' · ' : '') + 'SKU ' + esc(p.s) + '</span>' +
       '<span class="precio-fila"><span class="precio">' + money(p.p) + '</span>' + antes + (top ? '<span class="enter">Enter</span>' : '') + '</span>' +
-      '</button>' + stepper(p, qty) + ficha + '</li>';
+      '</span></button>' + stepper(p, qty) + ficha + '</li>';
   }).join('');
   if (!r.list.length && r.hasQuery) {
     html = '<li class="vacio"><strong>No encontré «' + esc(st.query) + '».</strong><span class="detalle">Prueba con menos letras, el sabor o el SKU, por ejemplo «aloe», «vai» o «2057».</span></li>';
@@ -461,8 +386,11 @@ function renderOrder() {
   var pieces = ls.reduce(function (a, l) { return a + l.qty; }, 0);
   var pLbl = pieces === 1 ? '1 pieza' : pieces + ' piezas';
   elLineas.innerHTML = ls.map(function (l) {
-    return '<li class="linea"><div class="linea-top"><div style="min-width:0;display:flex;flex-direction:column;gap:2px">' +
-      '<span class="nombre">' + esc(l.p.n) + '</span><span class="detalle">' + esc(l.p.d) + ' · ' + money(l.p.p) + ' c/u</span></div>' +
+    return '<li class="linea"><div class="linea-top">' +
+      (l.p.img ? '<img class="mini chica" src="' + l.p.img + '" alt="" loading="lazy" width="36" height="50">' : '') +
+      '<div style="flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px">' +
+      '<span class="nombre">' + esc(l.p.n) + '</span><span class="detalle">' + esc(l.p.d) + (l.p.d ? ' · ' : '') + money(l.p.p) + ' c/u</span>' +
+      (st.prev[l.p.s] != null ? '<span><span class="badge">Precio modificado recientemente</span></span>' : '') + '</div>' +
       '<span class="sub">' + money(l.sub) + '</span></div>' +
       '<div class="linea-acc">' + stepper(l.p, l.qty) +
       '<button type="button" class="btn-fantasma" data-act="remove" data-sku="' + l.p.s + '">Quitar</button></div></li>';
@@ -605,15 +533,27 @@ micBtn.addEventListener('click', function () {
 });
 
 /* ---------- arranque ---------- */
-$('fecha').textContent = FECHA_TXT;
-$('nprod').textContent = P.length;
-var nCambios = Object.keys(st.prev).length;
-if (nCambios) {
-  var aviso = $('aviso-precios');
-  aviso.textContent = (nCambios === 1 ? '1 precio cambió' : nCambios + ' precios cambiaron') + ' desde tu última visita: los marqué con «antes».';
-  aviso.hidden = false;
+function arrancar(data) {
+  build(data);
+  init();
+  $('fecha').textContent = FECHA_TXT;
+  $('nprod').textContent = P.length;
+  var nCambios = Object.keys(st.prev).length;
+  if (nCambios) {
+    var aviso = $('aviso-precios');
+    aviso.textContent = (nCambios === 1 ? '1 precio cambió recientemente' : nCambios + ' precios cambiaron recientemente') + ': los marqué con «Precio modificado recientemente».';
+    aviso.hidden = false;
+  }
+  render();
 }
-render();
+elConteo.textContent = 'Cargando productos…';
+fetch('productos.json', { cache: 'no-cache' })
+  .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(arrancar)
+  .catch(function () {
+    elConteo.textContent = '';
+    elLista.innerHTML = '<li class="vacio"><strong>No pude cargar los productos.</strong><span class="detalle">Revisa tu conexión y recarga la página.</span></li>';
+  });
 })();
 </script>
 </body>
