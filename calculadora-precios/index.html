@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Calculadora de pedidos</title>
-<meta name="description" content="Calculadora de pedidos para negocios que venden por catálogo: sube tu lista de productos en Excel, busca con abreviaturas o por voz y ve el total.">
+<title>Calculadora de precios</title>
+<meta name="description" content="Calculadora de precios para negocios que venden por catálogo: sube tu lista de productos en Excel, busca con abreviaturas o por voz y ve el total.">
 <meta name="theme-color" content="#1d3a30">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
 <body>
 <div class="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-5">
   <header class="flex flex-col gap-1">
-    <p class="kicker">Tools for Pymes · Calculadora de pedidos</p>
+    <p class="kicker">Tools for Pymes · Calculadora de precios</p>
     <h1 id="titulo" class="m-0 text-2xl font-medium leading-tight tracking-[-.02em] min-[900px]:text-[32px]">Arma pedidos con tu catálogo</h1>
     <p class="m-0 text-[13px] text-suave" id="meta-cat">Sube tu lista de productos en Excel y calcula pedidos en segundos, escribiendo o por voz.</p>
     <p class="aviso dif" id="aviso-precios" role="status" hidden></p>
@@ -167,7 +167,7 @@ function pintarCatalogo() {
   $('zona-txt').textContent = hay ? 'Subir una versión nueva' : 'Subir Excel o CSV';
   var negocio = catalogo && catalogo.negocio;
   $('titulo').textContent = negocio ? 'Pedidos · ' + negocio : 'Arma pedidos con tu catálogo';
-  document.title = negocio ? negocio + ' · Calculadora de pedidos' : 'Calculadora de pedidos';
+  document.title = negocio ? negocio + ' · Calculadora de precios' : 'Calculadora de precios';
   $('cat-estado').textContent = hay ? P.length + ' productos · actualizado el ' + fechaTxt(catalogo.fecha) : 'Sin catálogo';
   $('meta-cat').textContent = hay
     ? (negocio ? negocio + ' · ' : '') + P.length + ' productos · precios del ' + fechaTxt(catalogo.fecha)

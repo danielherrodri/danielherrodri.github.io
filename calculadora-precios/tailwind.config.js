@@ -1,10 +1,10 @@
-/* Tailwind de la Calculadora de pedidos.
+/* Tailwind de la Calculadora de precios.
  * Compilar (desde la raíz del repo):
- *   npx tailwindcss@3.4.17 -c calculadora-pedidos/tailwind.config.js -i calculadora-pedidos/src/estilos.css -o calculadora-pedidos/estilos.css --minify
+ *   npx tailwindcss@3.4.17 -c calculadora-precios/tailwind.config.js -i calculadora-precios/src/estilos.css -o calculadora-precios/estilos.css --minify
  * Los colores son los tokens de Nexo como variables CSS (claro y oscuro en src/estilos.css).
  */
 module.exports = {
-  content: ['./calculadora-pedidos/index.html'],
+  content: ['./calculadora-precios/index.html'],
   darkMode: 'media',
   theme: {
     extend: {

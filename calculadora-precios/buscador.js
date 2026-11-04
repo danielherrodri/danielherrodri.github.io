@@ -1,4 +1,4 @@
-/* Buscador de la Calculadora de pedidos: texto y voz.
+/* Buscador de la Calculadora de precios: texto y voz.
  *
  * Tolera abreviaturas, faltas de ortografía y errores del dictado:
  * - Compara por sonido en español (v/b, c/s/z, ll/y, h muda, qu/k, g/j…).
