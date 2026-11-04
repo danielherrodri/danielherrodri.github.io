@@ -130,7 +130,11 @@ function money(n) {
   return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: frac ? 2 : 0, maximumFractionDigits: 2 });
 }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-function urlSegura(u) { u = String(u || '').trim(); return /^https?:\/\/[^\s"'<>]+$/i.test(u) ? u : ''; }
+function urlSegura(u) { u = String(u || '').trim(); return /^https?:\/\/[^\s"'<>`\\]+$/i.test(u) && u.length <= 500 ? u : ''; }
+// Texto seguro: sin caracteres de control y con largo máximo. (Además, todo pasa por esc() antes de pintarse.)
+function limpio(v, max) { return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028\u2029]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max); }
+// Evita fórmulas al exportar a Excel (inyección de fórmulas).
+function celda(v) { return typeof v === 'string' && /^[=+\-@\t\r]/.test(v) ? "'" + v : v; }
 function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
 function load(k) { try { var r = localStorage.getItem(k); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
 function vibrar(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
@@ -141,8 +145,8 @@ function usarCatalogo(cat) {
   catalogo = cat;
   P = (cat && cat.productos || []).map(function (r) {
     var p = {
-      id: r.id, s: String(r.s || ''), n: String(r.n || ''), d: String(r.d || ''), p: Number(r.p) || 0,
-      c: String(r.c || 'Sin categoría'), k: String(r.k || ''), img: urlSegura(r.img), url: urlSegura(r.url),
+      id: String(r.id), s: limpio(r.s, 40), n: limpio(r.n, 160), d: limpio(r.d, 160), p: Number(r.p) || 0,
+      c: limpio(r.c, 60) || 'Sin categoría', k: limpio(r.k, 300), img: urlSegura(r.img), url: urlSegura(r.url),
       antes: (typeof r.a === 'number' && r.a !== r.p && diasDesde(r.f) <= 14) ? r.a : null
     };
     return BUS.indexar(p);
@@ -218,11 +222,12 @@ function campoDeEncabezado(h) {
 function leerPrecio(v) {
   if (typeof v === 'number') return isFinite(v) ? v : NaN;
   var t = String(v == null ? '' : v).replace(/[\s$]|mxn|pesos/gi, '');
-  if (!t) return NaN;
+  if (!t || t.length > 20) return NaN;
   if (/^\d{1,3}(\.\d{3})+(,\d{1,2})?$/.test(t)) t = t.replace(/\./g, '').replace(',', '.');
   else t = t.replace(/,(?=\d{3}(\D|$))/g, '').replace(',', '.');
+  if (!/^\d+(\.\d+)?$/.test(t)) return NaN;
   var n = parseFloat(t);
-  return isFinite(n) ? n : NaN;
+  return isFinite(n) && n <= 10000000 ? n : NaN;
 }
 function interpretarHoja(filas) {
   // Busca la fila de encabezados en las primeras 15 filas.
@@ -237,16 +242,16 @@ function interpretarHoja(filas) {
   for (var f = mejor.fila + 1; f < filas.length && productos.length < 5000; f++) {
     var r = filas[f] || [];
     var val = function (c) { return mejor.mapa[c] == null ? '' : r[mejor.mapa[c]]; };
-    var n = String(val('n') == null ? '' : val('n')).trim();
+    var n = limpio(val('n'), 160);
     var precioCrudo = val('p');
     if (!n && (precioCrudo === '' || precioCrudo == null)) continue;
     if (!n) { omitidas.push({ fila: f + 1, motivo: 'no tiene nombre de producto' }); continue; }
     var precio = leerPrecio(precioCrudo);
     if (!isFinite(precio) || precio < 0) { omitidas.push({ fila: f + 1, motivo: '«' + n + '» no tiene un precio válido' }); continue; }
     var prod = {
-      n: n.slice(0, 160), d: String(val('d') || '').trim().slice(0, 160), p: Math.round(precio * 100) / 100,
-      c: String(val('c') || '').trim().slice(0, 60) || 'Sin categoría', s: String(val('s') == null ? '' : val('s')).trim().slice(0, 40),
-      k: String(val('k') || '').trim().slice(0, 300), img: urlSegura(val('img')), url: urlSegura(val('url'))
+      n: n, d: limpio(val('d'), 160), p: Math.round(precio * 100) / 100,
+      c: limpio(val('c'), 60) || 'Sin categoría', s: limpio(val('s'), 40),
+      k: limpio(val('k'), 300), img: urlSegura(val('img')), url: urlSegura(val('url'))
     };
     var clave = claveProducto(prod);
     if (vistos[clave]) { omitidas.push({ fila: f + 1, motivo: '«' + n + '» está repetido' }); continue; }
@@ -258,12 +263,15 @@ function interpretarHoja(filas) {
 }
 function leerArchivo(file) {
   if (!file) return;
+  if (!/\.(xlsx|xls|csv|ods)$/i.test(file.name || '')) { msgCat('Ese tipo de archivo no lo puedo leer. Usa .xlsx, .xls o .csv.', 'err'); return; }
   if (file.size > 15 * 1024 * 1024) { msgCat('El archivo pesa más de 15 MB. Guarda solo la hoja de productos e inténtalo de nuevo.', 'err'); return; }
-  msgCat('Leyendo «' + file.name + '»…', 'info');
+  msgCat('Leyendo «' + limpio(file.name, 80) + '»…', 'info');
   cargarXLSX().then(function (XLSX) {
     return file.arrayBuffer().then(function (buf) {
       var esCSV = /\.csv$/i.test(file.name) || file.type === 'text/csv';
-      var wb = esCSV ? XLSX.read(new TextDecoder('utf-8').decode(buf), { type: 'string', raw: false }) : XLSX.read(buf, { type: 'array' });
+      // Solo valores: sin fórmulas, sin HTML, sin estilos ni macros. Todo se trata como texto.
+      var opciones = { cellFormula: false, cellHTML: false, cellStyles: false, cellDates: false, bookVBA: false, sheetRows: 5020 };
+      var wb = esCSV ? XLSX.read(new TextDecoder('utf-8').decode(buf), Object.assign({ type: 'string', raw: true }, opciones)) : XLSX.read(buf, Object.assign({ type: 'array' }, opciones));
       var resultado = null, hoja = '';
       for (var i = 0; i < wb.SheetNames.length && !resultado; i++) {
         var filas = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[i]], { header: 1, raw: true, defval: '' });
@@ -275,7 +283,7 @@ function leerArchivo(file) {
         vibrar([60, 40, 60]);
         return;
       }
-      resultado.archivo = file.name; resultado.hoja = hoja;
+      resultado.archivo = limpio(file.name, 80); resultado.hoja = limpio(hoja, 40);
       mostrarPrevia(resultado);
     });
   }).catch(function (e) { msgCat(e && e.message ? e.message : 'No pude leer el archivo.', 'err'); vibrar([60, 40, 60]); });
@@ -355,7 +363,7 @@ var EJEMPLO = [
 function descargar(nombre, filas, negocio) {
   return cargarXLSX().then(function (XLSX) {
     var wb = XLSX.utils.book_new();
-    var hoja = XLSX.utils.aoa_to_sheet([ENCABEZADOS].concat(filas));
+    var hoja = XLSX.utils.aoa_to_sheet([ENCABEZADOS].concat(filas.map(function (f) { return f.map(celda); })));
     hoja['!cols'] = [{ wch: 32 }, { wch: 30 }, { wch: 10 }, { wch: 18 }, { wch: 14 }, { wch: 34 }, { wch: 28 }, { wch: 28 }];
     hoja['!autofilter'] = { ref: 'A1:H' + (filas.length + 1) };
     for (var i = 0; i < filas.length; i++) { var c = hoja['C' + (i + 2)]; if (c && typeof c.v === 'number') c.z = '"$"#,##0.00'; }
