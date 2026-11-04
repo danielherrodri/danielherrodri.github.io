@@ -138,6 +138,37 @@ footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var
   .chips::-webkit-scrollbar{display:none}
   .card{border-radius:0;border-left:0;border-right:0;margin:0 -16px}
 }
+.dudas{display:flex;flex-direction:column;gap:12px}
+.dudas[hidden]{display:none}
+.duda p{margin:0 0 8px;font-size:13px;font-weight:500}
+.duda-ops{display:flex;flex-wrap:wrap;gap:8px}
+.op{display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);cursor:pointer;text-align:left;font-size:13px;line-height:1.3}
+.op:hover{background:var(--surface-alt)}
+.op b{display:block;font-weight:500}
+.op img{width:28px;height:38px;object-fit:contain;flex:0 0 auto}
+.total .v{display:inline-block;transform-origin:right center}
+.barra .v{transform-origin:left center}
+@media (prefers-reduced-motion:no-preference){
+  .linea.entra{animation:hlf-entra .38s cubic-bezier(.2,.8,.2,1)}
+  .paso.pop input{animation:hlf-pop .28s ease-out}
+  .bump{animation:hlf-bump .4s cubic-bezier(.2,.8,.2,1)}
+  .mic[aria-pressed=true]{animation:hlf-latido 1.3s ease-out infinite}
+  .ficha{animation:hlf-abre .28s cubic-bezier(.2,.8,.2,1)}
+  .aviso:not([hidden]),.permiso:not([hidden]){animation:hlf-aparece .3s ease-out}
+  .duda{animation:hlf-entra .3s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 60ms)}
+  .op{animation:hlf-entra .3s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--j,0) * 45ms + 80ms)}
+  .badge{animation:hlf-brillo 1.6s ease-in-out 2}
+  .paso button,.chip,.mic,.op,.btn-borde,.btn-fantasma,.barra a{transition:transform .12s ease,background-color .15s ease}
+  .paso button:active,.chip:active,.mic:active,.op:active,.btn-borde:active,.btn-fantasma:active,.barra a:active{transform:scale(.93)}
+  .item{transition:background-color .2s ease}
+}
+@keyframes hlf-entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes hlf-pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+@keyframes hlf-bump{0%{transform:scale(1)}35%{transform:scale(1.09)}100%{transform:scale(1)}}
+@keyframes hlf-latido{0%{box-shadow:0 0 0 0 rgba(213,248,138,.75)}70%{box-shadow:0 0 0 14px rgba(213,248,138,0)}100%{box-shadow:0 0 0 0 rgba(213,248,138,0)}}
+@keyframes hlf-abre{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes hlf-aparece{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@keyframes hlf-brillo{0%,100%{filter:none}50%{filter:brightness(1.08) saturate(1.2)}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -175,6 +206,7 @@ footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var
         </div>
       </div>
       <div role="status" aria-live="polite"><p class="aviso info" id="msg-voz" hidden></p></div>
+      <div class="dudas" id="dudas-voz" hidden></div>
       <div class="chips" id="chips" role="group" aria-label="Categorías"></div>
       <p class="conteo" id="conteo"></p>
       <ul class="lista" id="lista"></ul>
@@ -205,6 +237,7 @@ footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var
   <a href="#pedido">Ver pedido</a>
 </div>
 
+<script src="buscador.js"></script>
 <script>
 (function () {
 'use strict';
@@ -222,9 +255,6 @@ function diasDesde(iso) {
 var CATS = ['Batidos', 'Aloe y tés', 'Proteína y snacks', 'Deporte', 'Suplementos', 'Cuidado personal'];
 var KEY = 'hlf-calculadora-v1';
 var PRICE_KEY = 'hlf-precios-v1';
-var STOP = { de: 1, del: 1, la: 1, el: 1, los: 1, las: 1, con: 1, sabor: 1, y: 1, and: 1, a: 1, en: 1, para: 1, por: 1, favor: 1 };
-var NUM = { un: 1, uno: 1, una: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6, siete: 7, ocho: 8, nueve: 9, diez: 10, once: 11, doce: 12, quince: 15, veinte: 20 };
-var FILLER = { agrega: 1, agregar: 1, agregame: 1, pon: 1, ponme: 1, quiero: 1, dame: 1, mas: 1, tambien: 1, otro: 1, otra: 1 };
 var ICON_MENOS = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14"/></svg>';
 var ICON_MAS = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
 
@@ -250,49 +280,16 @@ function build(data) {
       u: 'https://www.herbalife.com/es-mx/u/products/' + encodeURI(String(r.u || '')).replace(/%25/g, '%'),
       img: r.img ? 'img/' + encodeURIComponent(String(r.s).toLowerCase()) + '.webp' : '',
       antes: (typeof r.a === 'number' && r.a !== r.p && diasDesde(r.f) <= 14) ? r.a : null,
-      words: norm(r.n + ' ' + (r.d || '') + ' ' + (r.k || '') + ' ' + r.c).split(' '),
-      ini: norm(r.n).split(' ').map(function (w) { return w.charAt(0); }).join(''),
-      sk: String(r.s).toLowerCase()
+      k: String(r.k || '')
     };
-  });
+  }).map(function (p) { return BUS.indexar(p); });
   BY = {};
   P.forEach(function (p) { BY[p.s] = p; });
 }
 
-function subseq(t, w) {
-  if (t.charAt(0) !== w.charAt(0)) return false;
-  var j = 0;
-  for (var i = 0; i < w.length && j < t.length; i++) if (w.charAt(i) === t.charAt(j)) j++;
-  return j === t.length;
-}
-function tokens(q) {
-  return norm(q).split(' ').filter(function (t) { return t && !STOP[t]; }).map(function (t) { return NUM[t] != null ? String(NUM[t]) : t; });
-}
-function tokenScore(t, p) {
-  if (p.sk === t) return 6;
-  var best = 0;
-  for (var i = 0; i < p.words.length; i++) {
-    var w = p.words[i];
-    if (w === t) { best = 3; break; }
-    if (w.indexOf(t) === 0) best = Math.max(best, 2);
-    else if (t.length >= 2 && subseq(t, w)) best = Math.max(best, 1);
-  }
-  if (t.length >= 2 && p.ini.indexOf(t) === 0) best = Math.max(best, 2);
-  return best;
-}
-function search(q, cat) {
-  var toks = tokens(q);
-  if (!toks.length) return [];
-  var out = [];
-  P.forEach(function (p) {
-    if (cat && cat !== 'Todos' && p.c !== cat) return;
-    var sum = 0;
-    for (var i = 0; i < toks.length; i++) { var sc = tokenScore(toks[i], p); if (!sc) return; sum += sc; }
-    out.push({ p: p, score: sum - p.words.length * 0.01 });
-  });
-  out.sort(function (a, b) { return b.score - a.score; });
-  return out;
-}
+var BUS = window.HLFBuscador;
+function hayBusqueda(q) { return BUS.norm(q).length > 0; }
+function search(q, cat) { return BUS.buscar(P, q, cat); }
 
 /* ---------- estado ---------- */
 var st = { query: '', cat: 'Todos', cart: {}, order: [], open: '', prev: {}, listening: false };
@@ -315,7 +312,14 @@ function init() {
 }
 
 function save() { store(KEY, { cart: st.cart, order: st.order }); }
+/* ---------- vibración y animaciones ---------- */
+function vibrar(patron) { try { if (navigator.vibrate) navigator.vibrate(patron); } catch (e) {} }
+var nuevos = {}, ultimo = '', totalAnterior = null;
+function marcarNuevo(s) { nuevos[s] = true; }
+function rebotar(el) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
 function setQty(s, q) {
+  ultimo = s;
+  if (!st.cart[s] && q > 0) marcarNuevo(s);
   q = Math.max(0, Math.min(999, Math.floor(q || 0)));
   if (q <= 0) { delete st.cart[s]; st.order = st.order.filter(function (x) { return x !== s; }); }
   else { st.cart[s] = q; if (st.order.indexOf(s) < 0) st.order.push(s); }
@@ -333,7 +337,7 @@ function hideCopy() { elMsgCopia.hidden = true; }
 
 function stepper(p, qty, cls) {
   var label = esc(p.n + ' ' + p.d);
-  return '<div class="paso' + (qty > 0 ? ' activo' : '') + (cls ? ' ' + cls : '') + '">' +
+  return '<div class="paso' + (qty > 0 ? ' activo' : '') + (p.s === ultimo ? ' pop' : '') + (cls ? ' ' + cls : '') + '">' +
     '<button type="button" class="menos" data-act="dec" data-sku="' + p.s + '" aria-label="Quitar una pieza de ' + label + '"' + (qty > 0 ? '' : ' disabled') + '>' + ICON_MENOS + '</button>' +
     '<input type="number" min="0" inputmode="numeric" data-act="qty" data-sku="' + p.s + '" value="' + qty + '" aria-label="Cantidad de ' + label + '">' +
     '<button type="button" data-act="inc" data-sku="' + p.s + '" aria-label="Agregar una pieza de ' + label + '">' + ICON_MAS + '</button>' +
@@ -341,7 +345,7 @@ function stepper(p, qty, cls) {
 }
 
 function currentList() {
-  var hasQuery = tokens(st.query).length > 0;
+  var hasQuery = hayBusqueda(st.query);
   var list = hasQuery ? search(st.query, st.cat).map(function (r) { return r.p; })
     : P.filter(function (p) { return st.cat === 'Todos' || p.c === st.cat; });
   return { hasQuery: hasQuery, list: list };
@@ -404,7 +408,7 @@ function renderOrder() {
   var pieces = ls.reduce(function (a, l) { return a + l.qty; }, 0);
   var pLbl = pieces === 1 ? '1 pieza' : pieces + ' piezas';
   elLineas.innerHTML = ls.map(function (l) {
-    return '<li class="linea"><div class="linea-top">' +
+    return '<li class="linea' + (nuevos[l.p.s] ? ' entra' : '') + '"><div class="linea-top">' +
       (l.p.img ? '<img class="mini chica" src="' + l.p.img + '" alt="" loading="lazy" width="36" height="50">' : '') +
       '<div style="flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px">' +
       '<span class="nombre">' + esc(l.p.n) + '</span><span class="detalle">' + esc(l.p.d) + (l.p.d ? ' · ' : '') + money(l.p.p) + ' c/u</span>' +
@@ -419,6 +423,9 @@ function renderOrder() {
   $('piezas-lbl').textContent = pLbl;
   $('total').textContent = money(total);
   $('barra-total').textContent = money(total);
+  if (totalAnterior !== null && totalAnterior !== total) { rebotar($('total')); rebotar($('barra-total')); }
+  totalAnterior = total;
+  nuevos = {}; ultimo = '';
   $('barra-piezas').textContent = pLbl;
   $('copiar').disabled = !ls.length;
   $('vaciar').disabled = !ls.length;
@@ -431,9 +438,9 @@ function onAction(e) {
   var t = e.target.closest('[data-act]');
   if (!t || t.tagName === 'INPUT') return;
   var s = t.getAttribute('data-sku'); var act = t.getAttribute('data-act');
-  if (act === 'inc') add(s, 1);
-  else if (act === 'dec') setQty(s, (st.cart[s] || 0) - 1);
-  else if (act === 'remove') setQty(s, 0);
+  if (act === 'inc') { vibrar(10); add(s, 1); }
+  else if (act === 'dec') { vibrar(8); setQty(s, (st.cart[s] || 0) - 1); }
+  else if (act === 'remove') { vibrar([10, 40, 10]); setQty(s, 0); }
   else if (act === 'toggle') { st.open = st.open === s ? '' : s; renderList(); }
 }
 function onQtyChange(e) {
@@ -459,7 +466,7 @@ elBuscar.addEventListener('keydown', function (e) {
       e.preventDefault();
       var first = r.list[0];
       st.query = ''; elBuscar.value = '';
-      add(first.s, 1);
+      vibrar(15); add(first.s, 1);
       showVoz('Agregué 1 × ' + first.n + ' · ' + first.d + '.');
       elBuscar.blur();
     }
@@ -467,7 +474,7 @@ elBuscar.addEventListener('keydown', function (e) {
     st.query = ''; elBuscar.value = ''; showVoz(''); renderList();
   }
 });
-$('vaciar').addEventListener('click', function () { st.cart = {}; st.order = []; save(); hideCopy(); showVoz(''); render(); });
+$('vaciar').addEventListener('click', function () { vibrar([20, 40, 20]); st.cart = {}; st.order = []; save(); hideCopy(); showVoz(''); render(); });
 $('copiar').addEventListener('click', function () {
   var ls = lines();
   var total = ls.reduce(function (a, l) { return a + l.sub; }, 0);
@@ -475,6 +482,7 @@ $('copiar').addEventListener('click', function () {
     return l.qty + ' × ' + l.p.n + ' · ' + l.p.d + ' (' + money(l.p.p) + ' c/u) = ' + money(l.sub);
   }).join('\n') + '\nTotal con IVA: ' + money(total) + '\nPrecios de herbalife.com/es-mx al ' + FECHA_TXT + '.';
   var done = function (ok) {
+    vibrar(ok ? 15 : [60, 40, 60]);
     elMsgCopia.textContent = ok ? 'Pedido copiado. No se envió a nadie: pégalo donde lo necesites.' : 'No pude copiar. Mantén presionado el resumen para copiarlo a mano.';
     elMsgCopia.hidden = false;
   };
@@ -490,35 +498,58 @@ function setListening(on) {
   micBtn.setAttribute('aria-label', on ? 'Detener el dictado' : 'Dictar productos con el micrófono');
   micTxt.textContent = on ? 'Escuchando' : 'Dictar';
 }
-function handleVoice(text) {
-  var parts = norm(text).split(/\s+(?:y|mas)\s+(?=(?:\d+|un|uno|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|quince|veinte)\b)/);
-  var added = [], pending = '', pendingCount = 0;
-  parts.forEach(function (part) {
-    var toks = part.split(' ').filter(function (t) { return t && !FILLER[t]; });
-    var qty = 1;
-    if (toks.length > 1) {
-      if (/^\d+$/.test(toks[0])) { qty = parseInt(toks[0], 10); toks.shift(); }
-      else if (NUM[toks[0]] != null) { qty = NUM[toks[0]]; toks.shift(); }
-    }
-    var rest = toks.join(' ');
-    if (!rest) return;
-    var res = search(rest, 'Todos');
-    if (res.length && (res.length === 1 || res[0].score > res[1].score + 0.001)) {
-      added.push({ s: res[0].p.s, q: qty, label: qty + ' × ' + res[0].p.n + ' · ' + res[0].p.d });
-    } else if (!pending) { pending = rest; pendingCount = res.length; }
+function etiqueta(p) { return p.n + (p.d ? ' · ' + p.d : ''); }
+function handleVoice(alternativas) {
+  var r = BUS.interpretarMejor(P, alternativas);
+  var agregados = [], dudas = [];
+  r.partes.forEach(function (x) {
+    if (x.tipo === 'seguro') agregados.push(x);
+    else dudas.push(x);
   });
-  added.forEach(function (a) {
-    st.cart[a.s] = Math.min(999, (st.cart[a.s] || 0) + a.q);
-    if (st.order.indexOf(a.s) < 0) st.order.push(a.s);
+  agregados.forEach(function (x) {
+    st.cart[x.p.s] = Math.min(999, (st.cart[x.p.s] || 0) + x.qty);
+    if (st.order.indexOf(x.p.s) < 0) st.order.push(x.p.s);
+    marcarNuevo(x.p.s);
   });
-  if (added.length) save();
-  var msg = added.length ? 'Agregué ' + added.map(function (a) { return a.label; }).join(', ') + '.' : '';
-  if (pending) msg += (msg ? ' ' : '') + (pendingCount ? 'Para «' + pending + '» hay ' + pendingCount + ' opciones: elige una abajo.' : 'No encontré «' + pending + '». Intenta con otras palabras.');
-  if (!msg) msg = 'No entendí el producto. Intenta de nuevo, por ejemplo «dos aloe mango».';
-  st.query = pending; elBuscar.value = pending;
-  if (pending) st.cat = 'Todos';
-  showVoz(msg); hideCopy(); render();
+  if (agregados.length) save();
+  var msg = 'Escuché: «' + r.texto.trim() + '». ';
+  if (agregados.length) {
+    msg += 'Agregué ' + agregados.map(function (x) {
+      return x.qty + ' × ' + etiqueta(x.p) + (x.otras && x.otras.length ? ' (también hay ' + x.otras.map(function (o) { var t = o.d.split('·').pop().trim(); return o.n !== x.p.n ? o.n + ' ' + t : t; }).join(', ') + ')' : '');
+    }).join(', ') + '.';
+  }
+  st.dudas = dudas.filter(function (x) { return x.opciones && x.opciones.length; });
+  if (st.dudas.length) msg += (agregados.length ? ' ' : '') + 'Elige abajo lo que no tuve claro.';
+  else if (dudas.length) msg += (agregados.length ? ' ' : '') + 'No reconocí «' + dudas[0].texto + '». Intenta de nuevo o escríbelo.';
+  if (!agregados.length && !dudas.length) msg += 'No entendí el producto. Intenta de nuevo, por ejemplo «dos aloe mango».';
+  st.query = ''; elBuscar.value = '';
+  vibrar(agregados.length ? [18, 50, 18] : st.dudas.length ? 25 : [60, 40, 60]);
+  showVoz(msg); hideCopy(); render(); renderDudas();
 }
+var elDudas = $('dudas-voz');
+function renderDudas() {
+  var d = st.dudas || [];
+  elDudas.hidden = !d.length;
+  elDudas.innerHTML = d.map(function (x, i) {
+    return '<div class="duda" style="--i:' + i + '"><p>' + (x.tipo === 'dudoso' ? '¿Cuál quisiste decir con «' + esc(x.texto) + '»?' : 'No reconocí «' + esc(x.texto) + '». ¿Es alguno de estos?') +
+      (x.qty > 1 ? ' <span class="detalle">(' + x.qty + ' piezas)</span>' : '') + '</p><div class="duda-ops">' +
+      x.opciones.map(function (p, j) {
+        return '<button type="button" class="op" style="--j:' + j + '" data-duda="' + i + '" data-sku="' + esc(p.s) + '">' +
+          (p.img ? '<img src="' + p.img + '" alt="" width="28" height="38" loading="lazy">' : '') +
+          '<span><b>' + esc(p.n) + '</b><span class="detalle">' + esc(p.d) + ' · ' + money(p.p) + '</span></span></button>';
+      }).join('') + '<button type="button" class="btn-fantasma" data-duda="' + i + '" data-sku="">Ninguno</button></div></div>';
+  }).join('');
+}
+elDudas.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-duda]');
+  if (!b) return;
+  var i = parseInt(b.getAttribute('data-duda'), 10), s = b.getAttribute('data-sku');
+  var x = (st.dudas || [])[i];
+  if (!x) return;
+  if (s) { add(s, x.qty); marcarNuevo(s); showVoz('Agregué ' + x.qty + ' × ' + etiqueta(BY[s]) + '.'); vibrar(15); }
+  st.dudas.splice(i, 1);
+  renderDudas();
+});
 /* ---------- permiso del micrófono ---------- */
 var SRClase = window.SpeechRecognition || window.webkitSpeechRecognition;
 var AVISO_MIC = 'hlf-aviso-mic';
@@ -588,13 +619,17 @@ micBtn.addEventListener('click', function () {
 function escuchar() {
   var SR = SRClase;
   try { rec = new SR(); } catch (e) { showVoz('No pude abrir el micrófono. Usa el micrófono del teclado del celular.'); return; }
-  rec.lang = 'es-MX'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
-  var finalText = '';
+  rec.lang = 'es-MX'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 5;
+  var finalText = '', finales = [];
   rec.onresult = function (ev) {
     var interim = '';
     for (var i = ev.resultIndex; i < ev.results.length; i++) {
-      if (ev.results[i].isFinal) finalText += ev.results[i][0].transcript + ' ';
-      else interim += ev.results[i][0].transcript;
+      if (ev.results[i].isFinal) {
+        finalText += ev.results[i][0].transcript + ' ';
+        var alts = [];
+        for (var k = 0; k < ev.results[i].length; k++) alts.push(ev.results[i][k].transcript);
+        finales.push(alts);
+      } else interim += ev.results[i][0].transcript;
     }
     elBuscar.value = (finalText + interim).trim();
   };
@@ -608,9 +643,16 @@ function escuchar() {
   rec.onend = function () {
     setListening(false);
     var text = finalText.trim();
-    if (text) handleVoice(text); else elBuscar.value = st.query;
+    if (!text) { elBuscar.value = st.query; return; }
+    // Alternativas: la frase completa con la mejor opción de cada tramo, y variantes cambiando un tramo a la vez.
+    var base = finales.map(function (a) { return a[0]; });
+    var alternativas = [base.join(' ')];
+    finales.forEach(function (a, i) {
+      for (var k = 1; k < a.length; k++) { var v = base.slice(); v[i] = a[k]; alternativas.push(v.join(' ')); }
+    });
+    handleVoice(alternativas);
   };
-  try { rec.start(); setListening(true); ocultarPermiso(); showVoz('Escuchando… di la cantidad y el producto.'); }
+  try { rec.start(); setListening(true); ocultarPermiso(); st.dudas = []; renderDudas(); vibrar(12); showVoz('Escuchando… di la cantidad y el producto.'); }
   catch (e) { setListening(false); showVoz('No pude abrir el micrófono. Usa el micrófono del teclado del celular.'); }
 }
 
