@@ -20,3 +20,11 @@ Los estilos están hechos con Tailwind CSS 3 y los colores de Nexo como variable
 ```
 npx tailwindcss@3.4.17 -c calculadora-precios/tailwind.config.js -i calculadora-precios/src/estilos.css -o calculadora-precios/estilos.css --minify
 ```
+
+## Logotipo, banner y animaciones
+
+- `logotipo.svg`: el logotipo original. `icono.svg` e `icono-180.png`: el ícono de la pestaña y de la pantalla de inicio.
+- `banner.svg`: el banner animado (se usa en el portafolio). `banner.png`: la imagen que aparece al compartir el enlace.
+- Animaciones: el logo entra al cargar y su tecla + se presiona cada vez que agregas un producto; los productos nuevos del pedido entran deslizándose, el total rebota al cambiar, la cantidad hace «pop», la ficha se despliega, la etiqueta «Precio modificado recientemente» brilla y el botón del micrófono late mientras escucha.
+- Con «reducir movimiento» activado en el teléfono, todo se muestra sin animar.
+- Las animaciones de Tailwind se aplican con `@apply`; el `safelist` de `tailwind.config.js` evita que Tailwind borre sus `@keyframes` al compilar.

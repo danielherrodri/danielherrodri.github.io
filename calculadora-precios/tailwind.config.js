@@ -61,5 +61,7 @@ module.exports = {
       }
     }
   },
+  // Las animaciones solo se usan con @apply; sin esta lista Tailwind omite sus @keyframes.
+  safelist: [{ pattern: /^animate-(entra|pop|bump|latido|abre|aparece|brillo)$/ }],
   plugins: []
 };

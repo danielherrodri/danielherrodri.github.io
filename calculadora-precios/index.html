@@ -6,6 +6,13 @@
 <title>Calculadora de precios</title>
 <meta name="description" content="Calculadora de precios para negocios que venden por catálogo: sube tu lista de productos en Excel, busca con abreviaturas o por voz y ve el total.">
 <meta name="theme-color" content="#1d3a30">
+<link rel="icon" href="icono.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icono-180.png">
+<meta property="og:title" content="Calculadora de precios · Tools for Pymes">
+<meta property="og:description" content="Arma pedidos en segundos: tu catálogo, tus precios y el total al instante.">
+<meta property="og:image" content="https://danielherrodri.github.io/calculadora-precios/banner.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
@@ -14,7 +21,20 @@
 <body>
 <div class="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 pt-5">
   <header class="flex flex-col gap-1">
-    <p class="kicker">Tools for Pymes · Calculadora de precios</p>
+    <div class="marca">
+      <svg class="logo" id="logo" viewBox="0 0 160 160" aria-hidden="true" focusable="false">
+        <rect class="lg-fondo" x="8" y="8" width="144" height="144" rx="38"/>
+        <rect class="lg-claro lg-pantalla" x="40" y="35" width="80" height="24" rx="7"/>
+        <path class="lg-cifra" d="M94 47h14"/>
+        <rect class="lg-claro lg-tecla" style="--i:0" x="40" y="73" width="18" height="18" rx="5"/>
+        <rect class="lg-claro lg-tecla" style="--i:1" x="68" y="73" width="18" height="18" rx="5"/>
+        <rect class="lg-claro lg-tecla" style="--i:2" x="40" y="101" width="18" height="18" rx="5"/>
+        <rect class="lg-claro lg-tecla" style="--i:3" x="68" y="101" width="18" height="18" rx="5"/>
+        <rect class="lg-aro" x="96" y="73" width="24" height="46" rx="8"/>
+        <g class="lg-mas"><rect x="96" y="73" width="24" height="46" rx="8"/><path d="M108 88v16m-8-8h16"/></g>
+      </svg>
+      <p class="marca-txt m-0"><span class="kicker">Tools for Pymes</span><span class="marca-nombre"><strong>Calculadora</strong> de precios<b>.</b></span></p>
+    </div>
     <h1 id="titulo" class="m-0 text-2xl font-medium leading-tight tracking-[-.02em] min-[900px]:text-[32px]">Arma pedidos con tu catálogo</h1>
     <p class="m-0 text-[13px] text-suave" id="meta-cat">Sube tu lista de productos en Excel y calcula pedidos en segundos, escribiendo o por voz.</p>
     <p class="aviso dif" id="aviso-precios" role="status" hidden></p>
@@ -449,7 +469,10 @@ function setQty(s, q) {
   else { st.cart[s] = q; if (st.order.indexOf(s) < 0) st.order.push(s); }
   save(); hideCopy(); render();
 }
-function add(s, q) { setQty(s, (st.cart[s] || 0) + (q || 1)); }
+function pulsarLogo() { var l = $('logo'); if (!l) return; l.classList.remove('pulsa'); void l.getBoundingClientRect(); l.classList.add('pulsa'); }
+function add(s, q) { setQty(s, (st.cart[s] || 0) + (q || 1)); pulsarLogo(); }
+setTimeout(function () { var l = $('logo'); if (l) l.classList.add('listo'); }, 1400);
+$('logo').addEventListener('click', function () { var l = this; l.classList.remove('saluda'); void l.getBoundingClientRect(); l.classList.add('saluda'); vibrar(8); setTimeout(function () { l.classList.remove('saluda'); }, 800); });
 
 var elBuscar = $('buscar'), elLista = $('lista'), elChips = $('chips'), elConteo = $('conteo');
 var elLineas = $('lineas'), elMsgVoz = $('msg-voz'), elMsgCopia = $('msg-copia');
