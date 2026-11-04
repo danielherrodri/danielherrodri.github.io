@@ -59,6 +59,14 @@ label.campo{font-size:12px;font-weight:500}
 .mic:hover{background:var(--primario-hover)}
 .mic[aria-pressed=true]{background:var(--lima);color:var(--lima-texto);border-color:var(--lima)}
 .ayuda{margin:0;font-size:12px;line-height:1.55;color:var(--muted)}
+.permiso{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:8px;background:var(--acento-fondo);color:var(--acento-fuerte)}
+.permiso[hidden]{display:none}
+.permiso svg{flex:0 0 auto;margin-top:2px}
+.permiso-cuerpo{display:flex;flex-direction:column;gap:8px;min-width:0}
+.permiso-cuerpo p{margin:0;font-size:13px;line-height:1.5}
+.permiso-acc{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.permiso-acc .btn-borde{margin-top:0;align-self:auto;background:var(--surface)}
+.permiso-acc .btn-borde[hidden]{display:none}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;background:var(--surface);color:var(--text);border:1px solid var(--border);white-space:nowrap}
 .chip[aria-pressed=true]{background:var(--acento-fondo);color:var(--acento-fuerte);border-color:var(--acento-fondo)}
@@ -156,6 +164,16 @@ footer{max-width:1200px;margin:0 auto;padding:24px 16px;font-size:12px;color:var
         </button>
       </div>
       <p class="ayuda">Escribe abreviado o dicta: «dos fórmula uno vainilla y un aloe mango». Toca un producto para ver su foto.</p>
+      <div class="permiso" id="permiso-mic" role="region" aria-label="Permiso del micrófono" hidden>
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
+        <div class="permiso-cuerpo">
+          <p id="permiso-txt"></p>
+          <div class="permiso-acc">
+            <button type="button" class="btn-borde" id="permiso-permitir">Permitir micrófono</button>
+            <button type="button" class="btn-fantasma" id="permiso-ahora">Ahora no</button>
+          </div>
+        </div>
+      </div>
       <div role="status" aria-live="polite"><p class="aviso info" id="msg-voz" hidden></p></div>
       <div class="chips" id="chips" role="group" aria-label="Categorías"></div>
       <p class="conteo" id="conteo"></p>
@@ -370,7 +388,7 @@ function renderList() {
   var n = r.list.length;
   elConteo.textContent = r.hasQuery
     ? (n === 1 ? '1 resultado' : n + ' resultados') + (st.cat !== 'Todos' ? ' en ' + st.cat : '')
-    : n + ' productos' + (st.cat !== 'Todos' ? ' en ' + st.cat : '') + ' · toca uno para ver su ficha';
+    : n + ' productos' + (st.cat !== 'Todos' ? ' en ' + st.cat : '') + ' · toca uno para ver su foto';
 }
 
 function lines() {
@@ -501,10 +519,74 @@ function handleVoice(text) {
   if (pending) st.cat = 'Todos';
   showVoz(msg); hideCopy(); render();
 }
+/* ---------- permiso del micrófono ---------- */
+var SRClase = window.SpeechRecognition || window.webkitSpeechRecognition;
+var AVISO_MIC = 'hlf-aviso-mic';
+var permMic = 'desconocido';
+var elPermiso = $('permiso-mic'), elPermTxt = $('permiso-txt'), elPermPermitir = $('permiso-permitir'), elPermAhora = $('permiso-ahora');
+var esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function instruccionesBloqueo() {
+  return esIOS
+    ? 'El micrófono está bloqueado para esta página. En Safari toca «aA» en la barra de dirección › Configuración del sitio web › Micrófono › Permitir, y recarga la página.'
+    : 'El micrófono está bloqueado para esta página. Toca el candado o el ícono junto a la dirección › Permisos › Micrófono › Permitir, y recarga la página.';
+}
+function mostrarPermiso(modo) {
+  if (!SRClase) return;
+  if (modo === 'bloqueado') {
+    elPermTxt.textContent = instruccionesBloqueo();
+    elPermPermitir.hidden = true;
+  } else {
+    elPermTxt.textContent = 'Para dictar tus productos necesito permiso para usar el micrófono. Solo escucho mientras el botón dice «Escuchando» y no se guarda ninguna grabación.';
+    elPermPermitir.hidden = false;
+  }
+  elPermiso.hidden = false;
+}
+function ocultarPermiso() { elPermiso.hidden = true; }
+function pedirMic() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return Promise.resolve(true);
+  return navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+    stream.getTracks().forEach(function (t) { t.stop(); });
+    permMic = 'granted'; ocultarPermiso();
+    return true;
+  }, function (err) {
+    permMic = (err && (err.name === 'NotAllowedError' || err.name === 'SecurityError')) ? 'denied' : permMic;
+    if (permMic === 'denied') mostrarPermiso('bloqueado');
+    else showVoz('No encontré un micrófono en este dispositivo. Usa el micrófono del teclado del celular.');
+    return false;
+  });
+}
+if (SRClase) {
+  var yaAviso = false;
+  try { yaAviso = localStorage.getItem(AVISO_MIC) === '1'; } catch (e) {}
+  var revisar = navigator.permissions && navigator.permissions.query
+    ? navigator.permissions.query({ name: 'microphone' }).then(function (r) {
+        permMic = r.state;
+        r.onchange = function () { permMic = r.state; if (r.state === 'granted') ocultarPermiso(); };
+      }, function () {})
+    : Promise.resolve();
+  revisar.then(function () {
+    if (permMic === 'granted') return;
+    if (permMic === 'denied') return;
+    if (!yaAviso) mostrarPermiso('pedir');
+  });
+}
+elPermPermitir.addEventListener('click', function () {
+  pedirMic().then(function (ok) { if (ok) showVoz('Listo, ya puedes dictar: toca «Dictar» y di la cantidad y el producto.'); });
+});
+elPermAhora.addEventListener('click', function () {
+  ocultarPermiso();
+  try { localStorage.setItem(AVISO_MIC, '1'); } catch (e) {}
+});
+
 micBtn.addEventListener('click', function () {
   if (st.listening) { try { rec && rec.stop(); } catch (e) {} return; }
-  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { showVoz('Este navegador no tiene dictado por voz. Prueba en Chrome, o usa el micrófono del teclado del celular.'); return; }
+  if (!SRClase) { showVoz('Este navegador no tiene dictado por voz. Prueba en Chrome, o usa el micrófono del teclado del celular.'); return; }
+  if (permMic === 'denied') { mostrarPermiso('bloqueado'); return; }
+  if (permMic !== 'granted') { pedirMic().then(function (ok) { if (ok) escuchar(); }); return; }
+  escuchar();
+});
+function escuchar() {
+  var SR = SRClase;
   try { rec = new SR(); } catch (e) { showVoz('No pude abrir el micrófono. Usa el micrófono del teclado del celular.'); return; }
   rec.lang = 'es-MX'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
   var finalText = '';
@@ -518,7 +600,7 @@ micBtn.addEventListener('click', function () {
   };
   rec.onerror = function (ev) {
     var m = 'No pude escucharte. Intenta de nuevo.';
-    if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') m = 'El micrófono está bloqueado. Permítelo en el navegador o usa el micrófono del teclado del celular.';
+    if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') { permMic = 'denied'; setListening(false); elBuscar.value = st.query; showVoz(''); mostrarPermiso('bloqueado'); return; }
     else if (ev.error === 'no-speech') m = 'No escuché nada. Toca el micrófono y habla cerca del teléfono.';
     else if (ev.error === 'network') m = 'El dictado necesita internet. Revisa tu conexión.';
     setListening(false); elBuscar.value = st.query; showVoz(m);
@@ -528,9 +610,9 @@ micBtn.addEventListener('click', function () {
     var text = finalText.trim();
     if (text) handleVoice(text); else elBuscar.value = st.query;
   };
-  try { rec.start(); setListening(true); showVoz('Escuchando… di la cantidad y el producto.'); }
+  try { rec.start(); setListening(true); ocultarPermiso(); showVoz('Escuchando… di la cantidad y el producto.'); }
   catch (e) { setListening(false); showVoz('No pude abrir el micrófono. Usa el micrófono del teclado del celular.'); }
-});
+}
 
 /* ---------- arranque ---------- */
 function arrancar(data) {
