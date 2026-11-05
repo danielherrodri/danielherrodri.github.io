@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Caso de arquitectura en BBVA México: de envíos síncronos best effort a un sistema de notificaciones asíncrono y resiliente con patrón Outbox, colas de prioridad y self-healing.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notificaciones que ya no se pierden · Daniel Rodriguez Herrera">
+<meta property="og:description" content="De envíos síncronos best effort a un sistema asíncrono y resiliente: Outbox, colas de prioridad y self-healing.">
+<meta property="og:url" content="https://danielherrodri.github.io/caso-notificaciones/">
+<meta property="og:image" content="https://danielherrodri.github.io/caso-notificaciones/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://danielherrodri.github.io/caso-notificaciones/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232457e6'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' font-weight='700' fill='white' text-anchor='middle'%3Ed.%3C/text%3E%3C/svg%3E">
+<title>Notificaciones que ya no se pierden · Daniel Rodriguez Herrera</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#f3f5f9; --surface:#ffffff; --fg:#0f1520; --muted:#566172; --line:#dbe0e8;
+  --accent:#2457e6; --accent-2:#0f9d8a; --accent-soft:#e2eafd; --ok:#127a49; --wip:#9a5600; --err:#a3302a;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.65 var(--f-body);overflow-x:hidden}
+img,video{max-width:100%;display:block}
+.wrap{max-width:960px;margin:0 auto;padding:36px max(20px,env(safe-area-inset-right,0px)) 72px max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:64px}
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{font:800 20px var(--f-display);letter-spacing:-.02em;text-decoration:none;color:var(--fg)}
+.logo span{color:var(--accent)}
+.back{font:500 14px var(--f-mono);color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px}
+.back:hover{color:var(--fg);background:var(--accent-soft)}
+a:focus-visible,video:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.eyebrow{font:500 13px var(--f-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin:0}
+h1{font:800 clamp(40px,6.4vw,72px)/1 var(--f-display);letter-spacing:-.04em;margin:14px 0 0;text-wrap:balance}
+h2{font:800 clamp(28px,3.8vw,40px)/1.1 var(--f-display);letter-spacing:-.03em;margin:8px 0 18px;text-wrap:balance}
+.lead{font-size:21px;color:var(--muted);max-width:56ch;margin:18px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.state{font:500 13px var(--f-mono);display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid currentColor}
+.state::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.state.wip{color:var(--wip)}
+.state.co{color:var(--muted)}
+
+figure{margin:0}
+.media{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 60px -40px rgba(15,25,45,.45)}
+.media video{width:100%;height:auto;aspect-ratio:16/9;background:#f8f8f3}
+figcaption{font-size:15px;color:var(--muted);margin-top:12px}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+.stat{padding:22px 20px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font:800 clamp(28px,3.6vw,40px)/1 var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat span{display:block;margin-top:8px;font-size:15px;color:var(--muted)}
+
+.prose p{margin:0 0 14px;max-width:68ch}
+.prose p:last-child{margin-bottom:0}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.card .k{font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+.card.before .k{color:var(--err)}.card.after .k{color:var(--ok)}
+.card h3{font:800 22px/1.2 var(--f-display);margin:6px 0 6px;letter-spacing:-.02em}
+.card p{margin:0;color:var(--muted);font-size:16px}
+
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
+.steps h3{font:800 20px/1.25 var(--f-display);margin:0 0 4px;letter-spacing:-.02em}
+.steps p{margin:0;color:var(--muted);font-size:16px}
+code{font:500 .86em var(--f-mono);background:var(--accent-soft);color:var(--accent);padding:1px 6px;border-radius:6px}
+
+.note{margin-top:18px;padding-left:14px;border-left:2px solid var(--accent-2)}
+.credit{font:400 14px var(--f-mono);color:var(--muted);border-top:1px solid var(--line);padding-top:18px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:12px;font:600 16px var(--f-body);text-decoration:none;transition:transform .2s,box-shadow .2s}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 12px 30px -14px var(--accent)}
+.btn.ghost{border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn:hover{transform:translateY(-2px)}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:400 13px var(--f-mono);color:var(--muted)}
+
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}.compare{grid-template-columns:1fr}.steps li{grid-template-columns:1fr;gap:10px}.steps li::before{width:44px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}.btn:hover{transform:none}}
+</style>
+<script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="../">daniel<span>.dev</span></a>
+    <a class="back" href="../#experiencia">← Volver a experiencia</a>
+  </nav>
+
+  <header>
+    <p class="eyebrow">Caso de arquitectura · BBVA México</p>
+    <h1>Notificaciones que ya no se pierden</h1>
+    <p class="lead">De envíos síncronos y de «mejor esfuerzo» a un sistema distribuido con patrón Outbox, colas de prioridad y self-healing.</p>
+    <div class="meta">
+      <span class="state wip">en producción parcial</span>
+      <span class="state co">México – España · revisiones asíncronas</span>
+    </div>
+  </header>
+
+  <figure>
+    <div class="media">
+      <video controls muted playsinline loop preload="metadata" poster="diagrama.jpg" aria-describedby="video-desc">
+        <source src="arquitectura-notificaciones.mp4" type="video/mp4">
+      </video>
+    </div>
+    <figcaption id="video-desc">Antes: el mensaje se pierde con un 429. Ahora: recorre el flujo hasta confirmarse como entregado. El video tiene sonido.</figcaption>
+  </figure>
+
+  <section class="stats" aria-label="Cifras del proyecto">
+    <div class="stat"><b>8</b><span>semanas de sprint, en paralelo a otro proyecto</span></div>
+    <div class="stat"><b>+7 h</b><span>de diferencia entre México y España</span></div>
+    <div class="stat"><b>4</b><span>colas de prioridad independientes</span></div>
+    <div class="stat"><b>5</b><span>piezas: de la fachada al self-healing</span></div>
+  </section>
+
+  <section class="prose">
+    <p class="eyebrow">El problema</p>
+    <h2>«A veces los correos simplemente no llegan»</h2>
+    <p>Esa queja se repetía. Al revisar el sistema encontré la causa raíz: el envío era síncrono y de mejor esfuerzo. Si el proveedor respondía 429 (límite de cuota) o un error 5xx, la notificación se perdía sin dejar rastro y sin reintento.</p>
+    <div class="compare">
+      <div class="card before"><span class="k">Antes</span><h3>Síncrono</h3><p>Cada módulo llamaba directo al proveedor. Un 429 significaba un mensaje perdido.</p></div>
+      <div class="card after"><span class="k">Ahora</span><h3>Asíncrono y trazable</h3><p>Cada mensaje se guarda antes de enviarse y termina entregado o registrado.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">La solución</p>
+    <h2>Cinco piezas que se cuidan entre sí</h2>
+    <ol class="steps">
+      <li><div><h3>Eventos de negocio</h3><p>Los módulos llaman a una fachada única de envío, que filtra el entorno y prevalida dominios inválidos antes de tocar la red.</p></div></li>
+      <li><div><h3>Patrón Outbox</h3><p>Todo mensaje se persiste en <code>PENDING</code> antes de intentar enviarse. Si el proceso muere, no se pierde nada.</p></div></li>
+      <li><div><h3>Despacho HTTP y control de flujo</h3><p>El cliente sale hacia el API Gateway con rate limiter (token bucket) y exponential backoff a nivel transporte.</p></div></li>
+      <li><div><h3>Bifurcación inteligente</h3><p>Con <code>202 Accepted</code> y correlation ID, el mensaje pasa a <code>QUEUED</code> y se cierra por webhook en <code>SENT</code> o <code>BOUNCED</code>. Los errores permanentes (422) van a dead letter sin reintento; los recuperables (429, 5xx) pasan a cuatro colas de prioridad con backoff exponencial: crítica, alta, normal y baja.</p></div></li>
+      <li><div><h3>Resiliencia y self-healing</h3><p>Un cron de reconciliación rescata mensajes huérfanos en <code>PENDING</code> o en <code>QUEUED</code> sin respuesta de webhook. El reproceso de dead letters reencola por lotes con un delay por índice (staggering) para evitar el thundering herd sobre el proveedor.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="prose">
+    <p class="eyebrow">Cómo se hizo</p>
+    <h2>Ejecución distribuida, desbloqueo asíncrono</h2>
+    <p>El código pertenecía a otro equipo y proponer un cambio de fondo no era sencillo. Pedí feedback a personas cuyo criterio admiro, documenté la causa raíz y presenté la propuesta a mi líder.</p>
+    <p>Con su aprobación, la implementación se coordinó con revisiones de código y arquitectura a distancia entre México y España, con una ventana de solapamiento de pocas horas, en un sprint de 8 semanas en paralelo a otro proyecto.</p>
+    <p class="note">Hoy ya opera en parte de los módulos; la migración del resto sigue en curso.</p>
+  </section>
+
+  <p class="credit">El diagrama y la animación los hice con ayuda de Claude (IA); la arquitectura y el sistema, con mi equipo.</p>
+
+  <section class="cta" aria-label="Siguientes pasos">
+    <a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera">Conversemos en LinkedIn</a>
+    <a class="btn ghost" href="../#proyectos">Ver mis proyectos</a>
+  </section>
+
+  <footer><span>© 2026 Daniel Rodriguez Herrera</span><span>Cuernavaca · CDMX · México</span></footer>
+</div>
+</body>
+</html>
