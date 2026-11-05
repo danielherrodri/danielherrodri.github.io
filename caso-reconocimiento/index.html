@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Caso en izzi telecom: la necesidad, el problema y cómo pasé de controlar pines y Coinx en Excel a una plataforma con estado de cuenta, marketplace de canje, inventario y panel administrativo.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reconocimiento que se puede canjear · Daniel Rodriguez Herrera">
+<meta property="og:description" content="De Excel a una plataforma de pines y Coinx: estado de cuenta, marketplace, inventario y panel administrativo.">
+<meta property="og:url" content="https://danielherrodri.github.io/caso-reconocimiento/">
+<meta property="og:image" content="https://danielherrodri.github.io/caso-reconocimiento/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://danielherrodri.github.io/caso-reconocimiento/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232457e6'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' font-weight='700' fill='white' text-anchor='middle'%3Ed.%3C/text%3E%3C/svg%3E">
+<title>Reconocimiento que se puede canjear · Daniel Rodriguez Herrera</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+/* Mismos tokens del portafolio */
+:root{
+  --bg:#f3f5f9; --surface:#ffffff; --fg:#0f1520; --muted:#566172; --line:#dbe0e8;
+  --accent:#2457e6; --accent-2:#0f9d8a; --accent-soft:#e2eafd; --ok:#127a49; --wip:#9a5600; --err:#a3302a;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  /* Paleta de Nexo, solo para el bloque de la recreación */
+  --nx-verde:#1d3a30; --nx-texto:#eaf2e6; --nx-suave:#c9dfb4; --nx-linea:#3b5a4a; --nx-lima:#d5f88a; --nx-papel:#f8f8f3;
+  --nx-muted:#56665d; --nx-borde:#dce3d9; --nx-alt:#eef2e9; --nx-ok:#14684f; --nx-okbg:#ddf2e8;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.65 var(--f-body);overflow-x:hidden}
+img{max-width:100%;display:block}
+.wrap{max-width:980px;margin:0 auto;padding:36px max(20px,env(safe-area-inset-right,0px)) 72px max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:72px}
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{font:800 20px var(--f-display);letter-spacing:-.02em;text-decoration:none;color:var(--fg)}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-links a{font:500 13px var(--f-mono);color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--fg);background:var(--accent-soft)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.eyebrow{font:500 13px var(--f-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin:0}
+h1{font:800 clamp(42px,6.6vw,76px)/1 var(--f-display);letter-spacing:-.04em;margin:14px 0 0;text-wrap:balance}
+h1 .hl{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);color:var(--accent)}
+h2{font:800 clamp(30px,4vw,44px)/1.08 var(--f-display);letter-spacing:-.035em;margin:8px 0 20px;text-wrap:balance}
+h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
+.lead{font-size:21px;color:var(--muted);max-width:58ch;margin:18px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.state{font:500 13px var(--f-mono);display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid currentColor}
+.state::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.state.ok{color:var(--ok)}
+.state.co{color:var(--muted)}
+
+/* Bloque de la recreación con los colores de Nexo */
+.nexo{background:var(--nx-verde);color:var(--nx-texto);border-radius:28px;padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:20px}
+.nexo-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.nexo .k{display:inline-block;font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--nx-verde);background:var(--nx-lima);border-radius:6px;padding:3px 9px}
+.nexo h2{color:var(--nx-texto);margin:12px 0 0;font-size:clamp(26px,3.4vw,36px)}
+.nexo > p{margin:0;color:var(--nx-suave);font-size:16px}
+.rail{height:3px;background-image:radial-gradient(circle,var(--nx-lima) 1.4px,transparent 1.6px);background-size:10px 3px;background-repeat:repeat-x;opacity:.9}
+
+/* Panel ilustrativo */
+.app{background:var(--nx-papel);color:var(--nx-verde);border-radius:16px;border:1px solid var(--nx-linea);overflow:hidden;font:400 15px/1.45 var(--f-body)}
+.app-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 18px;background:#fff;border-bottom:1px solid var(--nx-borde)}
+.app-bar b{font:800 16px var(--f-display);letter-spacing:-.01em}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs span{font:500 12px var(--f-mono);padding:6px 10px;border-radius:8px;color:var(--nx-muted)}
+.tabs span.on{background:#e3eedb;color:var(--nx-verde)}
+.app-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;padding:16px}
+.pane{background:#fff;border:1px solid var(--nx-borde);border-radius:14px;padding:16px}
+.pane-t{font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--nx-muted);margin:0 0 10px}
+.who{display:flex;align-items:center;gap:12px}
+.av{width:42px;height:42px;border-radius:50%;background:var(--nx-verde);color:var(--nx-lima);display:flex;align-items:center;justify-content:center;font:800 15px var(--f-display)}
+.who small{display:block;color:var(--nx-muted);font-size:13px}
+.bal{display:flex;align-items:baseline;gap:8px;margin:14px 0 4px}
+.bal b{font:800 40px/1 var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.bal span{font:500 14px var(--f-mono);color:var(--nx-muted)}
+.pins{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.pin{display:inline-flex;align-items:center;gap:6px;font:500 12px var(--f-mono);background:var(--nx-alt);border-radius:999px;padding:4px 10px 4px 6px}
+.pin i{width:16px;height:16px;border-radius:50%;background:var(--nx-lima);box-shadow:inset 0 0 0 2px var(--nx-verde)}
+.mov{list-style:none;margin:0;padding:0}
+.mov li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:8px 0;border-top:1px solid var(--nx-borde);font-size:14px}
+.mov li span{color:var(--nx-muted)}
+.mov b{font:500 13px var(--f-mono);font-variant-numeric:tabular-nums}
+.mov .plus{color:var(--nx-ok)}
+.mov .minus{color:var(--nx-verde)}
+.shop{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.item{border:1px solid var(--nx-borde);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.thumb{height:54px;border-radius:8px;background:var(--nx-alt);display:flex;align-items:center;justify-content:center}
+.thumb svg{width:28px;height:28px;fill:none;stroke:var(--nx-verde);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.item b{font:600 14px var(--f-body)}
+.item .price{font:500 12px var(--f-mono);color:var(--nx-muted)}
+.item .go{font:600 12px var(--f-body);text-align:center;border-radius:8px;padding:5px 0;background:var(--nx-verde);color:#fff}
+.inv{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.inv li{font-size:14px}
+.inv .row{display:flex;justify-content:space-between;gap:10px}
+.inv .row span{font:500 12px var(--f-mono);color:var(--nx-muted)}
+.lvl{height:7px;border-radius:4px;background:var(--nx-alt);overflow:hidden;margin-top:5px}
+.lvl i{display:block;height:100%;width:var(--v);background:var(--nx-verde);border-radius:4px}
+.lvl i.low{background:#c98a1a}
+.disclaimer{font:400 13px var(--f-mono);color:var(--nx-suave)}
+
+/* Animación de la recreación */
+.js .app .mov li,.js .app .item,.js .app .inv li{opacity:0;transform:translateY(8px);transition:opacity .5s cubic-bezier(.2,.7,.2,1),transform .5s cubic-bezier(.2,.7,.2,1);transition-delay:calc(.35s + var(--i,0) * .12s)}
+.js .app.in .mov li,.js .app.in .item,.js .app.in .inv li{opacity:1;transform:none}
+.js .app .lvl i{transform-origin:left;transform:scaleX(0);transition:transform 1s cubic-bezier(.2,.7,.2,1) .9s}
+.js .app.in .lvl i{transform:none}
+.js .app .pin{opacity:0;transform:scale(.6);transition:opacity .4s,transform .4s cubic-bezier(.3,1.5,.5,1);transition-delay:calc(.2s + var(--i,0) * .1s)}
+.js .app.in .pin{opacity:1;transform:none}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+.stat{padding:22px 20px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font:800 clamp(22px,2.6vw,30px)/1.1 var(--f-display);letter-spacing:-.03em}
+.stat span{display:block;margin-top:8px;font-size:15px;color:var(--muted)}
+
+/* Capítulos */
+.chapter{display:grid;grid-template-columns:120px minmax(0,1fr);gap:28px}
+.chap-n{font:800 64px/1 var(--f-display);letter-spacing:-.04em;color:var(--line);font-variant-numeric:tabular-nums}
+.prose p{margin:0 0 14px;max-width:68ch}
+.prose p:last-child{margin-bottom:0}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.card .k{font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
+.card.before .k{color:var(--err)}.card.after .k{color:var(--ok)}
+.card h3{margin:6px 0}
+.card p{margin:0;color:var(--muted);font-size:16px}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
+.steps h3{font-size:20px;margin:0 0 4px}
+.steps p{margin:0;color:var(--muted);font-size:16px}
+.note{margin-top:18px!important;padding-left:14px;border-left:2px solid var(--accent-2)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tags span{font:400 12px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 9px}
+
+.credit{font:400 14px var(--f-mono);color:var(--muted);border-top:1px solid var(--line);padding-top:18px;margin:0}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:12px;font:600 16px var(--f-body);text-decoration:none;transition:transform .2s,box-shadow .2s}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 12px 30px -14px var(--accent)}
+.btn.ghost{border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn:hover{transform:translateY(-2px)}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:400 13px var(--f-mono);color:var(--muted)}
+
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.js .reveal.in{opacity:1;transform:none}
+@media (max-width:760px){.app-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}.compare{grid-template-columns:1fr}.chapter{grid-template-columns:1fr;gap:4px}.chap-n{font-size:44px}.steps li{grid-template-columns:1fr;gap:10px}.steps li::before{width:44px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal,.js .app .mov li,.js .app .item,.js .app .inv li,.js .app .pin{opacity:1;transform:none}.js .app .lvl i{transform:none}}
+</style>
+<script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="../">daniel<span>.dev</span></a>
+    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#caso">← Volver</a></div>
+  </nav>
+
+  <header>
+    <p class="eyebrow reveal">Caso de producto · izzi telecom</p>
+    <h1 class="reveal" style="--d:.06s">Reconocimiento que <span class="hl">se puede canjear</span></h1>
+    <p class="lead reveal" style="--d:.12s">Cómo pasé de controlar pines y Coinx en Excel a una plataforma con estado de cuenta, marketplace de canje, eventos personalizados, álbum de fotos, inventario y panel administrativo.</p>
+    <div class="meta reveal" style="--d:.18s">
+      <span class="state ok">se usó en producción</span>
+      <span class="state co">Recursos Humanos · empleados</span>
+    </div>
+  </header>
+
+  <section class="nexo reveal" style="--d:.1s" aria-labelledby="panel-t">
+    <div class="nexo-head">
+      <div><span class="k">Así funcionaba</span><h2 id="panel-t">Participas, acumulas y canjeas</h2></div>
+    </div>
+    <div class="app" id="app" role="img" aria-label="Recreación del panel: estado de cuenta de un empleado de ejemplo con 1,250 Coinx y tres pines, marketplace con productos para canjear e inventario con niveles de existencia.">
+      <div class="app-bar" aria-hidden="true">
+        <b>Reconocimiento · Panel</b>
+        <div class="tabs"><span class="on">Estado de cuenta</span><span>Actividades</span><span>Eventos</span><span>Álbum</span><span>Marketplace</span><span>Inventario</span></div>
+      </div>
+      <div class="app-grid" aria-hidden="true">
+        <div class="pane">
+          <p class="pane-t">Estado de cuenta</p>
+          <div class="who"><div class="av">EE</div><div>Empleado de ejemplo<small>Área de ejemplo</small></div></div>
+          <div class="bal"><b id="saldo">1,250</b><span>Coinx disponibles</span></div>
+          <div class="pins"><span class="pin" style="--i:0"><i></i>Capacitación</span><span class="pin" style="--i:1"><i></i>Voluntariado</span><span class="pin" style="--i:2"><i></i>Integración</span></div>
+          <ul class="mov">
+            <li style="--i:0"><div>Taller de capacitación<br><span>Actividad de RH · +1 pin</span></div><b class="plus">+150</b></li>
+            <li style="--i:1"><div>Jornada de voluntariado<br><span>Actividad de RH · +1 pin</span></div><b class="plus">+200</b></li>
+            <li style="--i:2"><div>Canje en marketplace<br><span>Producto de ejemplo</span></div><b class="minus">−300</b></li>
+          </ul>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="pane">
+            <p class="pane-t">Marketplace</p>
+            <div class="shop">
+              <div class="item" style="--i:3"><div class="thumb"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg></div><b>Audífonos</b><span class="price">600 Coinx</span><span class="go">Canjear</span></div>
+              <div class="item" style="--i:4"><div class="thumb"><svg viewBox="0 0 24 24"><path d="M8 3h8M9 3v3l-2 3v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9l-2-3V3"/></svg></div><b>Termo</b><span class="price">250 Coinx</span><span class="go">Canjear</span></div>
+            </div>
+          </div>
+          <div class="pane">
+            <p class="pane-t">Inventario</p>
+            <ul class="inv">
+              <li style="--i:5"><div class="row">Pines de reconocimiento<span>en existencia</span></div><div class="lvl"><i style="--v:78%"></i></div></li>
+              <li style="--i:6"><div class="row">Productos del marketplace<span>en existencia</span></div><div class="lvl"><i style="--v:52%"></i></div></li>
+              <li style="--i:7"><div class="row">Materiales por asignar<span>por surtir</span></div><div class="lvl"><i class="low" style="--v:22%"></i></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rail" aria-hidden="true"></div>
+    <p class="disclaimer">Recreación ilustrativa con datos ficticios; no es la plataforma original ni sus productos.</p>
+  </section>
+
+  <section class="stats reveal" aria-label="Datos del proyecto">
+    <div class="stat"><b>Excel → web</b><span>del control manual a una plataforma</span></div>
+    <div class="stat"><b>Pines y Coinx</b><span>dos formas de reconocer la participación</span></div>
+    <div class="stat"><b>Marketplace</b><span>los Coinx se canjean por productos</span></div>
+    <div class="stat"><b>Mayor carga</b><span>del desarrollo, a mi cargo</span></div>
+  </section>
+
+  <section class="chapter reveal" id="necesidad">
+    <div class="chap-n" aria-hidden="true">01</div>
+    <div class="prose">
+      <p class="eyebrow">La necesidad</p>
+      <h2>Reconocer la participación, y que valga algo</h2>
+      <p>Recursos Humanos quería reconocer a los empleados que participaban en sus actividades: entregarles pines y Coinx, y que esos Coinx se pudieran cambiar por productos.</p>
+      <p>Para que el programa funcionara hacía falta llevar bien las cuentas: quién participó, qué recibió, cuántos Coinx tenía cada persona, qué canjeó y qué quedaba en inventario.</p>
+    </div>
+  </section>
+
+  <section class="chapter reveal" id="problema">
+    <div class="chap-n" aria-hidden="true">02</div>
+    <div class="prose">
+      <p class="eyebrow">El problema</p>
+      <h2>Todo vivía en hojas de cálculo</h2>
+      <p>Las entregas de pines y Coinx, los saldos, los canjes y el inventario se llevaban a mano y en Excel. Cada movimiento dependía de una captura manual, y responder algo tan simple como «¿cuántos Coinx tengo?» o «¿qué nos queda en inventario?» requería revisar archivos.</p>
+      <div class="compare">
+        <div class="card before"><span class="k">Antes</span><h3>A mano y en Excel</h3><p>Asignaciones, saldos, canjes e inventario en hojas de cálculo separadas.</p></div>
+        <div class="card after"><span class="k">Ahora</span><h3>Una sola plataforma</h3><p>Cada actividad, entrega y canje queda registrado y el saldo se calcula solo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter reveal" id="solucion">
+    <div class="chap-n" aria-hidden="true">03</div>
+    <div class="prose">
+      <p class="eyebrow">Cómo lo solucioné</p>
+      <h2>Una plataforma con todo el ciclo del reconocimiento</h2>
+
+      <p class="sub">Lo que construí</p>
+      <ol class="steps">
+        <li><div><h3>Actividades y entrega</h3><p>Registro de la participación de cada empleado en las actividades de Recursos Humanos y entrega de los pines y Coinx que le corresponden.</p></div></li>
+        <li><div><h3>Estado de cuenta</h3><p>Cada persona tiene su saldo de Coinx, sus pines y el historial de movimientos: lo que ganó y lo que canjeó.</p></div></li>
+        <li><div><h3>Marketplace de productos</h3><p>Los empleados cambian sus Coinx por productos; el canje descuenta el saldo y la existencia.</p></div></li>
+        <li><div><h3>Eventos personalizados y álbum</h3><p>Campañas especiales, como el envío de tarjetas el 14 de febrero, y un álbum de eventos con fotos para que cada actividad quedara a la vista de todos.</p></div></li>
+        <li><div><h3>Inventario y asignación de materiales</h3><p>Control de existencias de pines, productos y materiales, y de su asignación.</p></div></li>
+        <li><div><h3>Panel administrativo</h3><p>Desde un solo lugar, Recursos Humanos administra actividades, eventos, pines, Coinx, productos e inventario.</p></div></li>
+      </ol>
+
+      <p class="sub">Cómo se hizo</p>
+      <p>Empecé el desarrollo solo; después se sumó un compañero, pero la mayor parte del trabajo siguió a mi cargo.</p>
+      <div class="tags" aria-label="Tecnologías"><span>Laravel</span><span>PHP</span><span>SQL Server</span></div>
+
+      <p class="sub">El resultado</p>
+      <p>La plataforma se usó en producción: Recursos Humanos dejó las hojas de cálculo y los empleados pudieron ver su saldo y canjear sus Coinx por productos.</p>
+    </div>
+  </section>
+
+  <p class="credit">La recreación del panel la hice con ayuda de Claude (IA) y usa datos ficticios; la plataforma original la desarrollé en izzi.</p>
+
+  <section class="cta" aria-label="Siguientes pasos">
+    <a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera">Conversemos en LinkedIn</a>
+    <a class="btn ghost" href="../">Volver al portafolio</a>
+  </section>
+
+  <footer><span>© 2026 Daniel Rodriguez Herrera</span><span>Cuernavaca · CDMX · México</span></footer>
+</div>
+<script>
+document.documentElement.classList.add('js');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('in')), 3000);
+// El panel se anima al aparecer: el saldo cuenta hasta su valor
+const app = document.getElementById('app'), saldo = document.getElementById('saldo');
+new IntersectionObserver(([e], o) => {
+  if (!e.isIntersecting) return;
+  o.disconnect(); app.classList.add('in');
+  if (reduce) return;
+  const fin = 1250, t0 = performance.now(), dur = 1400;
+  const paso = t => { const p = Math.min((t - t0) / dur, 1), v = Math.round(fin * (1 - Math.pow(1 - p, 3))); saldo.textContent = v.toLocaleString('es-MX'); if (p < 1) requestAnimationFrame(paso); };
+  requestAnimationFrame(paso);
+}, { threshold: .15 }).observe(app);
+</script>
+</body>
+</html>

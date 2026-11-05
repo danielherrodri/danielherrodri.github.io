@@ -471,8 +471,8 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   </section>
 
   <section id="caso">
-    <p class="eyebrow reveal">Caso destacado</p>
-    <h2 class="reveal" style="--d:.06s">Notificaciones que ya no se pierden</h2>
+    <p class="eyebrow reveal">Casos destacados</p>
+    <h2 class="reveal" style="--d:.06s">Problemas reales, resueltos de punta a punta</h2>
     <div class="projects">
       <article class="proj reveal" style="--d:.1s" data-term="caso">
         <a class="shot banner caso-shot" href="caso-notificaciones/" aria-label="Ver el caso: notificaciones que ya no se pierden">
@@ -484,6 +484,19 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
           <p>El envío de correos era síncrono y de «mejor esfuerzo»: con un 429 del proveedor, la notificación se perdía sin rastro. Lo rediseñé como un sistema asíncrono y resiliente, coordinando revisiones entre México y España en un sprint de 8 semanas.</p>
           <div class="tags"><span>Patrón Outbox</span><span>NoSQL</span><span>Token bucket</span><span>Colas de prioridad</span><span>Webhooks</span><span>Self-healing</span></div>
           <div class="links"><a href="caso-notificaciones/">Ver la necesidad, el problema y la solución →</a></div>
+        </div>
+      </article>
+
+      <article class="proj reveal" style="--d:.15s" data-term="reconocimiento">
+        <a class="shot banner caso-shot" href="caso-reconocimiento/" aria-label="Ver el caso: plataforma de reconocimiento con pines y Coinx">
+          <img src="caso-reconocimiento/panel.jpg" width="1920" height="1080" loading="lazy" alt="Recreación del panel de reconocimiento: estado de cuenta con saldo de Coinx y pines, marketplace de productos e inventario.">
+          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#d5f88a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Ver caso</span>
+        </a>
+        <div class="proj-body">
+          <div class="proj-head"><h3>Plataforma de reconocimiento · izzi telecom</h3><span class="state ok">se usó en producción</span></div>
+          <p>Recursos Humanos llevaba en Excel la entrega de pines y Coinx a quienes participaban en sus actividades. Construí la plataforma completa: estado de cuenta, marketplace para canjear Coinx por productos, eventos personalizados, álbum de fotos, inventario y panel administrativo.</p>
+          <div class="tags"><span>Laravel</span><span>PHP</span><span>SQL Server</span><span>Panel administrativo</span><span>Marketplace</span><span>Inventario</span></div>
+          <div class="links"><a href="caso-reconocimiento/">Ver la necesidad, el problema y la solución →</a></div>
         </div>
       </article>
     </div>
@@ -507,6 +520,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
           <h3>izzi telecom</h3>
           <p>Desarrollo y mantenimiento de aplicaciones web full stack con Laravel, PHP, JavaScript, Node.js, Vue.js, MySQL y SQL Server.</p>
           <p class="xp-note">Construí un sistema que asigna incidencias entre agentes según reglas configurables y cuotas por área.</p>
+          <p class="xp-note">Desarrollé la plataforma de reconocimiento de pines y Coinx: estado de cuenta, marketplace de canje, eventos, inventario y panel administrativo. <a class="inline" href="caso-reconocimiento/">Ver caso →</a></p>
         </div>
       </article>
     </div>
@@ -625,6 +639,11 @@ const scripts = {
     ['$ ', 'subir catalogo.xlsx'], ['ok', '98 productos cargados ✓'],
     ['$ ', 'dictar "dos plumas de gel negras y un cuaderno"'], ['dim', '2 × Pluma de gel · Negra, 1 × Cuaderno'],
     ['$ ', 'open danielherrodri.github.io/calculadora-precios'], ['dim', 'gratis, sin servidor'],
+  ]},
+  reconocimiento: { dir: '~/reconocimiento', lines: [
+    ['$ ', 'registrar --actividad capacitacion'], ['ok', '+1 pin · +150 Coinx ✓'],
+    ['$ ', 'canjear --producto audifonos'], ['dim', 'saldo actualizado · inventario −1'],
+    ['$ ', 'enviar --evento "14 de febrero"'], ['ok', 'tarjetas enviadas ✓'],
   ]},
   caso: { dir: '~/notificaciones', lines: [
     ['$ ', 'notificar --evento'], ['ok', 'PENDING · guardado en Outbox ✓'],
