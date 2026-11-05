@@ -116,6 +116,11 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .need{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}
 .need div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:16px;color:var(--muted)}
 .need b{display:block;color:var(--fg);font:800 18px/1.25 var(--f-display);margin-bottom:4px}
+.need .wide{grid-column:1/-1}
+.opt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:4px}
+.opt div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:16px;color:var(--muted)}
+.opt b{display:block;color:var(--fg);font:800 18px/1.25 var(--f-display);margin-bottom:4px}
+.opt i{display:block;font:500 12px var(--f-mono);font-style:normal;color:var(--accent-2);margin-bottom:6px}
 .sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
@@ -135,7 +140,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 
 .js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
 .js .reveal.in{opacity:1;transform:none}
-@media (max-width:760px){.app-grid{grid-template-columns:1fr}.need{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}.chapter{grid-template-columns:1fr;gap:4px}.chap-n{font-size:44px}.steps li{grid-template-columns:1fr;gap:10px}.steps li::before{width:44px}}
+@media (max-width:760px){.app-grid{grid-template-columns:1fr}.need,.opt{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}.chapter{grid-template-columns:1fr;gap:4px}.chap-n{font-size:44px}.steps li{grid-template-columns:1fr;gap:10px}.steps li::before{width:44px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal,.js .app .act,.js .app .rules li,.js .app .log li{opacity:1;transform:none}.js .app .bars i{transform:none}}
 </style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
@@ -230,6 +235,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <div><b>Cada manager tenía su lógica</b>Por ejemplo, que nadie atendiera más de tres actividades a la vez.</div>
         <div><b>Saber quién estaba disponible</b>No asignar trabajo a quien estaba en comida o indispuesto.</div>
         <div><b>Medir y documentar</b>Cuánto tardaba cada actividad, la productividad y el uso de los estados.</div>
+        <div class="wide"><b>Con pocos recursos de servidor</b>Los recursos del servidor eran limitados y el sistema se volvía lento; tenía que responder bien con lo que había.</div>
       </div>
     </div>
   </section>
@@ -249,12 +255,20 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <li><div><h3>Reportes, gráficas y exportación</h3><p>Gráficas de productividad y exportación de la base de datos; los reportes se procesaban en segundo plano y se enviaban por correo para descargarlos.</p></div></li>
       </ol>
 
+      <p class="sub">Optimización con recursos limitados</p>
+      <p>Aquí aprendí mucho de optimización. Como el servidor tenía pocos recursos y había lentitud, trabajé en tres frentes hasta que dejó de haberla:</p>
+      <div class="opt">
+        <div><i>base de datos</i><b>Consultas, índices y procedimientos</b>Optimicé las consultas, agregué índices y moví lógica a procedimientos almacenados para que la base respondiera más rápido.</div>
+        <div><i>front</i><b>CSS y JavaScript minificados</b>Archivos más ligeros que cargaban más rápido en cada pantalla.</div>
+        <div><i>navegador</i><b>Procesamiento en el cliente</b>Parte del trabajo se movió al navegador de cada usuario para descargar al servidor.</div>
+      </div>
+
       <p class="sub">Cómo se hizo</p>
       <p>Lo desarrollé solo, de punta a punta: desde la conexión con los datos de Inbound hasta la interfaz de los agentes y los reportes de los managers.</p>
       <div class="tags" aria-label="Tecnologías"><span>Laravel</span><span>PHP</span><span>SQL Server</span><span>Tailwind CSS</span></div>
 
       <p class="sub">El resultado</p>
-      <p>El sistema se usó en producción con agentes de call center a nivel nacional: las actividades se repartían según las reglas de cada manager, cada cierre quedaba ligado a su ticket y los managers tenían tiempos, productividad y bitácora para tomar decisiones.</p>
+      <p>El sistema se usó en producción con agentes de call center a nivel nacional: las actividades se repartían según las reglas de cada manager, cada cierre quedaba ligado a su ticket y los managers tenían tiempos, productividad y bitácora para tomar decisiones. Y, con la optimización, el sistema dejó de ser lento aun con los recursos limitados del servidor.</p>
     </div>
   </section>
 
