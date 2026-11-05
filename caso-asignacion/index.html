@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Caso en izzi telecom: un sistema que repartía las actividades de Inbound entre los agentes de call center a nivel nacional, con reglas por manager, temporizador en tiempo real, estados del agente, bitácora y reportes.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cada actividad, a quien sí puede atenderla · Daniel Rodriguez Herrera">
+<meta property="og:description" content="Asignación de actividades con reglas por manager, temporizador en tiempo real, estados del agente, bitácora y reportes por correo.">
+<meta property="og:url" content="https://danielherrodri.github.io/caso-asignacion/">
+<meta property="og:image" content="https://danielherrodri.github.io/caso-asignacion/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://danielherrodri.github.io/caso-asignacion/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232457e6'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' font-weight='700' fill='white' text-anchor='middle'%3Ed.%3C/text%3E%3C/svg%3E">
+<title>Cada actividad, a quien sí puede atenderla · Daniel Rodriguez Herrera</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+/* Mismos tokens del portafolio */
+:root{
+  --bg:#f3f5f9; --surface:#ffffff; --fg:#0f1520; --muted:#566172; --line:#dbe0e8;
+  --accent:#2457e6; --accent-2:#0f9d8a; --accent-soft:#e2eafd; --ok:#127a49; --wip:#9a5600; --err:#a3302a;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  /* Paleta de Nexo, solo para el bloque de la recreación */
+  --nx-verde:#1d3a30; --nx-texto:#eaf2e6; --nx-suave:#c9dfb4; --nx-linea:#3b5a4a; --nx-lima:#d5f88a; --nx-papel:#f8f8f3;
+  --nx-muted:#56665d; --nx-borde:#dce3d9; --nx-alt:#eef2e9; --nx-ok:#14684f; --nx-okbg:#ddf2e8; --nx-dif:#7f5300; --nx-difbg:#fbefd3; --nx-err:#a3302a; --nx-errbg:#fbe4e2;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.65 var(--f-body);overflow-x:hidden}
+img{max-width:100%;display:block}
+.wrap{max-width:980px;margin:0 auto;padding:36px max(20px,env(safe-area-inset-right,0px)) 72px max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:72px}
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{font:800 20px var(--f-display);letter-spacing:-.02em;text-decoration:none;color:var(--fg)}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-links a{font:500 13px var(--f-mono);color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--fg);background:var(--accent-soft)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.eyebrow{font:500 13px var(--f-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin:0}
+h1{font:800 clamp(42px,6.6vw,76px)/1 var(--f-display);letter-spacing:-.04em;margin:14px 0 0;text-wrap:balance}
+h1 .hl{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);color:var(--accent)}
+h2{font:800 clamp(30px,4vw,44px)/1.08 var(--f-display);letter-spacing:-.035em;margin:8px 0 20px;text-wrap:balance}
+h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
+.lead{font-size:21px;color:var(--muted);max-width:58ch;margin:18px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.state{font:500 13px var(--f-mono);display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid currentColor}
+.state::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.state.ok{color:var(--ok)}
+.state.co{color:var(--muted)}
+
+/* Bloque de la recreación con los colores de Nexo */
+.nexo{background:var(--nx-verde);color:var(--nx-texto);border-radius:28px;padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:20px}
+.nexo .k{display:inline-block;font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--nx-verde);background:var(--nx-lima);border-radius:6px;padding:3px 9px}
+.nexo h2{color:var(--nx-texto);margin:12px 0 0;font-size:clamp(26px,3.4vw,36px)}
+.rail{height:3px;background-image:radial-gradient(circle,var(--nx-lima) 1.4px,transparent 1.6px);background-size:10px 3px;background-repeat:repeat-x;opacity:.9}
+.disclaimer{font:400 13px var(--f-mono);color:var(--nx-suave);margin:0}
+
+/* Panel ilustrativo */
+.app{background:var(--nx-papel);color:var(--nx-verde);border-radius:16px;border:1px solid var(--nx-linea);overflow:hidden;font:400 15px/1.45 var(--f-body)}
+.app-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 18px;background:#fff;border-bottom:1px solid var(--nx-borde)}
+.app-bar b{font:800 16px var(--f-display);letter-spacing:-.01em}
+.src{font:500 12px var(--f-mono);color:var(--nx-muted)}
+.app-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;padding:16px}
+.pane{background:#fff;border:1px solid var(--nx-borde);border-radius:14px;padding:16px}
+.pane-t{display:flex;justify-content:space-between;align-items:center;gap:8px;font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--nx-muted);margin:0 0 10px}
+.pane-t em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--nx-verde);background:var(--nx-alt);border-radius:999px;padding:2px 8px}
+.status{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.status span{display:inline-flex;align-items:center;gap:6px;font:500 12px var(--f-mono);border:1px solid var(--nx-borde);border-radius:999px;padding:5px 10px;color:var(--nx-muted)}
+.status span::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.status .on{background:var(--nx-okbg);border-color:transparent;color:var(--nx-ok)}
+.acts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.act{border:1px solid var(--nx-borde);border-radius:12px;padding:12px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center}
+.act b{font:600 14px var(--f-body)}
+.act small{grid-column:1;color:var(--nx-muted);font-size:13px}
+.timer{grid-row:1/3;grid-column:2;font:500 20px var(--f-mono);font-variant-numeric:tabular-nums;color:var(--nx-verde);background:var(--nx-alt);border-radius:10px;padding:6px 10px}
+.timer.long{color:var(--nx-dif);background:var(--nx-difbg)}
+.close{grid-column:1/-1;display:flex;gap:8px;align-items:center;margin-top:8px}
+.close .field{flex:1;font:500 12px var(--f-mono);color:var(--nx-muted);border:1px dashed var(--nx-borde);border-radius:8px;padding:6px 10px}
+.close .btn-c{font:600 12px var(--f-body);background:var(--nx-verde);color:#fff;border-radius:8px;padding:7px 12px}
+.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.rules li{display:flex;gap:8px}
+.rules li::before{content:"→";font-family:var(--f-mono);color:var(--nx-ok)}
+.bars{display:flex;align-items:flex-end;gap:8px;height:76px;margin:4px 0 10px}
+.bars i{flex:1;background:var(--nx-verde);border-radius:4px 4px 0 0;height:var(--h);transform-origin:bottom}
+.bars i:nth-child(even){background:#a6c98a}
+.acts-row{display:flex;gap:8px;flex-wrap:wrap}
+.acts-row span{font:600 12px var(--f-body);border:1px solid var(--nx-borde);border-radius:8px;padding:6px 10px}
+.acts-row span.mail{background:var(--nx-lima);border-color:transparent}
+.log{list-style:none;margin:0;padding:0;font:400 12px/1.6 var(--f-mono);color:var(--nx-muted)}
+.log b{color:var(--nx-verde);font-weight:500}
+
+/* Animación de la recreación */
+.js .app .act,.js .app .rules li,.js .app .log li{opacity:0;transform:translateY(8px);transition:opacity .5s cubic-bezier(.2,.7,.2,1),transform .5s cubic-bezier(.2,.7,.2,1);transition-delay:calc(.3s + var(--i,0) * .12s)}
+.js .app.in .act,.js .app.in .rules li,.js .app.in .log li{opacity:1;transform:none}
+.js .app .bars i{transform:scaleY(0);transition:transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:calc(.6s + var(--i,0) * .08s)}
+.js .app.in .bars i{transform:none}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+.stat{padding:22px 20px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font:800 clamp(22px,2.6vw,30px)/1.1 var(--f-display);letter-spacing:-.03em}
+.stat span{display:block;margin-top:8px;font-size:15px;color:var(--muted)}
+
+/* Capítulos */
+.chapter{display:grid;grid-template-columns:120px minmax(0,1fr);gap:28px}
+.chap-n{font:800 64px/1 var(--f-display);letter-spacing:-.04em;color:var(--line);font-variant-numeric:tabular-nums}
+.prose p{margin:0 0 14px;max-width:68ch}
+.prose p:last-child{margin-bottom:0}
+.need{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}
+.need div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:16px;color:var(--muted)}
+.need b{display:block;color:var(--fg);font:800 18px/1.25 var(--f-display);margin-bottom:4px}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
+.steps h3{font-size:20px;margin:0 0 4px}
+.steps p{margin:0;color:var(--muted);font-size:16px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tags span{font:400 12px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 9px}
+
+.credit{font:400 14px var(--f-mono);color:var(--muted);border-top:1px solid var(--line);padding-top:18px;margin:0}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:12px;font:600 16px var(--f-body);text-decoration:none;transition:transform .2s,box-shadow .2s}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 12px 30px -14px var(--accent)}
+.btn.ghost{border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn:hover{transform:translateY(-2px)}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:400 13px var(--f-mono);color:var(--muted)}
+
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.js .reveal.in{opacity:1;transform:none}
+@media (max-width:760px){.app-grid{grid-template-columns:1fr}.need{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}.chapter{grid-template-columns:1fr;gap:4px}.chap-n{font-size:44px}.steps li{grid-template-columns:1fr;gap:10px}.steps li::before{width:44px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal,.js .app .act,.js .app .rules li,.js .app .log li{opacity:1;transform:none}.js .app .bars i{transform:none}}
+</style>
+<script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="../">daniel<span>.dev</span></a>
+    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#caso">← Volver</a></div>
+  </nav>
+
+  <header>
+    <p class="eyebrow reveal">Caso de producto · izzi telecom</p>
+    <h1 class="reveal" style="--d:.06s">Cada actividad, a quien <span class="hl">sí puede atenderla</span></h1>
+    <p class="lead reveal" style="--d:.12s">Un sistema que tomaba la carga de Inbound y la repartía entre los agentes del call center según las reglas de cada manager, con temporizador en tiempo real, estados del agente, bitácora y reportes.</p>
+    <div class="meta reveal" style="--d:.18s">
+      <span class="state ok">en producción a nivel nacional</span>
+      <span class="state co">hecho solo, de punta a punta</span>
+    </div>
+  </header>
+
+  <section class="nexo reveal" style="--d:.1s" aria-labelledby="panel-t">
+    <div><span class="k">Así funcionaba</span><h2 id="panel-t">Asignar, atender, cerrar con ticket</h2></div>
+    <div class="app" id="app" role="img" aria-label="Recreación del sistema: un agente en estado disponible con tres actividades activas y sus temporizadores corriendo, reglas del manager, gráfica de productividad con exportación y envío de reportes al correo, y bitácora de cambios de estado.">
+      <div class="app-bar" aria-hidden="true">
+        <b>Asignación · Call center</b>
+        <span class="src">carga de Inbound: Excel · base de datos</span>
+      </div>
+      <div class="app-grid" aria-hidden="true">
+        <div class="pane">
+          <p class="pane-t">Mi bandeja <em>3 de 3 activas</em></p>
+          <div class="status"><span class="on">Disponible</span><span>Comida</span><span>Indispuesto</span></div>
+          <ul class="acts">
+            <li class="act" style="--i:0"><b>Actividad de ejemplo A</b><small>Asignada por regla del manager</small><span class="timer long" data-t="1384">23:04</span></li>
+            <li class="act" style="--i:1"><b>Actividad de ejemplo B</b><small>Asignada por regla del manager</small><span class="timer" data-t="512">08:32</span></li>
+            <li class="act" style="--i:2"><b>Actividad de ejemplo C</b><small>Asignada por regla del manager</small><span class="timer" data-t="41">00:41</span>
+              <div class="close"><span class="field">Ticket de atención: [número]</span><span class="btn-c">Cerrar</span></div></li>
+          </ul>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="pane">
+            <p class="pane-t">Reglas del manager</p>
+            <ul class="rules">
+              <li style="--i:3">Máximo 3 actividades activas por agente</li>
+              <li style="--i:4">Solo se asigna a agentes disponibles</li>
+              <li style="--i:5">Cierre obligatorio con número de ticket</li>
+            </ul>
+          </div>
+          <div class="pane">
+            <p class="pane-t">Productividad</p>
+            <div class="bars"><i style="--h:48%;--i:0"></i><i style="--h:66%;--i:1"></i><i style="--h:58%;--i:2"></i><i style="--h:82%;--i:3"></i><i style="--h:74%;--i:4"></i><i style="--h:90%;--i:5"></i></div>
+            <div class="acts-row"><span>Exportar base</span><span class="mail">Enviar reporte al correo</span></div>
+          </div>
+          <div class="pane">
+            <p class="pane-t">Bitácora de estado</p>
+            <ul class="log">
+              <li style="--i:6"><b>13:02</b> Disponible → Comida</li>
+              <li style="--i:7"><b>13:47</b> Comida → Disponible</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rail" aria-hidden="true"></div>
+    <p class="disclaimer">Recreación ilustrativa con datos ficticios; no es el sistema original.</p>
+  </section>
+
+  <section class="stats reveal" aria-label="Datos del proyecto">
+    <div class="stat"><b>Nacional</b><span>agentes de call center en todo el país</span></div>
+    <div class="stat"><b>Por manager</b><span>reglas de asignación personalizadas</span></div>
+    <div class="stat"><b>Tiempo real</b><span>temporizador visible en cada actividad</span></div>
+    <div class="stat"><b>Solo</b><span>de punta a punta: datos, back, front y reportes</span></div>
+  </section>
+
+  <section class="chapter reveal" id="necesidad">
+    <div class="chap-n" aria-hidden="true">01</div>
+    <div class="prose">
+      <p class="eyebrow">La necesidad</p>
+      <h2>Repartir el trabajo con las reglas de cada manager</h2>
+      <p>El equipo de Inbound depositaba las actividades por atender, y había que repartirlas entre los agentes del call center a nivel nacional. Cada manager tenía su propia forma de asignar, y necesitaba saber cuánto tardaba cada actividad y qué tan productivo era su equipo.</p>
+    </div>
+  </section>
+
+  <section class="chapter reveal" id="problema">
+    <div class="chap-n" aria-hidden="true">02</div>
+    <div class="prose">
+      <p class="eyebrow">El problema</p>
+      <h2>Mucho trabajo, muchas reglas y poca visibilidad</h2>
+      <p>Para que la asignación fuera justa y medible había que resolver varias cosas a la vez:</p>
+      <div class="need">
+        <div><b>La carga llegaba de otro equipo</b>En Excel o en una base de datos, y había que tomarla tal cual.</div>
+        <div><b>Cada manager tenía su lógica</b>Por ejemplo, que nadie atendiera más de tres actividades a la vez.</div>
+        <div><b>Saber quién estaba disponible</b>No asignar trabajo a quien estaba en comida o indispuesto.</div>
+        <div><b>Medir y documentar</b>Cuánto tardaba cada actividad, la productividad y el uso de los estados.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter reveal" id="solucion">
+    <div class="chap-n" aria-hidden="true">03</div>
+    <div class="prose">
+      <p class="eyebrow">Cómo lo solucioné</p>
+      <h2>Un sistema de asignación con reglas, tiempos y bitácora</h2>
+
+      <p class="sub">Lo que construí</p>
+      <ol class="steps">
+        <li><div><h3>Carga desde Excel o base de datos</h3><p>El sistema tomaba las actividades que Inbound depositaba, ya fuera en un Excel o directamente desde su base de datos.</p></div></li>
+        <li><div><h3>Asignación con lógica por manager</h3><p>Cada manager definía sus reglas, como un máximo de tres actividades activas por agente, y el sistema asignaba conforme a ellas.</p></div></li>
+        <li><div><h3>Temporizador en tiempo real y cierre con ticket</h3><p>Cada actividad mostraba su tiempo transcurrido en vivo; para cerrarla, el agente capturaba el número de ticket de la plataforma de atención.</p></div></li>
+        <li><div><h3>Estados del agente y bitácora</h3><p>El agente indicaba si estaba disponible, en comida o indispuesto, y solo recibía actividades estando disponible. Cada cambio de estado quedaba registrado para documentar malas prácticas.</p></div></li>
+        <li><div><h3>Reportes, gráficas y exportación</h3><p>Gráficas de productividad y exportación de la base de datos; los reportes se procesaban en segundo plano y se enviaban por correo para descargarlos.</p></div></li>
+      </ol>
+
+      <p class="sub">Cómo se hizo</p>
+      <p>Lo desarrollé solo, de punta a punta: desde la conexión con los datos de Inbound hasta la interfaz de los agentes y los reportes de los managers.</p>
+      <div class="tags" aria-label="Tecnologías"><span>Laravel</span><span>PHP</span><span>SQL Server</span><span>Tailwind CSS</span></div>
+
+      <p class="sub">El resultado</p>
+      <p>El sistema se usó en producción con agentes de call center a nivel nacional: las actividades se repartían según las reglas de cada manager, cada cierre quedaba ligado a su ticket y los managers tenían tiempos, productividad y bitácora para tomar decisiones.</p>
+    </div>
+  </section>
+
+  <p class="credit">La recreación del sistema la hice con ayuda de Claude (IA) y usa datos ficticios; el sistema original lo desarrollé en izzi.</p>
+
+  <section class="cta" aria-label="Siguientes pasos">
+    <a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera">Conversemos en LinkedIn</a>
+    <a class="btn ghost" href="../">Volver al portafolio</a>
+  </section>
+
+  <footer><span>© 2026 Daniel Rodriguez Herrera</span><span>Cuernavaca · CDMX · México</span></footer>
+</div>
+<script>
+document.documentElement.classList.add('js');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('in')), 3000);
+// El panel se anima al aparecer y los temporizadores corren en tiempo real
+const app = document.getElementById('app');
+const fmt = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+new IntersectionObserver(([e], o) => {
+  if (!e.isIntersecting) return;
+  o.disconnect(); app.classList.add('in');
+  if (reduce) return;
+  const timers = [...app.querySelectorAll('.timer')].map(el => ({ el, t: +el.dataset.t }));
+  setInterval(() => timers.forEach(x => { x.t++; x.el.textContent = fmt(x.t); }), 1000);
+}, { threshold: .15 }).observe(app);
+</script>
+</body>
+</html>
