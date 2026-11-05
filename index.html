@@ -499,6 +499,19 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
           <div class="links"><a href="caso-reconocimiento/">Ver la necesidad, el problema y la solución →</a></div>
         </div>
       </article>
+
+      <article class="proj reveal" style="--d:.2s" data-term="asignacion">
+        <a class="shot banner caso-shot" href="caso-asignacion/" aria-label="Ver el caso: asignación de actividades para el call center">
+          <img src="caso-asignacion/panel.jpg" width="1920" height="1080" loading="lazy" alt="Recreación del sistema de asignación: bandeja del agente con tres actividades y temporizadores, reglas del manager, productividad y bitácora de estado.">
+          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#d5f88a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Ver caso</span>
+        </a>
+        <div class="proj-body">
+          <div class="proj-head"><h3>Asignación de actividades · izzi telecom</h3><span class="state ok">en producción a nivel nacional</span></div>
+          <p>Repartía entre los agentes del call center la carga que Inbound depositaba en Excel o en base de datos, según las reglas de cada manager. Con temporizador en tiempo real, cierre con ticket, estados del agente con bitácora y reportes que llegaban por correo. Lo hice solo, de punta a punta, y lo optimicé hasta quitarle la lentitud con un servidor de recursos limitados.</p>
+          <div class="tags"><span>Laravel</span><span>PHP</span><span>SQL Server</span><span>Tailwind CSS</span><span>Tiempo real</span><span>Optimización</span></div>
+          <div class="links"><a href="caso-asignacion/">Ver la necesidad, el problema y la solución →</a></div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -519,7 +532,7 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
         <div>
           <h3>izzi telecom</h3>
           <p>Desarrollo y mantenimiento de aplicaciones web full stack con Laravel, PHP, JavaScript, Node.js, Vue.js, MySQL y SQL Server.</p>
-          <p class="xp-note">Construí un sistema que asigna incidencias entre agentes según reglas configurables y cuotas por área.</p>
+          <p class="xp-note">Construí, solo y de punta a punta, un sistema que asigna actividades a los agentes del call center a nivel nacional según las reglas de cada manager. <a class="inline" href="caso-asignacion/">Ver caso →</a></p>
           <p class="xp-note">Desarrollé la plataforma de reconocimiento de pines y Coinx: estado de cuenta, marketplace de canje, eventos, inventario y panel administrativo. <a class="inline" href="caso-reconocimiento/">Ver caso →</a></p>
         </div>
       </article>
@@ -639,6 +652,11 @@ const scripts = {
     ['$ ', 'subir catalogo.xlsx'], ['ok', '98 productos cargados ✓'],
     ['$ ', 'dictar "dos plumas de gel negras y un cuaderno"'], ['dim', '2 × Pluma de gel · Negra, 1 × Cuaderno'],
     ['$ ', 'open danielherrodri.github.io/calculadora-precios'], ['dim', 'gratis, sin servidor'],
+  ]},
+  asignacion: { dir: '~/asignacion', lines: [
+    ['$ ', 'importar --origen inbound'], ['ok', 'actividades cargadas ✓'],
+    ['$ ', 'asignar --regla "max 3 por agente"'], ['dim', 'solo agentes disponibles'],
+    ['$ ', 'reporte --productividad --correo'], ['ok', 'reporte enviado al correo ✓'],
   ]},
   reconocimiento: { dir: '~/reconocimiento', lines: [
     ['$ ', 'registrar --actividad capacitacion'], ['ok', '+1 pin · +150 Coinx ✓'],
