@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f7f6f1">
+<title>Data Hub · Arquitectura y automatización | Caso de ingeniería</title>
+<meta name="description" content="Recorrido animado conceptual de un toolkit de control operativo, IA híbrida, integración y QA E2E.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Caslon+Display&display=swap">
+<style>
+:root{--bg:#f7f6f1;--fg:#14241d;--green:#153e2e;--sage:#799780;--line:#cad2c7;--muted:#66776b;--pale:#e9efe7;--white:#fcfbf7}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);font-family:"DM Sans",system-ui,sans-serif}
+a{color:inherit}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid var(--sage);outline-offset:3px}
+.wrap{max-width:1220px;margin:auto;padding:26px clamp(18px,4vw,56px) 70px}
+.top{display:flex;justify-content:space-between;gap:20px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:20px}
+.top a{font:500 12px "DM Mono",monospace;text-decoration:none;text-transform:uppercase;letter-spacing:.07em}
+.top a:hover{text-decoration:underline}.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.02em}
+.mark{display:grid;grid-template-columns:repeat(2,9px);gap:4px;border-radius:8px;background:var(--green);padding:11px}
+.mark i{display:block;width:9px;height:9px;border:1.5px solid #d9eadb;border-radius:2px}
+.eyebrow{font:500 11px "DM Mono",monospace;letter-spacing:.15em;color:var(--green);text-transform:uppercase}
+.intro{padding:48px 0 40px}h1{max-width:920px;font:400 clamp(45px,7vw,89px)/1.03 "Libre Caslon Display",Georgia,serif;letter-spacing:-.035em;margin:14px 0}h1 em{color:var(--green);font-style:normal}
+.lead{font-size:19px;color:var(--muted);line-height:1.65;max-width:760px;margin:18px 0 0}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar small{font:500 11px "DM Mono",monospace;letter-spacing:.11em;color:var(--muted)}
+.actions{display:flex;gap:10px}
+.actions button{border:1px solid var(--line);background:var(--white);border-radius:8px;padding:10px 14px;font:500 12px "DM Mono",monospace;color:var(--green)}
+.actions button:hover{border-color:var(--green)}
+.stage-viewport{overflow-x:auto;border:1px solid var(--line);border-radius:15px;background:var(--white);box-shadow:0 28px 65px -48px rgba(14,37,22,.28)}
+.stage{position:relative;min-width:855px;aspect-ratio:16/9;background:var(--bg);padding:3.5% 4% 2.8%;overflow:hidden}
+.screen-top{display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:16px}
+.technical{font:500 clamp(10px,.9vw,13px) "DM Mono",monospace;letter-spacing:.04em}
+.screen-brand{display:flex;align-items:center;gap:12px}.screen-brand b{font-weight:500;font-size:15px}
+.screen-top .flag{font:500 10px "DM Mono",monospace;color:var(--muted);letter-spacing:.08em}
+.screen-head{padding:2.2% 0 2%;border-bottom:1px solid var(--line)}
+.screen-head h2{font:400 clamp(24px,3.1vw,48px)/1.05 "Libre Caslon Display",Georgia,serif;letter-spacing:-.02em;margin:0 0 9px}
+.screen-head p{margin:0;font-size:clamp(11px,1.2vw,15px);color:var(--muted)}
+.kpis{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:1.2% 0;border-bottom:1px solid var(--line)}
+.kpi{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted)}.kpi strong{font:400 29px "Libre Caslon Display",Georgia,serif;color:var(--fg)}
+.kpis .status{font:500 10px "DM Mono",monospace;color:var(--green);border:1px solid #abc1af;padding:6px 11px;border-radius:50px}
+.columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3.2%;margin-top:2.7%}
+.cap{border-bottom:1px solid var(--sage);padding-bottom:10px;margin-bottom:13px;color:var(--green);font:500 clamp(10px,.9vw,13px) "DM Mono",monospace;text-transform:uppercase}
+.module{position:relative;display:block;text-align:left;width:100%;min-height:99px;border-radius:10px;border:1px solid var(--line);background:var(--white);padding:13px 15px;margin:0 0 10px;transition:background .3s ease,color .3s ease,opacity .3s ease,border-color .3s ease,transform .3s ease}
+.module .number{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font:500 10px "DM Mono",monospace;letter-spacing:.04em}
+.module strong{display:block;margin:12px 0 6px;font-size:clamp(12px,1.08vw,16px);line-height:1.2}
+.module .sub{display:block;color:var(--muted);font-size:clamp(10px,.91vw,12px)}
+.module.active{background:var(--green);color:#fff;border-color:var(--green);transform:translateY(-2px)}
+.module.active .number,.module.active .sub{color:#d2e2d5}
+.module.dimmed{opacity:.48}
+.module:hover{border-color:var(--green);opacity:1}
+.inspector{position:absolute;left:18%;right:18%;bottom:5%;background:var(--white);border:1.5px solid var(--green);border-radius:11px;padding:18px 23px;box-shadow:0 26px 52px -33px rgba(15,42,21,.3);transform:translateY(10px);opacity:0;transition:transform .45s ease,opacity .45s ease,top .45s ease}
+.inspector.visible{transform:translateY(0);opacity:1}
+.inspector.above{bottom:auto;top:45%}
+.inspector .inspect-head{display:flex;gap:13px;align-items:center;font:500 10px "DM Mono",monospace;color:var(--green);letter-spacing:.04em}
+.inspector .step{background:var(--green);color:#fff;border-radius:4px;padding:5px 8px}
+.inspector h3{font:400 clamp(21px,2vw,30px)/1.1 "Libre Caslon Display",Georgia,serif;margin:12px 0 7px}
+.inspector p{font-size:clamp(10px,1vw,13px);color:var(--muted);line-height:1.5;margin:0}
+.progress{position:absolute;bottom:0;left:0;right:0;height:5px;background:#dde4d9}
+.progress>div{background:var(--green);height:100%;width:0;transition:width .12s linear}
+.summary{max-width:980px;margin:35px auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.summary article{border-top:1px solid var(--line);padding-top:20px}.summary span{color:var(--green);font:500 12px "DM Mono",monospace}.summary h3{font:400 29px "Libre Caslon Display",Georgia,serif;margin:12px 0}.summary p{color:var(--muted);font-size:15px;line-height:1.55}
+.foot{margin-top:46px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.foot strong{color:var(--green)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+@media(max-width:840px){.stage{width:855px}.intro{padding-top:32px}.summary{grid-template-columns:1fr;gap:5px}.lead{font-size:16px}.wrap{padding:18px 18px 55px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>DATA HUB / ENGINEERING</div>
+ <a href="../#caso">← Volver a casos de ingeniería</a>
+</header>
+<main>
+ <section class="intro">
+  <p class="eyebrow">Engineering case study · Recorrido animado</p>
+  <h1>Menos tareas manuales.<br><em>Más ingeniería.</em></h1>
+  <p class="lead">Una representación conceptual de un toolkit de control operativo: observabilidad, asistencia contextual, integración entre sistemas y aseguramiento de calidad.</p>
+ </section>
+ <div class="toolbar">
+  <small>09 MÓDULOS · 03 CAPAS · RECORRIDO CONCEPTUAL</small>
+  <div class="actions">
+   <button id="play" type="button" aria-pressed="true">Ⅱ Pausar</button>
+   <button id="restart" type="button">↺ Reiniciar</button>
+  </div>
+ </div>
+ <div class="stage-viewport" role="region" aria-label="Animación de la arquitectura de Data Hub" tabindex="0">
+ <section class="stage" id="stage">
+  <div class="screen-top">
+   <div class="screen-brand"><span class="mark" style="padding:6px;border-radius:6px;grid-template-columns:repeat(2,6px);gap:3px" aria-hidden="true"><i style="width:6px;height:6px"></i><i style="width:6px;height:6px"></i><i style="width:6px;height:6px"></i><i style="width:6px;height:6px"></i></span><b>Data Hub / Engineering</b></div>
+   <span class="flag">ARCHITECTURE REFERENCE · CONCEPTUAL VIEW</span>
+  </div>
+  <div class="screen-head">
+   <h2>Arquitectura de control operativo, IA híbrida<br>y calidad de datos</h2>
+   <p>Observabilidad · Orquestación · Integración · QA de extremo a extremo</p>
+  </div>
+  <div class="kpis"><div class="kpi"><strong>9</strong> módulos</div><div class="kpi"><strong>3</strong> capas</div><span class="status">VISTA SANITIZADA</span><span class="status">RECORRIDO ANIMADO</span></div>
+  <div class="columns">
+   <div class="column"><div class="cap">I. Experience & Cockpit</div><div id="col0"></div></div>
+   <div class="column"><div class="cap">II. Core Orchestration & AI</div><div id="col1"></div></div>
+   <div class="column"><div class="cap">III. Data & Integration</div><div id="col2"></div></div>
+  </div>
+  <div class="inspector" id="inspect" aria-live="polite"><div class="inspect-head"><span class="step" id="step">PASO 01</span> INSPECCIÓN CONCEPTUAL</div><h3 id="inspect-title">Daily Ops Studio</h3><p id="inspect-detail">Operación diaria y seguimiento.</p></div>
+  <div class="progress" aria-hidden="true"><div id="progress"></div></div>
+ </section>
+ </div>
+ <section class="summary" aria-label="Capacidades">
+  <article><span>01 / OPERACIÓN</span><h3>Lo que se observa</h3><p>Seguimiento operativo, contexto de trabajo, tendencias y calidad de datos, reunidos en una vista legible.</p></article>
+  <article><span>02 / INTELIGENCIA</span><h3>Lo que se orquesta</h3><p>Asistencia contextual y validaciones con controles sobre el procesamiento y flujos de respaldo.</p></article>
+  <article><span>03 / EJECUCIÓN</span><h3>Lo que se automatiza</h3><p>Pruebas de extremo a extremo, verificaciones reproducibles e integración organizada entre servicios.</p></article>
+ </section>
+</main>
+<footer class="foot">
+ <div><strong>QA Ops Toolkit · Data Hub</strong><br>Recreación editorial para portafolio.</div>
+ <div>Vista conceptual. No representa datos operativos reales ni revela componentes internos.<br>Los nombres y flujos han sido simplificados para su presentación pública.</div>
+</footer>
+</div>
+<script>
+(function(){
+const modules=[
+['01','Daily Ops Studio','Operación diaria','Preparación, seguimiento de actividades y priorización de trabajo.'],
+['02','Contextual Smart Reply','Asistencia contextual','Propuestas revisables a partir del contexto disponible.'],
+['03','Governance Analytics & QA','Calidad y observabilidad','Indicadores, evidencias y validaciones para el seguimiento.'],
+['04','Gateway & Security','Protección de flujos','Controles de entrada y validaciones antes del procesamiento.'],
+['05','Hybrid AI Router','IA híbrida','Asistencia contextual con opción de reglas locales de respaldo.'],
+['06','Browser E2E Orchestrator','Automatización E2E','Pruebas y checkpoints reproducibles con evidencia.'],
+['07','Protected Data Store','Datos y trazabilidad','Persistencia controlada y registros de operación.'],
+['08','Enterprise ITSM Bridge','Integración','Vinculación estructurada entre fuentes de trabajo.'],
+['09','Multi-environment Workflows','Flujos entre entornos','Coordinación de ejecución y comprobaciones.']
+];
+const container=[document.getElementById('col0'),document.getElementById('col1'),document.getElementById('col2')];
+modules.forEach((m,i)=>{let b=document.createElement('button');b.type='button';b.className='module';b.innerHTML='<span class="number"><span>PASO '+m[0]+'</span><span>'+m[0]+'</span></span><strong>'+m[1]+'</strong><span class="sub">'+m[2]+'</span>';b.setAttribute('aria-label','Inspeccionar '+m[1]);b.addEventListener('click',()=>{running=false;selected=i;render();});container[Math.floor(i/3)].appendChild(b);});
+const cards=[...document.querySelectorAll('.module')],detail=document.getElementById('inspect'),play=document.getElementById('play'),progress=document.getElementById('progress');
+let selected=0,running=!matchMedia('(prefers-reduced-motion: reduce)').matches,started=performance.now(),last=started,elapsed=0;
+const STEP=2700,TOTAL=STEP*9;
+function render(){
+cards.forEach((card,i)=>{const on=i===selected;card.classList.toggle('active',on);card.classList.toggle('dimmed',!on);card.setAttribute('aria-pressed',String(on));});
+const m=modules[selected];document.getElementById('step').textContent='PASO '+m[0];document.getElementById('inspect-title').textContent=m[1];document.getElementById('inspect-detail').textContent=m[3];detail.classList.add('visible');detail.classList.toggle('above',selected%3===2);play.textContent=running?'Ⅱ Pausar':'▷ Reproducir';play.setAttribute('aria-pressed',String(running));progress.style.width=(running?elapsed/TOTAL:(selected+1)/9)*100+'%';
+}
+function tick(now){let delta=Math.min(70,now-last);last=now;if(running){elapsed=(elapsed+delta)%TOTAL;let next=Math.floor(elapsed/STEP);if(next!==selected){selected=next;render();}progress.style.width=(100*elapsed/TOTAL)+'%';}requestAnimationFrame(tick)}
+play.addEventListener('click',()=>{running=!running;elapsed=selected*STEP;render()});
+document.getElementById('restart').addEventListener('click',()=>{selected=0;elapsed=0;running=true;render()});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){selected=(selected+(e.key==='ArrowRight'?1:8))%9;elapsed=selected*STEP;running=false;render();}});
+render();requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
