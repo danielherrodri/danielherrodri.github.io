@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-labelledby="t d">
+<title id="t">Auto-Healing con IA</title><desc id="d">Poster del Reel vertical con seis etapas de recuperación asistida por IA.</desc>
+<defs><linearGradient id="b" x2=".25" y2="1"><stop stop-color="#0b1521"/><stop offset="1" stop-color="#132439"/></linearGradient><pattern id="p" width="45" height="45" patternUnits="userSpaceOnUse"><path d="M45 0H0V45" fill="none" stroke="#2e4559" opacity=".28"/></pattern></defs>
+<rect width="1080" height="1920" fill="url(#b)"/><rect width="1080" height="1920" fill="url(#p)"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="84" y="180" font-size="30" letter-spacing="6" font-weight="700" fill="#52e0c8">ENGINEERING / DEMO</text>
+<text x="84" y="306" font-size="94" font-weight="700" fill="white">SISTEMAS</text><text x="84" y="420" font-size="94" font-weight="700" fill="white">QUE SE</text><text x="84" y="534" font-size="94" font-weight="700" fill="#5bdcc6">RECUPERAN.</text>
+<text x="84" y="618" font-size="37" fill="#b0c5d2">De reglas estáticas a</text><text x="84" y="666" font-size="37" fill="#b0c5d2">Auto-Healing con IA</text>
+<rect x="84" y="800" rx="30" width="912" height="660" fill="#0e1c2c" stroke="#345067" stroke-width="3"/>
+<text x="137" y="883" font-size="28" letter-spacing="2" fill="#67daca">PIPELINE · SEIS ETAPAS</text>
+<g fill="#192d40" stroke="#345b68" stroke-width="2">
+<rect x="129" y="937" width="380" height="135" rx="20"/><rect x="571" y="937" width="380" height="135" rx="20"/>
+<rect x="129" y="1097" width="380" height="135" rx="20"/><rect x="571" y="1097" width="380" height="135" rx="20"/>
+<rect x="129" y="1257" width="380" height="135" rx="20"/><rect x="571" y="1257" width="380" height="135" rx="20"/>
+</g><g font-size="29" font-weight="700" fill="#e6f2f3">
+<text x="167" y="991">01  Observar</text><text x="609" y="991">02  Detectar</text>
+<text x="167" y="1151">03  Evaluar</text><text x="609" y="1151">04  Recuperar</text>
+<text x="167" y="1311">05  Medir</text><text x="609" y="1311">06  Evolucionar</text>
+</g><g font-size="24" fill="#8ba7b8">
+<text x="167" y="1033">Telemetría</text><text x="609" y="1033">Señales</text>
+<text x="167" y="1193">Contexto</text><text x="609" y="1193">Respuesta</text>
+<text x="167" y="1353">Impacto</text><text x="609" y="1353">Resiliencia</text>
+</g>
+<rect x="434" y="1550" width="212" height="212" rx="106" fill="#58dfc8" opacity=".11" stroke="#59e3d0" stroke-width="5"/>
+<path d="M510 1596l99 60-99 60z" fill="#6bf2db"/>
+<text x="540" y="1850" text-anchor="middle" font-size="32" letter-spacing="4" fill="#a9becd">DEMO · 00:59</text></g>
+</svg>
