@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Sistemas que se recuperan: demostración conceptual de una arquitectura de Auto-Healing con IA. Observabilidad, evaluación contextual, recuperación y medición de tensión operativa.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sistemas que se recuperan · Auto-Healing con IA · Daniel Rodriguez Herrera">
+<meta property="og:description" content="Del monitoreo a la recuperación: seis etapas de una arquitectura resiliente asistida por IA.">
+<meta property="og:url" content="https://danielherrodri.github.io/caso-autohealing/">
+<link rel="canonical" href="https://danielherrodri.github.io/caso-autohealing/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232457e6'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' font-weight='700' fill='white' text-anchor='middle'%3Ed.%3C/text%3E%3C/svg%3E">
+<meta name="twitter:card" content="summary_large_image">
+<title>Sistemas que se recuperan · Auto-Healing con IA · Daniel Rodriguez Herrera</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#f3f5f9;--surface:#fff;--fg:#0f1520;--muted:#566172;--line:#dbe0e8;--accent:#2457e6;--accent-2:#0f9d8a;--accent-soft:#e2eafd;--f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;--f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;--f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.65 var(--f-body)}
+a{color:inherit}
+a:focus-visible,video:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.wrap{max-width:1060px;margin:0 auto;padding:36px max(20px,env(safe-area-inset-right)) 64px max(20px,env(safe-area-inset-left))}
+nav{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:66px}
+.logo{font:800 20px var(--f-display);text-decoration:none;letter-spacing:-.03em}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:16px;font:500 13px var(--f-mono)}
+.nav-links a{text-decoration:none;color:var(--muted)}
+.nav-links a:hover{color:var(--accent)}
+.eyebrow{font:500 13px var(--f-mono);text-transform:uppercase;letter-spacing:.13em;color:var(--accent);margin:0}
+h1,h2,h3{font-family:var(--f-display);letter-spacing:-.035em}
+h1{font-size:clamp(44px,7vw,80px);line-height:1.01;margin:16px 0 22px;font-weight:800;max-width:14ch}
+h1 span{color:var(--accent)}
+h2{font-size:clamp(31px,4.5vw,46px);line-height:1.1;margin:10px 0 24px}
+h3{font-size:21px;line-height:1.2;margin:0 0 9px}
+p{margin:0 0 15px}
+.lead{font-size:clamp(19px,2.4vw,23px);line-height:1.55;color:var(--muted);max-width:58ch}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.chip{font:500 12px var(--f-mono);padding:7px 12px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(26px,5vw,66px);align-items:center;margin-top:50px;background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:clamp(18px,4vw,42px)}
+.stage-copy{align-self:center}
+.stage-copy p{color:var(--muted)}
+.stage-copy .micro{font:500 12px var(--f-mono);letter-spacing:.1em;color:var(--accent-2);text-transform:uppercase}
+.stage-copy h2{font-size:clamp(28px,3.7vw,43px)}
+.media{background:#081522;border-radius:20px;padding:18px 18px 15px;display:flex;flex-direction:column;align-items:center;gap:13px}
+.media-label{font:500 12px var(--f-mono);letter-spacing:.12em;color:#77cdbf;text-transform:uppercase;align-self:stretch}
+.media video{display:block;width:min(100%,315px);max-height:560px;aspect-ratio:9/16;object-fit:contain;background:#0b1421;border:1px solid #2e4357;border-radius:14px}
+.media-note{font:400 11px/1.6 var(--f-mono);color:#a4bbc9;text-align:center}
+.section{padding:84px 0 0;scroll-margin-top:18px}
+.section-text{max-width:780px;font-size:19px}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}
+.compare .box{background:var(--surface);padding:24px;border:1px solid var(--line);border-radius:18px}
+.compare .label{font:500 12px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2)}
+.compare p{color:var(--muted);font-size:16px;margin:0}
+.timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;list-style:none;padding:0;margin:32px 0 0}
+.timeline li{background:var(--surface);border:1px solid var(--line);padding:23px 22px;border-radius:18px;min-height:180px}
+.num{font:600 13px var(--f-mono);color:var(--accent-2);display:block;margin-bottom:21px}
+.timeline p{font-size:16px;color:var(--muted);margin:0}
+.note{border-left:3px solid var(--accent-2);padding-left:18px;color:var(--muted);font-size:16px}
+footer{border-top:1px solid var(--line);margin-top:80px;padding-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font:400 13px var(--f-mono)}
+footer a{text-decoration:none;color:var(--accent)}
+@media(max-width:780px){nav{margin-bottom:44px}.stage{grid-template-columns:1fr}.stage-copy{order:0}.media{order:1}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}.section{padding-top:65px}}
+@media(max-width:530px){.compare,.timeline{grid-template-columns:1fr}.nav-links{gap:11px}.media video{width:min(100%,280px)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<script>try{const t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t}catch{}</script>
+</head>
+<body>
+<div class="wrap">
+<nav aria-label="Navegación">
+  <a class="logo" href="../">daniel<span>.dev</span></a>
+  <div class="nav-links"><a href="#problema">Problema</a><a href="#arquitectura">Arquitectura</a><a href="#flujo">Flujo</a><a href="../#caso">← Volver al portafolio</a></div>
+</nav>
+<main>
+<header>
+  <p class="eyebrow">Caso de ingeniería · demostración conceptual</p>
+  <h1>Sistemas que <span>se recuperan.</span></h1>
+  <p class="lead">De reglas estáticas a Auto-Healing con IA: una exploración visual de cómo un sistema puede observar su estado, identificar señales operativas y responder de forma controlada ante fallos.</p>
+  <div class="meta"><span class="chip">Arquitectura resiliente</span><span class="chip">Observabilidad</span><span class="chip">IA contextual</span><span class="chip">Video · 59 segundos</span></div>
+</header>
+<section class="stage" aria-labelledby="video-t">
+  <div class="stage-copy">
+    <p class="micro">Demostración animada</p>
+    <h2 id="video-t">Del monitoreo a la recuperación</h2>
+    <p>El recorrido muestra un pipeline de seis etapas, desde la captura de telemetría hasta la evolución de una arquitectura adaptable.</p>
+    <p>El foco está en las decisiones operativas: observar, detectar, evaluar, recuperar y aprender del comportamiento del sistema.</p>
+    <p class="note">Visualización conceptual. No se presentan credenciales, datos operativos de una empresa ni métricas de producción verificadas.</p>
+  </div>
+  <div class="media">
+    <span class="media-label">ENGINEERING / CASE STUDY</span>
+    <video controls playsinline preload="metadata" poster="poster.svg" aria-label="Video de demostración del pipeline Auto-Healing con IA, formato vertical, duración aproximada de un minuto">
+      <source src="autohealing-reel.mp4" type="video/mp4">
+      Tu navegador no admite la reproducción de video MP4.
+    </video>
+    <span class="media-note">Video vertical · H.264 / MP4 · 1080 × 1920</span>
+  </div>
+</section>
+<section id="problema" class="section">
+  <p class="eyebrow">01 / El desafío</p>
+  <h2>Detectar un fallo no significa recuperarse</h2>
+  <div class="section-text"><p>Una alerta puede indicar que algo salió mal, pero la recuperación sigue dependiendo con frecuencia de reglas rígidas o intervención humana. El desafío es pasar de reaccionar ante excepciones a comprender el estado operativo y tomar decisiones trazables.</p></div>
+  <div class="compare">
+    <div class="box"><span class="label">Enfoque tradicional</span><h3>Reacción por reglas estáticas</h3><p>El sistema identifica condiciones predefinidas y ejecuta respuestas fijas, con poco contexto sobre el resto del flujo.</p></div>
+    <div class="box"><span class="label">Enfoque propuesto</span><h3>Recuperación contextual</h3><p>La telemetría, las reglas y la evaluación contextual ayudan a seleccionar acciones de recuperación y medir sus efectos.</p></div>
+  </div>
+</section>
+<section id="arquitectura" class="section">
+  <p class="eyebrow">02 / La propuesta</p>
+  <h2>Una arquitectura guiada por el estado del sistema</h2>
+  <div class="section-text"><p>El video presenta una arquitectura conceptual que conecta observabilidad, detección de señales, inferencia contextual, respuesta ante fallos y medición de tensión operativa.</p><p>La IA se plantea como apoyo para evaluar el contexto, no como sustituto de controles, reglas ni validaciones. Las acciones de recuperación deberían operar bajo límites explícitos y con trazabilidad.</p></div>
+</section>
+<section id="flujo" class="section">
+  <p class="eyebrow">03 / Seis etapas</p>
+  <h2>Del dato a una respuesta adaptable</h2>
+  <ol class="timeline">
+    <li><span class="num">01 / OBSERVAR</span><h3>Diagnóstico del flujo</h3><p>Telemetría para comprender el estado y comportamiento del sistema.</p></li>
+    <li><span class="num">02 / DETECTAR</span><h3>Señales operativas</h3><p>Monitoreo de condiciones que pueden requerir atención.</p></li>
+    <li><span class="num">03 / EVALUAR</span><h3>Decisiones con contexto</h3><p>Reglas e inferencia como apoyo para elegir una respuesta.</p></li>
+    <li><span class="num">04 / RECUPERAR</span><h3>Auto-reparación</h3><p>Mecanismos controlados de respuesta ante fallos.</p></li>
+    <li><span class="num">05 / MEDIR</span><h3>Tensión operativa</h3><p>Indicadores de desempeño, impacto y recuperación.</p></li>
+    <li><span class="num">06 / EVOLUCIONAR</span><h3>Arquitectura resiliente</h3><p>El flujo se convierte en una propuesta de sistema adaptable.</p></li>
+  </ol>
+</section>
+<section class="section" aria-label="Alcance de la demostración">
+  <p class="note">Este material es una recreación visual para explicar principios de ingeniería. La demostración no valida una implementación en producción, una tasa de recuperación ni mejoras cuantificadas.</p>
+</section>
+</main>
+<footer><span>Daniel Rodriguez Herrera · Engineering case study</span><a href="../#caso">Volver a casos destacados ↑</a></footer>
+</div>
+</body>
+</html>
