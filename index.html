@@ -145,6 +145,8 @@ h1{font:800 clamp(46px,7vw,88px)/.95 var(--f-display);letter-spacing:-.045em;mar
 .heal{display:flex;gap:10px;align-items:center;margin:12px 0 0 48px;font-size:14px;color:var(--muted);line-height:1.35}
 .heal svg{width:22px;height:22px;flex:none;stroke:var(--accent-2-text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .flow .more{margin-top:8px}
+.flow-note{margin:10px 0 0;font:500 13px/1.45 var(--f-mono);color:var(--muted)}
+.xp-disc{margin-top:14px!important;font:500 13px/1.5 var(--f-mono);color:var(--muted)!important}
 
 /* Retrato: se arma de pixeles al cargar y se vuelve a pixelar al pasar el puntero */
 .id-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
@@ -360,6 +362,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <p class="fork"><code>422</code>Cola de errores, sin reintento</p>
       </div>
       <p class="heal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4h-4"/></svg>Una reconciliación periódica rescata los mensajes huérfanos.</p>
+      <p class="flow-note">Recreación ilustrativa, no el sistema original.</p>
       <div class="flow-foot">
         <a class="more" href="caso-notificaciones/">Ver el caso completo <span class="arr" aria-hidden="true">→</span></a>
         <button type="button" class="pause" id="pause" aria-pressed="false" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg><span>Pausar</span></button>
@@ -461,6 +464,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
           <p>Automatización de pruebas de extremo a extremo con Python y Playwright, validación de flujos de datos y aseguramiento de calidad para plataformas empresariales. Análisis de incidencias y causa raíz, e integración de sistemas y APIs.</p>
           <p class="xp-note">Diseñé la propuesta de rediseño de notificaciones, de envío síncrono a asíncrono y resiliente. Ya opera en parte de los módulos. <a class="more" href="caso-notificaciones/">Ver caso <span class="arr" aria-hidden="true">→</span></a></p>
           <p class="xp-note">Implementé un motor heurístico local de respaldo para la asistencia con IA: si el servicio externo falla o alcanza su límite de uso, las respuestas siguen saliendo con reglas y la operación no se detiene.</p>
+          <p class="xp-disc">Ejemplos descritos de forma general para proteger información interna.</p>
         </div>
       </article>
       <article class="xp-item">
