@@ -146,6 +146,29 @@ h1{font:800 clamp(46px,7vw,88px)/.95 var(--f-display);letter-spacing:-.045em;mar
 .heal svg{width:22px;height:22px;flex:none;stroke:var(--accent-2-text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .flow .more{margin-top:8px}
 
+/* Retrato: se arma de pixeles al cargar y se vuelve a pixelar al pasar el puntero */
+.id-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.me{position:relative;width:132px;height:132px;flex:none;border-radius:28px;overflow:hidden;background:var(--line);box-shadow:0 0 0 1px var(--line),0 18px 40px -26px rgba(15,25,45,.6);cursor:crosshair}
+.me img,.me canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.me canvas{image-rendering:pixelated}
+
+/* Diagrama en movimiento: un mensaje recorre el flujo, reintenta tras un 429 y termina en SENT */
+.steps-wrap{position:relative}
+.steps-wrap .packet{position:absolute;left:11px;top:0;z-index:2;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 22%,transparent);opacity:0;transform:translate(0,var(--y,0px));transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .3s,background-color .3s;pointer-events:none}
+.flow.anim .packet{opacity:1}
+.flow[data-step="4"] .packet{background:var(--accent-2);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent-2) 25%,transparent)}
+.flow.retry .packet{transform:translate(26px,var(--y,0px))}
+.steps .n{transition:border-color .3s,color .3s,background-color .3s,box-shadow .3s}
+.flow[data-step="1"] .steps li:nth-of-type(1) .n,.flow[data-step="2"] .steps li:nth-of-type(2) .n,.flow[data-step="3"] .steps li:nth-of-type(3) .n{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 14%,transparent)}
+.flow[data-step="4"] .steps li:nth-of-type(4) .n{background:color-mix(in srgb,var(--accent-2) 14%,var(--surface));box-shadow:0 0 0 4px color-mix(in srgb,var(--accent-2) 16%,transparent)}
+.fork{transition:border-color .3s,background-color .3s,color .3s}
+.flow.retry .fork.r{border-style:solid;border-color:var(--accent);background:var(--accent-soft);color:var(--fg)}
+.flow-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+.flow-foot .more{margin-top:0}
+.pause{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--muted);font:500 13px var(--f-mono);cursor:pointer;transition:border-color .2s,color .2s}
+.pause:hover{border-color:var(--accent);color:var(--fg)}
+.pause svg{width:14px;height:14px;fill:currentColor}
+
 /* Cifras */
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);overflow:hidden;margin:0}
 .stat{padding:26px 24px;border-left:1px solid var(--line);min-width:0}
@@ -220,6 +243,9 @@ h1{font:800 clamp(46px,7vw,88px)/.95 var(--f-display);letter-spacing:-.045em;mar
 .final .btn.ghost{background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 35%,transparent)}
 .final .btn.ghost:hover{border-color:var(--bg)}
 .final .eyebrow{color:var(--accent-2)}
+:root[data-theme="dark"] .final .eyebrow,:root[data-theme="dark"] .skip{color:#0b7a6b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .final .eyebrow{color:#0b7a6b}:root:not([data-theme="light"]) .skip{color:#0b0f15}}
+:root[data-theme="dark"] .skip{color:#0b0f15}
 .mail{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px}
 .mail code{font:500 clamp(16px,2.4vw,22px) var(--f-mono);color:var(--bg);user-select:all;word-break:break-all}
 .mail .btn{cursor:pointer}
@@ -230,6 +256,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
   *,*::before,*::after{transition:none!important;animation:none!important}
   .case:hover,.proj:hover,.btn.primary:hover{transform:none}
   .case:hover .case-media img{transform:none}
+  .pause,.steps-wrap .packet{display:none}
 }
 @media (max-width:1000px){
   .hero{grid-template-columns:1fr;gap:40px}
@@ -255,6 +282,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 }
 @media (max-width:560px){
   body{font-size:16px}
+  .me{width:104px;height:104px;border-radius:22px}
   .lead{font-size:17px}
   .cta .btn{flex:1 1 100%}
   .forks{grid-template-columns:1fr;margin-left:0}
@@ -304,7 +332,10 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 <main class="wrap" id="contenido">
   <section class="hero" aria-labelledby="nombre">
     <div>
-      <p class="badge">QA Automation &amp; Data Operations Engineer</p>
+      <div class="id-row">
+        <div class="me" id="me"><img src="retrato.webp" width="480" height="480" fetchpriority="high" alt="Retrato de Daniel Rodriguez Herrera"><canvas aria-hidden="true"></canvas></div>
+        <p class="badge">QA Automation &amp; Data Operations Engineer</p>
+      </div>
       <h1 id="nombre">Daniel Rodriguez Herrera</h1>
       <p class="role">Convierto procesos complejos en sistemas confiables</p>
       <p class="lead">Automatizo pruebas de extremo a extremo y flujos de datos en banca; antes construí sistemas backend en producción para telecomunicaciones. Empiezo por la causa del problema y termino con algo que se puede verificar.</p>
@@ -317,18 +348,22 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
     <aside class="flow" aria-labelledby="flow-title">
       <div class="flow-head"><b>Caso · BBVA Technology en América</b><span class="state prod">En producción</span></div>
       <h2 class="flow-title" id="flow-title">Notificaciones que ya no se pierden</h2>
-      <ol class="steps">
+      <div class="steps-wrap"><span class="packet" aria-hidden="true"></span>
+      <ol class="steps" aria-label="Pasos del flujo">
         <li><span class="n" aria-hidden="true">01</span><div><strong>Evento de negocio</strong><span>Una fachada única filtra el entorno y prevalida dominios.</span></div></li>
         <li><span class="n" aria-hidden="true">02</span><div><strong>Outbox · <code>PENDING</code></strong><span>El mensaje se guarda antes de intentar enviarse.</span></div></li>
         <li><span class="n" aria-hidden="true">03</span><div><strong>Despacho con control de flujo</strong><span>Token bucket y backoff exponencial hacia el proveedor.</span></div></li>
         <li><span class="n" aria-hidden="true">04</span><div><strong>Webhook · <code>SENT</code></strong><span>El resultado se confirma de forma asíncrona.</span></div></li>
-      </ol>
+      </ol></div>
       <div class="forks">
-        <p class="fork"><code>429 · 5xx</code>4 colas de prioridad con reintento</p>
+        <p class="fork r"><code>429 · 5xx</code>4 colas de prioridad con reintento</p>
         <p class="fork"><code>422</code>Cola de errores, sin reintento</p>
       </div>
       <p class="heal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4h-4"/></svg>Una reconciliación periódica rescata los mensajes huérfanos.</p>
-      <a class="more" href="caso-notificaciones/">Ver el caso completo <span class="arr" aria-hidden="true">→</span></a>
+      <div class="flow-foot">
+        <a class="more" href="caso-notificaciones/">Ver el caso completo <span class="arr" aria-hidden="true">→</span></a>
+        <button type="button" class="pause" id="pause" aria-pressed="false" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg><span>Pausar</span></button>
+      </div>
     </aside>
   </section>
 
@@ -611,6 +646,75 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 </main>
 
 <script>
+const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+// Retrato: de bloques grandes a nítido; al pasar el puntero se pixela un instante
+(() => {
+  const box = document.getElementById('me'), img = box.querySelector('img'), cv = box.querySelector('canvas'), ctx = cv.getContext('2d');
+  const tmp = document.createElement('canvas'), tctx = tmp.getContext('2d');
+  let raf = 0;
+  const size = () => { const d = Math.min(2, devicePixelRatio || 1); cv.width = cv.height = Math.round(box.clientWidth * d); };
+  const draw = block => {
+    const n = Math.max(1, Math.round(cv.width / block));
+    tmp.width = tmp.height = n;
+    tctx.drawImage(img, 0, 0, n, n);
+    ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.drawImage(tmp, 0, 0, n, n, 0, 0, cv.width, cv.height);
+  };
+  const play = (from, to, ms, done) => {
+    cancelAnimationFrame(raf); cv.style.opacity = 1;
+    const t0 = performance.now();
+    const step = t => { const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); draw(from + (to - from) * e); if (k < 1) raf = requestAnimationFrame(step); else if (done) done(); };
+    raf = requestAnimationFrame(step);
+  };
+  const hide = () => { cv.style.opacity = 0; };
+  const reveal = () => play(cv.width / 6, 1, 1100, hide);
+  const glitch = () => { if (reduce.matches) return; play(1, cv.width / 14, 260, () => play(cv.width / 14, 1, 420, hide)); };
+  const start = () => { size(); if (reduce.matches) { hide(); return; } reveal(); };
+  if (img.complete && img.naturalWidth) start(); else img.addEventListener('load', start, { once: true });
+  box.addEventListener('pointerenter', glitch);
+  box.addEventListener('pointerdown', glitch);
+  addEventListener('resize', size);
+})();
+
+// Diagrama: el mensaje avanza por el flujo, reintenta tras un 429 y termina en SENT
+(() => {
+  const flow = document.querySelector('.flow'), steps = flow.querySelector('.steps'), pkt = flow.querySelector('.packet'), btn = document.getElementById('pause');
+  const nodes = [...steps.querySelectorAll('.n')];
+  const ys = () => nodes.map(n => n.closest('li').offsetTop + n.offsetTop + n.offsetHeight / 2 - 7);
+  const seq = [[1, 1300], [2, 1300], [3, 900], ['retry', 1100], [3, 700], [4, 2600], [0, 700]];
+  let i = 0, timer = 0, paused = false, onScreen = true, y = ys();
+  const go = () => {
+    const [s, ms] = seq[i];
+    flow.classList.toggle('retry', s === 'retry');
+    if (s !== 'retry') {
+      if (s === 0) { flow.classList.remove('anim'); flow.dataset.step = ''; }
+      else { flow.dataset.step = s; pkt.style.setProperty('--y', y[s - 1] + 'px'); flow.classList.add('anim'); }
+    }
+    i = (i + 1) % seq.length;
+    timer = setTimeout(tick, ms);
+  };
+  const tick = () => { if (!paused && onScreen && !document.hidden) go(); else timer = setTimeout(tick, 400); };
+  const stop = () => { clearTimeout(timer); flow.classList.remove('anim', 'retry'); flow.dataset.step = ''; };
+  const begin = () => {
+    clearTimeout(timer);
+    if (reduce.matches) { btn.hidden = true; stop(); return; }
+    btn.hidden = false; i = 0; y = ys();
+    pkt.style.transition = 'none'; pkt.style.setProperty('--y', y[0] + 'px'); void pkt.offsetWidth; pkt.style.transition = '';
+    tick();
+  };
+  btn.addEventListener('click', () => {
+    paused = !paused; btn.setAttribute('aria-pressed', paused);
+    btn.querySelector('span').textContent = paused ? 'Reanudar' : 'Pausar';
+    btn.querySelector('svg').innerHTML = paused ? '<path d="M4 2.5v11l9-5.5z"/>' : '<path d="M4 3h3v10H4zM9 3h3v10H9z"/>';
+  });
+  new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }).observe(flow);
+  addEventListener('resize', () => { y = ys(); });
+  reduce.addEventListener('change', begin);
+  document.fonts.ready.then(begin);
+})();
+
 // Encabezado: línea inferior al desplazarse
 const top_ = document.getElementById('top');
 const onScroll = () => top_.classList.toggle('scrolled', scrollY > 8);

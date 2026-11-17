@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Caso de arquitectura en BBVA México: la necesidad, el problema y cómo pasé de envíos síncronos best effort a un sistema de notificaciones asíncrono y resiliente con patrón Outbox, colas de prioridad y self-healing.">
+<meta name="description" content="Caso de arquitectura en BBVA Technology en América: la necesidad, el problema y cómo pasé de envíos síncronos best effort a un sistema de notificaciones asíncrono y resiliente con patrón Outbox, colas de prioridad y self-healing.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Notificaciones que ya no se pierden · Daniel Rodriguez Herrera">
@@ -110,26 +110,22 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal{opacity:1;transform:none}}
 </style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
-<style>/* Alineación con la paleta del portafolio: turquesa legible en modo claro, «En producción» en turquesa y sin verde ni lima fuera de Tools for Pymes */
-:root{--accent-2-text:#0b7a6b;--nx-verde:var(--fg);--nx-texto:var(--bg);--nx-suave:color-mix(in srgb,var(--bg) 76%,transparent);--nx-linea:color-mix(in srgb,var(--bg) 22%,transparent);--nx-lima:var(--accent-2)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent-2-text:#4fd6c2}}
-:root[data-theme="dark"]{--accent-2-text:#4fd6c2}
-.state.ok{color:var(--accent-2-text)}
-</style>
+<link rel="stylesheet" href="../casos.css">
 </head>
 <body>
 <div class="wrap">
   <nav>
     <a class="logo" href="../">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#caso">← Volver</a></div>
+    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#casos">← Volver a casos</a></div>
   </nav>
 
   <header>
-    <p class="eyebrow reveal">Caso de arquitectura · BBVA México</p>
+    <p class="eyebrow reveal">Caso de ingeniería · BBVA Technology en América</p>
     <h1 class="reveal" style="--d:.06s">Notificaciones que <span class="hl">ya no se pierden</span></h1>
     <p class="lead reveal" style="--d:.12s">Cómo pasé de envíos síncronos y de «mejor esfuerzo» a un sistema distribuido con patrón Outbox, colas de prioridad y self-healing.</p>
     <div class="meta reveal" style="--d:.18s">
-      <span class="state ok">en producción parcial</span>
+      <span class="state prod">En producción</span>
+      <span class="state co">En parte de los módulos</span>
       <span class="state co">México – España · revisiones asíncronas</span>
     </div>
   </header>
@@ -196,7 +192,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <li><div><h3>Resiliencia y self-healing</h3><p>Un cron de reconciliación rescata mensajes huérfanos en <code>PENDING</code> o en <code>QUEUED</code> sin respuesta de webhook. El reproceso de dead letters reencola por lotes con un delay por índice (staggering) para evitar el thundering herd sobre el proveedor.</p></div></li>
       </ol>
 
-      <p class="sub">La ejecución</p>
+      <p class="sub">Cómo se hizo</p>
       <p>La implementación se coordinó con revisiones de código y arquitectura a distancia entre México y España, con pocas horas de horario en común, en un sprint de 8 semanas en paralelo a otro proyecto.</p>
 
       <p class="sub">El resultado</p>
