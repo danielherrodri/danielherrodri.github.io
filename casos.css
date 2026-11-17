@@ -48,7 +48,7 @@ h1 .hl{color:inherit;background:linear-gradient(transparent 64%,color-mix(in srg
 .nexo h2{font:800 clamp(26px,3.2vw,34px)/1.1 var(--f-display);margin:12px 0 0}
 .nexo p,.nexo > p,.nexo figcaption{font-size:16px;line-height:1.55}
 .frame{border-radius:16px}
-.disclaimer{font:500 13px var(--f-mono)}
+.disclaimer{font:500 13px/1.5 var(--f-mono);color:var(--nx-suave);margin:0}
 
 /* Cifras */
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
