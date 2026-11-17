@@ -3,370 +3,484 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Daniel Rodriguez Herrera, Software Engineer en México. Convierto procesos complejos en software útil: desarrollo full stack, integración de sistemas y automatización.">
+<title>Daniel Rodriguez Herrera · QA Automation &amp; Data Operations Engineer</title>
+<meta name="description" content="Daniel Rodriguez Herrera, QA Automation &amp; Data Operations Engineer en México. Automatización de pruebas E2E, operaciones de datos e integración de sistemas en banca y telecomunicaciones.">
+<script>try{var t=localStorage.getItem("tema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0f15" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Daniel Rodriguez Herrera · Software Engineer">
-<meta property="og:description" content="Convierto procesos complejos en software útil. Proyectos, experiencia y contacto.">
+<meta property="og:locale" content="es_MX">
+<meta property="og:site_name" content="Daniel Rodriguez Herrera">
+<meta property="og:title" content="Daniel Rodriguez Herrera · QA Automation &amp; Data Operations Engineer">
+<meta property="og:description" content="Convierto procesos complejos en sistemas confiables. Casos de ingeniería en banca y telecomunicaciones, experiencia y contacto.">
 <meta property="og:url" content="https://danielherrodri.github.io/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://danielherrodri.github.io/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Daniel Rodriguez Herrera, QA Automation &amp; Data Operations Engineer: convierto procesos complejos en sistemas confiables.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://danielherrodri.github.io/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232457e6'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' font-weight='700' fill='white' text-anchor='middle'%3Ed.%3C/text%3E%3C/svg%3E">
-<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Daniel Rodriguez Herrera · Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: hero partido (nombre + terminal), franja de cifras, carrusel de stack, proyectos con mini-interfaces, CTA final */
+*,*::before,*::after{box-sizing:border-box}
 :root{
   --bg:#f3f5f9; --surface:#ffffff; --fg:#0f1520; --muted:#566172; --line:#dbe0e8; --dot:#c4ccd7;
   --accent:#2457e6; --accent-2:#0f9d8a; --accent-soft:#e2eafd; --ok:#127a49; --wip:#9a5600;
+  /* Turquesa para texto en modo claro: 4.8:1 sobre --bg y 5.2:1 sobre --surface */
+  --accent-2-text:#0b7a6b;
   --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --radius:18px;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--dot:#283342;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--dot:#283342;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;color-scheme:dark}
-html{scroll-behavior:smooth;scroll-padding-top:24px}
-body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-body);overflow-x:hidden}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-#grid{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding-block:40px 64px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:96px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--dot:#1f2935;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--accent-2-text:#4fd6c2;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--dot:#1f2935;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--accent-2-text:#4fd6c2;color-scheme:dark}
 
-/* Nav */
-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-.logo{font:800 20px var(--f-display);letter-spacing:-.02em;text-decoration:none;color:var(--fg)}
+html{scroll-behavior:smooth;scroll-padding-top:88px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:color-mix(in srgb,var(--accent) 18%,transparent)}
+a,button{touch-action:manipulation}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 var(--f-body);overflow-x:hidden;
+  background-image:radial-gradient(var(--dot) 1px,transparent 1.3px);background-size:28px 28px;background-attachment:fixed}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:16px;top:-60px;z-index:50;background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;font-weight:600;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+main.wrap{display:flex;flex-direction:column;gap:112px;padding-top:40px;padding-bottom:72px}
+
+/* Encabezado */
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent}
+.top.scrolled{border-bottom-color:var(--line)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:72px}
+.logo{display:inline-flex;align-items:center;min-height:44px;font:800 20px var(--f-display);letter-spacing:-.02em;text-decoration:none;color:var(--fg)}
 .logo span{color:var(--accent)}
-.nav-links{display:flex;gap:6px;flex-wrap:wrap}
-.nav-links a{font:500 13px var(--f-mono);color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;transition:color .2s,background .2s}
-.nav-links a:hover{color:var(--fg);background:var(--accent-soft)}
-
-/* Hero */
-.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:48px;align-items:center}
-.badge{display:inline-flex;align-items:center;gap:8px;font:500 13px var(--f-mono);color:var(--ok);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
-.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;animation:pulse 1.8s ease-in-out infinite}
-h1{font:800 clamp(46px,7.5vw,92px)/.95 var(--f-display);letter-spacing:-.045em;margin:22px 0 0;text-wrap:balance}
-h1 .hl{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);color:var(--accent)}
-.role{font:600 clamp(20px,2.6vw,26px)/1.3 var(--f-display);margin:20px 0 0;min-height:1.3em}
-.role .rot{color:var(--accent-2)}
-.lead{font-size:19px;color:var(--muted);max-width:52ch;margin:14px 0 0}
-.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
-.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:12px;font:600 16px var(--f-body);text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s}
-.btn.primary{background:var(--accent);color:#fff;box-shadow:0 12px 30px -14px var(--accent)}
-.btn.primary:hover{transform:translateY(-2px);box-shadow:0 18px 36px -14px var(--accent)}
-.btn.ghost{border:1px solid var(--line);background:var(--surface);color:var(--fg)}
-.btn.ghost:hover{border-color:var(--accent);transform:translateY(-2px)}
-.btn svg{width:18px;height:18px}
-
-.term{background:#0d131c;color:#d7e1ee;border-radius:16px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(10,20,40,.6),0 0 0 1px rgba(255,255,255,.06);transform:perspective(1200px) rotateY(-6deg) rotateX(3deg);transition:transform .6s}
-.term:hover{transform:none}
-.term-bar{display:flex;align-items:center;gap:7px;padding:12px 14px;background:#121a25}
-.term-bar i{width:11px;height:11px;border-radius:50%}
-.term-bar i:nth-child(1){background:#ff6058}.term-bar i:nth-child(2){background:#ffbd2e}.term-bar i:nth-child(3){background:#28c940}
-.term-bar span{margin-left:10px;font:400 12px var(--f-mono);color:#7d8a9c}
-.term-body{padding:20px 22px 26px;font:400 14px/1.75 var(--f-mono);min-height:230px}
-.term-body .p{color:#7ca4ff}.term-body .ok{color:#4fd6c2}.term-body .dim{color:#7d8a9c}
-.caret{display:inline-block;width:8px;height:1.05em;vertical-align:-3px;background:#7ca4ff;animation:blink 1s steps(1) infinite}
-
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
-.stat{padding:26px 24px;border-left:1px solid var(--line)}
-.stat:first-child{border-left:0}
-.stat b{display:block;font:800 clamp(34px,4.4vw,48px)/1 var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.stat span{display:block;margin-top:8px;font-size:15px;color:var(--muted)}
-
-/* Section heads */
-.eyebrow{font:500 13px var(--f-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin:0}
-h2{font:800 clamp(32px,4.6vw,52px)/1.05 var(--f-display);letter-spacing:-.035em;margin:10px 0 28px;text-wrap:balance}
-
-/* Marquee */
-.marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
-.track{display:flex;gap:12px;width:max-content;animation:slide 40s linear infinite}
-.marquee:hover .track{animation-play-state:paused}
-.track span{font:500 15px var(--f-mono);white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:10px 18px}
-.track span:nth-child(3n+1){color:var(--accent)}.track span:nth-child(3n+2){color:var(--accent-2)}
-@keyframes slide{to{transform:translateX(-50%)}}
-
-/* Projects */
-.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.proj{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s}
-.proj.big{grid-column:1/-1;flex-direction:row}
-.proj:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 30px 60px -36px var(--accent)}
-.shot{position:relative;min-height:210px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden}
-.proj.big .shot{flex:1 1 50%;min-height:300px}
-.shot.banner{padding:0;min-height:0;background:#f7f5ef;display:block}.shot.banner svg{display:block;width:100%;height:auto;transition:transform .6s cubic-bezier(.2,.7,.2,1)}.proj:hover .shot.banner svg{transform:scale(1.025)}#tools-pymes .proj{grid-column:1/-1}
-.proj-body{padding:24px 26px 26px;display:flex;flex-direction:column;gap:10px;flex:1 1 50%;min-width:0}
-.proj-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.proj h3{font:800 30px/1.1 var(--f-display);margin:0;letter-spacing:-.03em}
-.state{font:500 12px var(--f-mono);display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:999px;border:1px solid currentColor}
-.state::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
-.state.wip{color:var(--wip)}.state.wip::before{animation:pulse 1.6s ease-in-out infinite}
-.state.ok{color:var(--ok)}
-.proj p{margin:0;color:var(--muted)}
-.facts{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-direction:column;gap:6px}
-.facts li{font-size:15px;display:flex;gap:10px}
-.facts li::before{content:"→";color:var(--accent);font-family:var(--f-mono)}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px}
-.tags span{font:400 12px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 9px}
-
-/* Caso destacado */
-#caso .proj{grid-column:1/-1}
-.caso-shot{position:relative;flex:none;background:#f8f8f3}
-.caso-shot img{display:block;width:100%;height:auto;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
-.proj:hover .caso-shot img{transform:scale(1.02)}
-.caso-shot .play{position:absolute;right:18px;top:18px;display:inline-flex;align-items:center;gap:8px;font:600 15px var(--f-body);color:#eaf2e6;background:#1d3a30;border-radius:999px;padding:10px 18px 10px 14px;box-shadow:0 12px 30px -12px rgba(29,58,48,.7)}
-.caso-shot .play svg{width:18px;height:18px;fill:#d5f88a}
-.caso-shot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-
-/* Mini UIs */
-.ui{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 24px 50px -30px rgba(15,25,45,.45);font:400 13px var(--f-body);transition:transform .5s}
-.proj:hover .ui{transform:translateY(-6px) rotate(-1deg)}
-.ui-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.ui-top b{font:600 14px var(--f-display)}
-.ui-top i{font:400 11px var(--f-mono);color:var(--muted);font-style:normal}
-.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
-.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
-.bar i{display:block;height:100%;background:var(--accent);border-radius:3px;width:0;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
-.in .bar i{width:var(--w)}
-.pill{font:500 11px var(--f-mono);padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
-.pill.g{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
-.chart{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:6px}
-.chart i{flex:1;background:var(--accent);border-radius:4px 4px 0 0;opacity:.85;height:8%;transition:height 1.2s cubic-bezier(.2,.7,.2,1)}
-.chart i:nth-child(even){background:var(--accent-2)}
-.in .chart i{height:var(--h)}
-.code{font:400 12px/1.7 var(--f-mono);color:var(--muted)}
-.code .k{color:var(--accent)}.code .s{color:var(--accent-2)}
-
-/* Final CTA */
-.final{position:relative;text-align:center;background:var(--fg);color:var(--bg);border-radius:28px;padding:64px 24px;overflow:hidden}
-.final h2{color:var(--bg);margin:10px auto 14px;max-width:18ch}
-.final p{color:color-mix(in srgb,var(--bg) 72%,transparent);max-width:46ch;margin:0 auto}
-.final .cta{justify-content:center}
-.final .btn.ghost{background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 35%,transparent)}
-.final .eyebrow{color:var(--accent-2)}
-.state.idea{color:var(--muted)}
-.soon-link{font:500 13px var(--f-mono);color:var(--muted)}
-.links{display:flex;gap:16px;flex-wrap:wrap;margin-top:6px}
-.links a,.inline{color:var(--accent);font-weight:600;text-decoration:none}
-.links a:hover,.inline:hover{text-decoration:underline}
-.xp{position:relative;display:flex;flex-direction:column;padding-left:36px;--p:0}
-.xp::before,.xp::after{content:"";position:absolute;left:7px;top:34px;bottom:34px;width:2px;border-radius:2px}
-.xp::before{background:var(--line)}
-.xp::after{background:linear-gradient(var(--accent),var(--accent-2));transform-origin:top;transform:scaleY(var(--p))}
-.xp-item{position:relative;display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;padding:24px 0}
-.xp-item::before{content:"";position:absolute;left:-35px;top:34px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--line);z-index:1;transition:border-color .4s,background .4s,box-shadow .4s,transform .4s}
-.xp-item.lit::before{border-color:var(--accent-2);background:var(--accent-2);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent-2) 22%,transparent);transform:scale(1.1)}
-.xp-item h3,.xp-item .xp-when{transition:color .4s}
-.xp-item:not(.lit) h3{color:var(--muted)}
-
-/* Mini terminal flotante */
-.mini{position:fixed;right:max(20px,calc(env(safe-area-inset-right,0px) + 20px));bottom:calc(env(safe-area-inset-bottom,0px) + 20px);z-index:20;width:340px;background:#0d131c;color:#d7e1ee;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px -24px rgba(5,10,20,.7),0 0 0 1px rgba(255,255,255,.07);opacity:0;transform:translateY(16px) scale(.97);pointer-events:none;transition:opacity .35s,transform .35s}
-.mini.show{opacity:1;transform:none}
-.mini .term-bar{padding:8px 12px;background:#121a25}
-.mini .term-bar i{width:9px;height:9px}
-.mini-body{padding:12px 14px 16px;font:400 12px/1.7 var(--f-mono);min-height:120px}
-.mini-body .p{color:#7ca4ff}.mini-body .ok{color:#4fd6c2}.mini-body .dim{color:#7d8a9c}
-@media (max-width:860px){.mini{display:none}}
-
-/* Botón de tema: sol que se vuelve luna */
-.theme{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:4px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--fg);cursor:pointer;transition:border-color .2s,transform .2s}
-.theme:hover{border-color:var(--accent);transform:rotate(12deg)}
-.theme:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.theme svg{width:22px;height:22px;overflow:visible}
-.theme .core{fill:currentColor;transition:r .5s cubic-bezier(.3,1.4,.5,1)}
-.theme .bite{transition:cx .5s cubic-bezier(.3,1.4,.5,1),cy .5s}
-.theme .rays{stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none;transform-origin:12px 12px;transition:transform .5s cubic-bezier(.3,1.4,.5,1),opacity .3s}
+.nav{display:flex;align-items:center;gap:4px}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:10px;font:600 16px var(--f-body);color:var(--muted);text-decoration:none;transition:color .2s,background-color .2s}
+.nav a:hover{color:var(--fg);background:var(--accent-soft)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--fg);cursor:pointer;transition:border-color .2s}
+.icon-btn:hover{border-color:var(--accent)}
+.icon-btn svg{width:22px;height:22px;overflow:visible}
+.theme{margin-left:8px}
+.theme .core{fill:currentColor;transition:r .4s ease}
+.theme .bite{transition:cx .4s ease,cy .4s ease}
+.theme .rays{stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none;transform-origin:12px 12px;transition:transform .4s ease,opacity .3s}
 .theme[aria-pressed="true"] .core{r:8px}
 .theme[aria-pressed="true"] .bite{cx:17px;cy:7px}
 .theme[aria-pressed="true"] .rays{transform:rotate(90deg) scale(.4);opacity:0}
-.theming,.theming *{transition:background-color .45s,color .45s,border-color .45s!important}
-.xp-when{font:500 14px var(--f-mono);color:var(--muted);padding-top:6px}
-.xp-item h3{font:800 26px/1.15 var(--f-display);letter-spacing:-.02em;margin:0 0 8px}
+.menu-btn{display:none}
+.menu-btn svg{stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+
+/* Menú móvil a pantalla completa */
+.sheet{position:fixed;inset:0;z-index:40;overscroll-behavior:contain;overflow-y:auto;background:var(--bg);display:flex;flex-direction:column;padding:16px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;min-height:56px}
+.sheet nav{display:flex;flex-direction:column;gap:4px;margin-top:24px}
+.sheet nav a{display:flex;align-items:center;min-height:64px;font:800 clamp(30px,8vw,40px)/1 var(--f-display);letter-spacing:-.03em;color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line)}
+.sheet nav a:hover{color:var(--accent)}
+.sheet .sheet-foot{margin-top:auto;font:500 14px var(--f-mono);color:var(--muted)}
+
+/* Tipografía de secciones */
+.eyebrow{font:500 13px var(--f-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent-2-text);margin:0}
+h1,h2,h3{text-wrap:balance}
+h2{font:800 clamp(32px,4.4vw,50px)/1.05 var(--f-display);letter-spacing:-.035em;margin:10px 0 0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:32px}
+.sec-head p.intro{margin:0;max-width:46ch;color:var(--muted)}
+
+/* Estados: solo tres, mismo formato */
+.state{display:inline-flex;align-items:center;gap:8px;min-height:28px;padding:0 11px;border-radius:999px;border:1px solid currentColor;font:500 13px/1 var(--f-mono);white-space:nowrap}
+.state::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.state.prod{color:var(--accent-2-text)}
+.state.dev{color:var(--wip)}
+.state.exp{color:var(--muted);border-style:dashed}
+.state.exp::before{background:transparent;border:1.5px solid currentColor;width:8px;height:8px}
+
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.tags li{font:400 13px/1.4 var(--f-mono);color:var(--muted);background:color-mix(in srgb,var(--line) 45%,transparent);border-radius:6px;padding:3px 9px}
+
+/* Botones y enlaces */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:12px;font:600 16px var(--f-body);text-decoration:none;cursor:pointer;transition:background-color .2s,border-color .2s,box-shadow .2s,transform .2s}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.primary{background:var(--accent);color:#fff;border:1px solid var(--accent);box-shadow:0 12px 28px -16px var(--accent)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 18px 34px -16px var(--accent)}
+.btn.ghost{border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+:root[data-theme="dark"] .btn.primary{color:#0b0f15}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#0b0f15}}
+.more{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-weight:600;color:var(--accent);text-decoration:none}
+.more:hover{text-decoration:underline;text-underline-offset:4px}
+.more .arr{transition:transform .2s}
+.more:hover .arr{transform:translateX(3px)}
+.muted-note{display:inline-flex;align-items:center;min-height:44px;font:500 14px var(--f-mono);color:var(--muted)}
+
+/* Inicio */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;align-items:center;padding-top:24px}
+.badge{display:inline-flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font:500 13px var(--f-mono);color:var(--fg)}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-2)}
+h1{font:800 clamp(46px,7vw,88px)/.95 var(--f-display);letter-spacing:-.045em;margin:22px 0 0}
+.role{font:600 clamp(21px,2.5vw,27px)/1.3 var(--f-display);letter-spacing:-.01em;margin:22px 0 0;max-width:24ch}
+.lead{font-size:19px;color:var(--muted);max-width:52ch;margin:16px 0 0}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+
+/* Tarjeta-diagrama del caso de notificaciones */
+.flow{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px 22px 18px;box-shadow:0 30px 70px -48px rgba(15,25,45,.55)}
+.flow-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.flow-head b{font:600 13px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.flow h2.flow-title{font:800 24px/1.15 var(--f-display);letter-spacing:-.02em;margin:12px 0 16px}
+.steps{list-style:none;margin:0;padding:0;position:relative}
+.steps::before{content:"";position:absolute;left:17px;top:18px;bottom:18px;width:2px;background:linear-gradient(var(--accent),var(--accent-2))}
+.steps li{position:relative;display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:start;padding:7px 0}
+.steps .n{position:relative;z-index:1;display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--surface);border:1.5px solid var(--line);font:500 13px var(--f-mono);color:var(--fg)}
+.steps li:last-child .n{border-color:var(--accent-2);color:var(--accent-2-text)}
+.steps strong{display:block;font:600 16px/1.3 var(--f-body)}
+.steps code{font:400 13px var(--f-mono);color:var(--accent)}
+.steps span{display:block;font-size:15px;color:var(--muted);line-height:1.4}
+.forks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 0 48px}
+.fork{border:1px dashed var(--line);border-radius:12px;padding:8px 10px;font-size:14px;line-height:1.35;color:var(--muted)}
+.fork code{display:block;font:500 13px var(--f-mono);color:var(--fg);margin-bottom:2px}
+.heal{display:flex;gap:10px;align-items:center;margin:12px 0 0 48px;font-size:14px;color:var(--muted);line-height:1.35}
+.heal svg{width:22px;height:22px;flex:none;stroke:var(--accent-2-text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.flow .more{margin-top:8px}
+
+/* Cifras */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);overflow:hidden;margin:0}
+.stat{padding:26px 24px;border-left:1px solid var(--line);min-width:0}
+.stat:first-child{border-left:0}
+.stat dt{font:800 clamp(30px,3.6vw,44px)/1 var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat dd{margin:10px 0 0;font-size:15px;line-height:1.45;color:var(--muted)}
+
+/* Casos */
+.cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.case{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:border-color .25s,box-shadow .25s,transform .25s}
+.case:hover{border-color:var(--accent);box-shadow:0 30px 60px -44px var(--accent);transform:translateY(-3px)}
+.case-media{display:block;aspect-ratio:3/2;background:#f8f8f3;overflow:hidden;border-bottom:1px solid var(--line)}
+.case-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.case:hover .case-media img{transform:scale(1.02)}
+.case-media.fit img{object-fit:contain}
+.case-body{display:flex;flex-direction:column;gap:14px;padding:24px 26px 22px;flex:1}
+.case-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.case-meta .org{font:500 13px var(--f-mono);color:var(--muted)}
+.case h3{font:800 clamp(24px,2.4vw,28px)/1.12 var(--f-display);letter-spacing:-.025em;margin:0}
+.pdr{margin:0;display:grid;gap:10px}
+.pdr div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px}
+.pdr dt{font:500 13px/1.7 var(--f-mono);color:var(--accent-2-text);text-transform:uppercase;letter-spacing:.06em}
+.pdr dd{margin:0;font-size:16px;line-height:1.5;color:var(--muted)}
+.pdr div:last-child dd{color:var(--fg)}
+.case-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+
+/* Experiencia */
+.xp{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.xp-item{display:grid;grid-template-columns:180px minmax(0,1fr);gap:28px;padding:32px 0;border-bottom:1px solid var(--line)}
+.xp-when{font:500 14px var(--f-mono);color:var(--muted);padding-top:8px}
+.xp-item h3{font:800 clamp(24px,2.6vw,30px)/1.15 var(--f-display);letter-spacing:-.025em;margin:0}
+.xp-role{font:600 clamp(18px,1.8vw,21px)/1.3 var(--f-display);margin:6px 0 12px;color:var(--fg)}
 .xp-item p{margin:0;color:var(--muted);max-width:68ch}
-.xp-note{margin-top:10px!important;padding-left:14px;border-left:2px solid var(--accent-2);color:var(--fg)!important}
-@media (max-width:600px){.xp-item{grid-template-columns:1fr;gap:6px}.xp-item::before{top:28px}}
-.final h2{max-width:22ch}
-/* Nombre: letras que caen al cargar, saltan al pasar el puntero y un brillo periódico */
-h1 .ch{display:inline-block;transition:transform .35s cubic-bezier(.3,1.6,.5,1),color .3s;will-change:transform}
-h1 .ch:hover{transform:translateY(-.12em) rotate(-6deg);color:var(--accent-2)}
-.js h1.split .ch{animation:drop .9s cubic-bezier(.2,1.4,.4,1) both;animation-delay:calc(var(--i) * 45ms + .15s)}
-@keyframes drop{0%{opacity:0;transform:translateY(-.6em) rotate(-12deg)}100%{opacity:1;transform:none}}
-h1 .hl .ch{background:linear-gradient(100deg,var(--accent) 40%,var(--accent-2) 50%,var(--accent) 60%) 200% 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:drop .9s cubic-bezier(.2,1.4,.4,1) both,shine 5s ease-in-out 2.2s infinite;animation-delay:calc(var(--i) * 45ms + .15s),calc(var(--i) * 60ms + 2.2s)}
-@keyframes shine{0%,60%{background-position:200% 0}100%{background-position:-50% 0}}
-h1 .w{display:inline-block;white-space:nowrap}
-/* Avance de los proyectos */
-.progress{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 28px 22px}
-.pg-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:26px}
-.pg-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.pg-name{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em}
-.pg-val{font:600 22px var(--f-display);font-variant-numeric:tabular-nums;color:var(--accent)}
-.pg-track{position:relative;height:14px;margin-top:10px;border-radius:999px;background:var(--line);overflow:hidden}
-.pg-track i{position:absolute;inset:0 auto 0 0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 1.6s cubic-bezier(.2,.7,.2,1)}
-.progress.in .pg-track i{width:var(--v)}
-.pg-row:nth-child(2) .pg-track i{transition-delay:.15s}.pg-row:nth-child(3) .pg-track i{transition-delay:.3s}
-.pg-note{margin:8px 0 0;font-size:15px;color:var(--muted)}
-.pg-cap{margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:var(--muted);max-width:80ch}
-@media (prefers-reduced-motion:reduce){.pg-track i{width:var(--v)}}
-@media (max-width:480px){.progress{padding:20px 18px}.pg-name,.pg-val{font-size:19px}}
+.xp-note{margin-top:12px!important;padding-left:14px;border-left:2px solid var(--accent-2);color:var(--fg)!important}
+.xp-note .more{min-height:0}
+
+/* Proyectos propios */
+.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.proj{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;transition:border-color .25s,transform .25s}
+.proj:hover{border-color:var(--accent);transform:translateY(-3px)}
+.proj-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.proj h3{font:800 26px/1.1 var(--f-display);letter-spacing:-.025em;margin:0}
+.proj p{margin:0;color:var(--muted);font-size:16px}
+.proj .tags{margin-top:auto;padding-top:4px}
+.proj .more,.proj .muted-note{margin-top:-2px}
+
+/* Herramientas publicadas: verde y lima solo aquí */
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.tool{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:border-color .25s}
+.tool:hover{border-color:#5c9f7b}
+.tool-art{display:block;aspect-ratio:3/1;background:#f7f5ef;border-bottom:1px solid var(--line);overflow:hidden}
+.tool-art svg{display:block;width:100%;height:100%}
+.tool-body{display:flex;flex-direction:column;gap:8px;padding:18px 22px 14px;flex:1}
+.tool h3{font:800 21px/1.15 var(--f-display);letter-spacing:-.02em;margin:0}
+.tool p{margin:0;font-size:15px;line-height:1.45;color:var(--muted)}
+.tool .links{display:flex;gap:16px;flex-wrap:wrap;margin-top:auto}
+
+/* Stack */
+.stack{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);overflow:hidden;margin:0}
+.stack div{padding:24px;border-left:1px solid var(--line)}
+.stack div:first-child{border-left:0}
+.stack dt{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2-text);margin-bottom:14px}
+.stack dd{margin:0}
+.stack ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.stack li{font:600 17px var(--f-body)}
+
+/* Contacto (sin cambios de contenido) */
+.final{position:relative;text-align:center;background:var(--fg);color:var(--bg);border-radius:28px;padding:64px 24px;overflow:hidden}
+.final h2{color:var(--bg);margin:10px auto 14px;max-width:22ch}
+.final p{color:color-mix(in srgb,var(--bg) 74%,transparent);max-width:46ch;margin:0 auto}
+.final .cta{justify-content:center}
+.final .btn.ghost{background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 35%,transparent)}
+.final .btn.ghost:hover{border-color:var(--bg)}
+.final .eyebrow{color:var(--accent-2)}
 .mail{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px}
 .mail code{font:500 clamp(16px,2.4vw,22px) var(--f-mono);color:var(--bg);user-select:all;word-break:break-all}
-.mail .btn{border:0;cursor:pointer}
-footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:400 13px var(--f-mono);color:var(--muted)}
+.mail .btn{cursor:pointer}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:400 14px var(--f-mono);color:var(--muted)}
 
-a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@keyframes blink{50%{opacity:0}}
-@keyframes pulse{50%{transform:scale(1.6);opacity:.4}}
-.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
-.js .reveal.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.js .reveal{opacity:1;transform:none}.bar i{width:var(--w)}.chart i{height:var(--h)}.term{transform:none}}
-@media (max-width:860px){.hero{grid-template-columns:1fr}.term{transform:none}.projects{grid-template-columns:1fr}.proj.big{flex-direction:column}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}}
-@media (max-width:420px){.term-body{font-size:12px;padding:16px}.stat{padding:20px 16px}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .case:hover,.proj:hover,.btn.primary:hover{transform:none}
+  .case:hover .case-media img{transform:none}
+}
+@media (max-width:1000px){
+  .hero{grid-template-columns:1fr;gap:40px}
+  .flow{max-width:620px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .projects{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tools{grid-template-columns:1fr}
+  .stack{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stack div:nth-child(3){border-left:0}
+  .stack div:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media (max-width:760px){
+  .nav a{display:none}
+  .menu-btn{display:inline-flex}
+  .theme{margin-left:0}
+  main.wrap{gap:88px;padding-top:24px}
+  .cases{grid-template-columns:1fr}
+  .projects{grid-template-columns:1fr}
+  .xp-item{grid-template-columns:1fr;gap:6px;padding:26px 0}
+  .xp-when{padding-top:0}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .lead{font-size:17px}
+  .cta .btn{flex:1 1 100%}
+  .forks{grid-template-columns:1fr;margin-left:0}
+  .heal{margin-left:0}
+  .pdr div{grid-template-columns:1fr;gap:2px}
+  .stats{grid-template-columns:1fr}
+  .stat{border-left:0!important;border-top:1px solid var(--line);padding:20px}
+  .stat:first-child{border-top:0}
+  .stack{grid-template-columns:1fr}
+  .stack div{border-left:0!important;border-top:1px solid var(--line)}
+  .stack div:first-child{border-top:0}
+  .final{padding:48px 20px;border-radius:22px}
+}
 </style>
-
 </head>
 <body>
-<canvas id="grid" aria-hidden="true"></canvas>
-<aside id="mini" class="mini" aria-hidden="true">
-  <div class="term-bar"><i></i><i></i><i></i><span id="mini-dir">~/proyectos</span></div>
-  <div class="mini-body" id="mini-body"></div>
-</aside>
-<div class="wrap">
-  <nav>
-    <a class="logo" href="#inicio">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#proyectos">Proyectos</a><a href="#tools-pymes">Tools for Pymes</a><a href="#avance">Avance</a><a href="#caso">Caso</a><a href="#experiencia">Experiencia</a><a href="#stack">Stack</a><a href="#contacto">Contacto</a>
-      <button type="button" id="theme" class="theme" aria-label="Cambiar tema" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><mask id="moon"><rect width="24" height="24" fill="#fff"/><circle class="bite" cx="24" cy="6" r="7" fill="#000"/></mask><circle class="core" cx="12" cy="12" r="5" mask="url(#moon)"/><g class="rays"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
-      </button></div>
-  </nav>
+<a class="skip" href="#contenido">Saltar al contenido</a>
 
-  <header class="hero" id="inicio">
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" translate="no" href="#contenido" aria-label="Daniel Rodriguez Herrera, inicio">daniel<span>.dev</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#casos">Casos</a><a href="#experiencia">Experiencia</a><a href="#proyectos">Proyectos</a><a href="#contacto">Contacto</a>
+      <button type="button" id="theme" class="icon-btn theme" aria-label="Cambiar a tema oscuro" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><mask id="moon"><rect width="24" height="24" fill="#fff"/><circle class="bite" cx="24" cy="6" r="7" fill="#000"/></mask><circle class="core" cx="12" cy="12" r="5" mask="url(#moon)"/><g class="rays"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g></svg>
+      </button>
+      <button type="button" id="menu-open" class="icon-btn menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="sheet">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menú" hidden>
+  <div class="sheet-head">
+    <span class="logo">daniel<span>.dev</span></span>
+    <button type="button" id="menu-close" class="icon-btn menu-btn" style="display:inline-flex" aria-label="Cerrar menú">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav aria-label="Menú móvil">
+    <a href="#casos">Casos</a><a href="#experiencia">Experiencia</a><a href="#proyectos">Proyectos</a><a href="#contacto">Contacto</a>
+  </nav>
+  <p class="sheet-foot">Cuernavaca · CDMX · México</p>
+</div>
+
+<main class="wrap" id="contenido">
+  <section class="hero" aria-labelledby="nombre">
     <div>
-      <div class="badge reveal">Software Engineer · México</div>
-      <h1 class="reveal" style="--d:.08s">Daniel <span class="hl">Rodriguez</span> Herrera</h1>
-      <p class="role reveal" style="--d:.16s">Convierto procesos complejos en <span class="rot" id="rot">software que se usa</span></p>
-      <p class="lead reveal" style="--d:.24s">Más de cinco años construyendo y manteniendo software en telecomunicaciones y banca. Empiezo por entender el proceso y la causa del problema; después diseño, programo, pruebo y despliego la solución.</p>
-      <div class="cta reveal" style="--d:.32s">
-        <a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera">Conectemos en LinkedIn <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a class="btn ghost" href="https://github.com/danielherrodri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4 1.5-4-2-6-2.5M15 21v-3.5a3 3 0 0 0-1-2.5c3 0 6-2 6-5.5a4.5 4.5 0 0 0-1.2-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.3 1.2a11.5 11.5 0 0 0-6 0C7 2.8 6 3.1 6 3.1a4.2 4.2 0 0 0-.1 3.2A4.5 4.5 0 0 0 4.7 9.5C4.7 13 7.7 15 10.7 15a3 3 0 0 0-1 2.5V21"/></svg>Ver GitHub</a>
+      <p class="badge">QA Automation &amp; Data Operations Engineer</p>
+      <h1 id="nombre">Daniel Rodriguez Herrera</h1>
+      <p class="role">Convierto procesos complejos en sistemas confiables</p>
+      <p class="lead">Automatizo pruebas de extremo a extremo y flujos de datos en banca; antes construí sistemas backend en producción para telecomunicaciones. Empiezo por la causa del problema y termino con algo que se puede verificar.</p>
+      <div class="cta">
+        <a class="btn primary" href="#casos">Ver casos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+        <a class="btn ghost" href="cv.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Descargar CV</a>
       </div>
     </div>
-    <div class="term reveal" style="--d:.2s" role="img" aria-label="Terminal mostrando pruebas y despliegue">
-      <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>~/proyectos</span></div>
-      <div class="term-body" id="term" aria-hidden="true"></div>
-    </div>
-  </header>
 
-  <section class="stats reveal" aria-label="Cifras">
-    <div class="stat"><b data-count="5" data-prefix="+">+5</b><span>años construyendo software en producción</span></div>
-    <div class="stat"><b>2</b><span>industrias: telecomunicaciones y banca</span></div>
-    <div class="stat"><b data-count="222">222</b><span>pruebas automáticas en Shalom</span></div>
-    <div class="stat"><b>CI</b><span>en cada cambio: pruebas, revisión y despliegue por entornos</span></div>
+    <aside class="flow" aria-labelledby="flow-title">
+      <div class="flow-head"><b>Caso · BBVA Technology en América</b><span class="state prod">En producción</span></div>
+      <h2 class="flow-title" id="flow-title">Notificaciones que ya no se pierden</h2>
+      <ol class="steps">
+        <li><span class="n" aria-hidden="true">01</span><div><strong>Evento de negocio</strong><span>Una fachada única filtra el entorno y prevalida dominios.</span></div></li>
+        <li><span class="n" aria-hidden="true">02</span><div><strong>Outbox · <code>PENDING</code></strong><span>El mensaje se guarda antes de intentar enviarse.</span></div></li>
+        <li><span class="n" aria-hidden="true">03</span><div><strong>Despacho con control de flujo</strong><span>Token bucket y backoff exponencial hacia el proveedor.</span></div></li>
+        <li><span class="n" aria-hidden="true">04</span><div><strong>Webhook · <code>SENT</code></strong><span>El resultado se confirma de forma asíncrona.</span></div></li>
+      </ol>
+      <div class="forks">
+        <p class="fork"><code>429 · 5xx</code>4 colas de prioridad con reintento</p>
+        <p class="fork"><code>422</code>Cola de errores, sin reintento</p>
+      </div>
+      <p class="heal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4h-4"/></svg>Una reconciliación periódica rescata los mensajes huérfanos.</p>
+      <a class="more" href="caso-notificaciones/">Ver el caso completo <span class="arr" aria-hidden="true">→</span></a>
+    </aside>
   </section>
 
-  <section id="proyectos">
-    <p class="eyebrow reveal">Proyectos</p>
-    <h2 class="reveal" style="--d:.06s">Proyectos propios, de punta a punta</h2>
-    <div class="projects">
-      <article class="proj big reveal" style="--d:.1s" data-term="nexo">
-        <div class="shot">
-          <div class="ui" aria-hidden="true">
-            <div class="ui-top"><b>Nexo · Cartera</b><i>periodo nov 2026</i></div>
-            <div class="row"><div><div>Consultorio Dental Norte</div><div class="bar"><i style="--w:86%"></i></div></div><span class="pill g">al día</span></div>
-            <div class="row"><div><div>Despacho Contable Sur</div><div class="bar"><i style="--w:54%"></i></div></div><span class="pill">en revisión</span></div>
-            <div class="row"><div><div>Clínica Centro</div><div class="bar"><i style="--w:72%"></i></div></div><span class="pill g">al día</span></div>
+  <dl class="stats" aria-label="Cifras">
+    <div class="stat"><dt>+5</dt><dd>años construyendo software en producción</dd></div>
+    <div class="stat"><dt>2</dt><dd>industrias: telecomunicaciones y banca</dd></div>
+    <div class="stat"><dt>Nacional</dt><dd>sistema de asignación usado en producción en izzi</dd></div>
+    <div class="stat"><dt>Banca</dt><dd>rediseño de notificaciones en BBVA Technology en América</dd></div>
+  </dl>
+
+  <section id="casos" aria-labelledby="casos-t">
+    <div class="sec-head">
+      <div><p class="eyebrow">Casos de ingeniería</p><h2 id="casos-t">Problemas reales, de la causa a la solución</h2></div>
+      <p class="intro">Cada caso resume el problema, la decisión que tomé y lo que cambió. Las recreaciones visuales usan datos ficticios.</p>
+    </div>
+    <div class="cases">
+      <article class="case">
+        <a class="case-media fit" href="caso-notificaciones/" tabindex="-1" aria-hidden="true"><img src="caso-notificaciones/diagrama.jpg" width="1920" height="1080" loading="lazy" alt=""></a>
+        <div class="case-body">
+          <div class="case-meta"><span class="org">BBVA Technology en América · Arquitectura</span><span class="state prod">En producción</span></div>
+          <h3>Notificaciones que ya no se pierden</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>El envío de correos era síncrono y de mejor esfuerzo: con un 429 o un 5xx del proveedor, la notificación se perdía sin rastro ni reintento.</dd></div>
+            <div><dt>Decisión</dt><dd>Diseñé la propuesta de rediseño, que aprobó mi líder: cada mensaje se guarda antes de enviarse (patrón Outbox), sale con control de flujo y los errores recuperables pasan a cuatro colas de prioridad.</dd></div>
+            <div><dt>Resultado</dt><dd>Cada mensaje termina entregado o registrado con su motivo. Ya opera en parte de los módulos.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags" aria-label="Tecnologías" translate="no"><li>Patrón Outbox</li><li>Token bucket</li><li>Colas de prioridad</li><li>Webhooks</li></ul>
+            <a class="more" href="caso-notificaciones/">Ver caso <span class="arr" aria-hidden="true">→</span></a>
           </div>
-        </div>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Nexo</h3><span class="state wip">en desarrollo</span></div>
-          <p>Mi producto SaaS independiente. Busca simplificar la operación administrativa de profesionistas y prestadores de servicios en México.</p>
-          <ul class="facts">
-            <li>Producto, arquitectura, código y despliegue: lo hago yo</li>
-            <li>Prioridades: simplicidad, privacidad y costos controlados</li>
-            <li>En validación con usuarios reales antes de crecer el alcance</li>
-          </ul>
-          <div class="tags"><span>FastAPI</span><span>PostgreSQL</span><span>Firebase Auth</span><span>Cloud Run</span><span>GitHub Actions</span></div>
         </div>
       </article>
 
-      <article class="proj reveal" style="--d:.15s" data-term="shalom">
-        <div class="shot">
-          <div class="ui" aria-hidden="true">
-            <div class="ui-top"><b>Shalom Kids · Asistencia</b><i>domingo</i></div>
-            <div class="chart"><i style="--h:55%"></i><i style="--h:70%"></i><i style="--h:62%"></i><i style="--h:84%"></i><i style="--h:78%"></i><i style="--h:92%"></i><i style="--h:88%"></i></div>
+      <article class="case">
+        <a class="case-media" href="caso-asignacion/" tabindex="-1" aria-hidden="true"><img src="caso-asignacion/panel.jpg" width="1920" height="1080" loading="lazy" alt=""></a>
+        <div class="case-body">
+          <div class="case-meta"><span class="org">izzi telecom · Producto</span><span class="state prod">En producción</span></div>
+          <h3>Cada actividad, a quien sí puede atenderla</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>Inbound dejaba la carga en Excel o en base de datos y cada manager repartía el trabajo con sus propias reglas, sin medir tiempos ni disponibilidad.</dd></div>
+            <div><dt>Decisión</dt><dd>Lo construí solo, de punta a punta: asigna según las reglas de cada manager, solo a agentes disponibles y con cierre obligatorio por ticket. Optimicé consultas, índices y procedimientos para un servidor de recursos limitados.</dd></div>
+            <div><dt>Resultado</dt><dd>Se usó en producción a nivel nacional, con temporizador en vivo, bitácora de estados y reportes por correo.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags" aria-label="Tecnologías" translate="no"><li>Laravel</li><li>SQL Server</li><li>Motor de reglas</li><li>Tiempo real</li></ul>
+            <a class="more" href="caso-asignacion/">Ver caso <span class="arr" aria-hidden="true">→</span></a>
           </div>
-        </div>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Shalom</h3><span class="state wip">en desarrollo</span></div>
-          <p>Plataforma para el ministerio infantil de una iglesia: registro de asistencia, grupos y comunicación con las familias. Puedes recorrerla en una demo pública con datos ficticios.</p>
-          <div class="tags"><span>Apps Script</span><span>React</span><span>Django</span><span>Playwright</span></div>
-          <div class="links"><a href="https://danielherrodri.github.io/shalom-plataforma/">Ver demo →</a></div>
         </div>
       </article>
 
-      <article class="proj reveal" style="--d:.2s" data-term="data">
-        <div class="shot">
-          <div class="ui code" aria-hidden="true">
-            <div class="ui-top"><b>Plumazo · Pulir con IA</b><i>extensión</i></div>
-            <div><span class="k">entrada</span>: "no puedo ir a la junta"</div>
-            <div><span class="k">tono</span>: corporativo</div>
-            <div><span class="k">salida</span>: <span class="s">"Agradezco la invitación; esta vez no podré asistir."</span></div>
+      <article class="case">
+        <a class="case-media fit" href="caso-reconocimiento/" tabindex="-1" aria-hidden="true"><img src="caso-reconocimiento/panel.jpg" width="1920" height="1080" loading="lazy" alt=""></a>
+        <div class="case-body">
+          <div class="case-meta"><span class="org">izzi telecom · Producto</span><span class="state prod">En producción</span></div>
+          <h3>Reconocimiento que se puede canjear</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>Recursos Humanos llevaba en Excel las entregas de pines y Coinx, los saldos, los canjes y el inventario; cada consulta implicaba revisar archivos.</dd></div>
+            <div><dt>Decisión</dt><dd>Junté todo el ciclo en una plataforma: estado de cuenta, marketplace que descuenta saldo y existencia, eventos, inventario y panel administrativo. Empecé solo y mantuve la mayor parte del desarrollo.</dd></div>
+            <div><dt>Resultado</dt><dd>Se usó en producción: cada entrega y cada canje quedan registrados y el saldo se calcula solo.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags" aria-label="Tecnologías" translate="no"><li>Laravel</li><li>PHP</li><li>SQL Server</li><li>Marketplace</li></ul>
+            <a class="more" href="caso-reconocimiento/">Ver caso <span class="arr" aria-hidden="true">→</span></a>
           </div>
         </div>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Plumazo</h3><span class="state wip">en desarrollo</span></div>
-          <p>Extensión de navegador para escribir mejor y más rápido en el trabajo. «Transformar mensaje» pasa un texto a tono corporativo con reglas y un botón «Pulir con IA»; «Generar speech» prepara lo que vas a decir.</p>
-          <div class="tags"><span>JavaScript</span><span>Python</span><span>FastAPI</span><span>MySQL</span><span>pytest</span><span>Playwright</span></div>
-          <div class="links"><a href="https://danielherrodri.github.io/Plumazo/">Ver demo →</a></div>
+      </article>
+
+      <article class="case">
+        <a class="case-media fit" href="caso-datahub/" tabindex="-1" aria-hidden="true"><img src="caso-datahub/portada.svg" width="1920" height="1080" loading="lazy" alt=""></a>
+        <div class="case-body">
+          <div class="case-meta"><span class="org">Arquitectura · QA</span><span class="state exp">Exploración</span></div>
+          <h3>Data Hub · QA Ops Toolkit</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>Preparar tareas, revisar incidencias, ejecutar pruebas y guardar evidencia dependía de herramientas separadas y de revisiones manuales.</dd></div>
+            <div><dt>Decisión</dt><dd>Organicé el flujo en nueve módulos y tres capas (operación, orquestación, y datos y QA), con controles de acceso, evidencia y trazabilidad.</dd></div>
+            <div><dt>Resultado</dt><dd>Recreación conceptual sin datos internos: explica responsabilidades y conexiones, no reporta métricas.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags" aria-label="Tecnologías" translate="no"><li>React</li><li>TypeScript</li><li>Python</li><li>Playwright</li></ul>
+            <a class="more" href="caso-datahub/">Ver caso <span class="arr" aria-hidden="true">→</span></a>
+          </div>
         </div>
       </article>
     </div>
   </section>
 
-  <section id="tools-pymes">
-    <p class="eyebrow reveal">Tools for Pymes</p>
-    <h2 class="reveal" style="--d:.06s">Herramientas gratuitas para pequeños negocios</h2>
+  <section id="experiencia" aria-labelledby="xp-t">
+    <div class="sec-head"><div><p class="eyebrow">Experiencia</p><h2 id="xp-t">Dónde aprendí a resolver problemas de operación</h2></div></div>
+    <div class="xp">
+      <article class="xp-item">
+        <p class="xp-when">2024 — hoy</p>
+        <div>
+          <h3>BBVA Technology en América</h3>
+          <p class="xp-role">Software Associate II — QA Automation &amp; Data Ops</p>
+          <p>Automatización de pruebas de extremo a extremo con Python y Playwright, validación de flujos de datos y aseguramiento de calidad para plataformas empresariales. Análisis de incidencias y causa raíz, e integración de sistemas y APIs.</p>
+          <p class="xp-note">Diseñé la propuesta de rediseño de notificaciones, de envío síncrono a asíncrono y resiliente. Ya opera en parte de los módulos. <a class="more" href="caso-notificaciones/">Ver caso <span class="arr" aria-hidden="true">→</span></a></p>
+        </div>
+      </article>
+      <article class="xp-item">
+        <p class="xp-when">2021 — 2024</p>
+        <div>
+          <h3>izzi telecom</h3>
+          <p class="xp-role">Desarrollador web</p>
+          <p>Desarrollo y mantenimiento de aplicaciones web full stack con Laravel, PHP, JavaScript, Node.js, Vue.js, MySQL y SQL Server.</p>
+          <p class="xp-note">Construí, solo y de punta a punta, el sistema que asignaba actividades a los agentes del call center a nivel nacional. <a class="more" href="caso-asignacion/">Ver caso <span class="arr" aria-hidden="true">→</span></a></p>
+          <p class="xp-note">Desarrollé la plataforma de reconocimiento con pines y Coinx: estado de cuenta, marketplace de canje, eventos, inventario y panel administrativo. <a class="more" href="caso-reconocimiento/">Ver caso <span class="arr" aria-hidden="true">→</span></a></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="proyectos" aria-labelledby="proy-t">
+    <div class="sec-head">
+      <div><p class="eyebrow">Proyectos propios</p><h2 id="proy-t">Productos que construyo de punta a punta</h2></div>
+      <p class="intro">Producto, arquitectura, código y pruebas a mi cargo. Siguen en desarrollo.</p>
+    </div>
     <div class="projects">
-      <article class="proj reveal" style="--d:.1s" data-term="pymes">
-        <div class="shot banner">
-          <svg xmlns="http://www.w3.org/2000/svg" class="bn" viewBox="0 0 1500 500" role="img" aria-label="Tools for Pymes. Arma pedidos en segundos: tu catálogo, tus precios y el total al instante.">
+      <article class="proj">
+        <div class="proj-head"><h3>Nexo</h3><span class="state dev">En desarrollo</span></div>
+        <p>SaaS para simplificar la operación administrativa de profesionistas y prestadores de servicios en México, con prioridad en simplicidad, privacidad y costos controlados.</p>
+        <ul class="tags" aria-label="Tecnologías" translate="no"><li>FastAPI</li><li>PostgreSQL</li><li>Cloud Run</li><li>GitHub Actions</li></ul>
+        <span class="muted-note">Demo aún no pública</span>
+      </article>
+      <article class="proj">
+        <div class="proj-head"><h3>Shalom</h3><span class="state dev">En desarrollo</span></div>
+        <p>Plataforma para el ministerio infantil de una iglesia: registro de asistencia, grupos y comunicación con las familias. La demo pública usa datos ficticios.</p>
+        <ul class="tags" aria-label="Tecnologías" translate="no"><li>Django</li><li>React</li><li>Apps Script</li><li>Playwright</li></ul>
+        <a class="more" href="https://danielherrodri.github.io/shalom-plataforma/">Ver demo de Shalom <span class="arr" aria-hidden="true">→</span></a>
+      </article>
+      <article class="proj">
+        <div class="proj-head"><h3>Plumazo</h3><span class="state dev">En desarrollo</span></div>
+        <p>Extensión de navegador para escribir mejor en el trabajo: pasa un mensaje a tono corporativo con reglas o con IA y prepara lo que vas a decir.</p>
+        <ul class="tags" aria-label="Tecnologías" translate="no"><li>JavaScript</li><li>FastAPI</li><li>MySQL</li><li>pytest</li></ul>
+        <a class="more" href="https://danielherrodri.github.io/Plumazo/">Ver demo de Plumazo <span class="arr" aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </section>
+
+  <section id="herramientas" aria-labelledby="tools-t">
+    <div class="sec-head">
+      <div><p class="eyebrow">Tools for Pymes</p><h2 id="tools-t">Herramientas publicadas</h2></div>
+      <p class="intro">Gratuitas, sin cuenta y sin servidor: los datos no salen del dispositivo.</p>
+    </div>
+    <div class="tools">
+      <article class="tool">
+        <a class="tool-art" href="https://danielherrodri.github.io/calculadora-precios/" tabindex="-1" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" class="bn" viewBox="0 0 1500 500" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet">
 <style>
-.bn text{font-family:"Bricolage Grotesque",Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;fill:#1d3a30}
+.bn text{font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif;fill:#1d3a30}
 .bn .k{font-size:25px;font-weight:600;letter-spacing:2.5px}
 .bn .h{font-size:86px;font-weight:800;letter-spacing:-1.5px}
 .bn .s{font-size:25px;font-weight:400}
 .bn .tt{font-size:31px;font-weight:800;letter-spacing:-.5px}
-.bn .o{transform-box:fill-box}
-.bn .sube{animation:bn-sube .7s cubic-bezier(.2,.8,.2,1) both}
-.bn .raya{transform-origin:left center;animation:bn-crece .6s cubic-bezier(.2,.8,.2,1) .35s both}
-.bn .mancha{transform-origin:100% 50%;animation:bn-mancha 1s cubic-bezier(.2,.8,.2,1) .1s both}
-.bn .bola{transform-origin:0 100%;animation:bn-bola 1.1s cubic-bezier(.2,.8,.2,1) .2s both}
-.bn .reja{animation:bn-aparece 1.2s ease .6s both}
-.bn .calc{transform-origin:center;animation:bn-calc .8s cubic-bezier(.3,1.4,.5,1) .3s both}
-.bn .tecla{transform-origin:center;animation:bn-pop .45s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(.75s + var(--i) * 70ms)}
-.bn .mas{transform-origin:center;animation:bn-pop .45s cubic-bezier(.3,1.6,.5,1) 1.05s both,bn-pulsa 4.4s ease-in-out 1.5s infinite}
-.bn .aro{transform-origin:center;opacity:0;animation:bn-aro 4.4s ease-out 1.5s infinite}
-.bn .cifra{transform-origin:right center;animation:bn-cifra 4.4s cubic-bezier(.2,.8,.2,1) 1.5s infinite}
-.bn .cursor{animation:bn-parpadea 1.1s steps(1) infinite}
-.bn .fila{animation:bn-entra .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(1.55s + var(--i) * .3s)}
-.bn .fila .b1,.bn .fila .b2{transform-origin:left center;animation:bn-crece .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(1.8s + var(--i) * .3s)}
-.bn .fila .b2{animation-delay:calc(1.9s + var(--i) * .3s)}
-.bn .total{animation:bn-entra .6s cubic-bezier(.2,.8,.2,1) 2.5s both}
-.bn .llena{transform-origin:left center;animation:bn-crece .9s cubic-bezier(.2,.8,.2,1) 2.8s both}
-.bn .brilla{animation:bn-brilla 4.4s ease-in-out 3.6s infinite}
-.bn:not(.play) *{animation-play-state:paused!important}
-@keyframes bn-sube{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-@keyframes bn-crece{from{transform:scaleX(0)}to{transform:none}}
-@keyframes bn-mancha{from{opacity:0;transform:translateX(90px) scale(.96)}to{opacity:1;transform:none}}
-@keyframes bn-bola{from{transform:scale(0)}to{transform:none}}
-@keyframes bn-aparece{from{opacity:0}to{opacity:1}}
-@keyframes bn-calc{from{opacity:0;transform:translateY(60px) rotate(-6deg) scale(.9)}to{opacity:1;transform:none}}
-@keyframes bn-pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
-@keyframes bn-pulsa{0%,8%,30%,38%,60%,68%,100%{transform:none}4%,34%,64%{transform:translateY(3px) scale(.93)}}
-@keyframes bn-aro{0%,60%{opacity:0;transform:scale(1)}64%{opacity:.9;transform:scale(1)}80%,100%{opacity:0;transform:scale(1.45)}}
-@keyframes bn-cifra{0%,3%{transform:scaleX(.25)}5%,33%{transform:scaleX(.5)}35%,63%{transform:scaleX(.75)}65%,92%{transform:none}97%,100%{transform:scaleX(.25)}}
-@keyframes bn-parpadea{50%{opacity:0}}
-@keyframes bn-entra{from{opacity:0;transform:translateX(70px)}to{opacity:1;transform:none}}
-@keyframes bn-brilla{0%,70%,100%{opacity:0;transform:translateX(0)}75%{opacity:.85}95%{opacity:0;transform:translateX(120px)}}
-@media (prefers-reduced-motion:reduce){.bn *{animation:none!important}.bn .aro,.bn .brilla{opacity:0}}
 </style>
 <rect width="1500" height="500" fill="#f7f5ef"/>
 <circle class="o bola" cx="0" cy="500" r="120" fill="#d5f88a"/>
@@ -382,9 +496,9 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 <g>
   <text class="k o sube" x="70" y="80">TOOLS FOR PYMES</text>
   <rect class="o raya" x="70" y="98" width="112" height="7" rx="3.5" fill="#d5f88a"/>
-  <text class="h o sube" x="66" y="205" style="animation-delay:.15s">Arma pedidos</text>
-  <text class="h o sube" x="66" y="292" style="animation-delay:.25s">en segundos</text>
-  <text class="s o sube" x="70" y="350" style="animation-delay:.4s">Tu catálogo, tus precios y el total al instante.</text>
+  <text class="h o sube" x="66" y="205">Arma pedidos</text>
+  <text class="h o sube" x="66" y="292">en segundos</text>
+  <text class="s o sube" x="70" y="350">Tu catálogo, tus precios y el total al instante.</text>
 </g>
 
 <g transform="translate(40 0)">
@@ -433,18 +547,15 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
     <rect class="o brilla" x="1204" y="339" width="18" height="12" rx="6" fill="#fff" opacity="0"/>
   </g>
 </g>
-</svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Calculadora de precios</h3><span class="state ok">disponible</span></div>
-          <p>Para negocios que venden por catálogo: sube tu lista de productos en Excel y arma pedidos en segundos. Busca con abreviaturas o por voz, aunque se diga mal; elige cantidades con + y −, ve el total y mándalo por WhatsApp. Tus datos se quedan en tu dispositivo.</p>
-          <div class="tags"><span>HTML</span><span>JavaScript</span><span>SheetJS</span><span>Web Speech API</span></div>
-          <div class="links"><a href="https://danielherrodri.github.io/calculadora-precios/">Abrir calculadora →</a></div>
+</svg></a>
+        <div class="tool-body">
+          <div class="proj-head"><h3>Calculadora de precios</h3><span class="state prod">En producción</span></div>
+          <p>Arma pedidos desde tu catálogo en Excel: busca con abreviaturas o por voz, ve el total y mándalo por WhatsApp.</p>
+          <div class="links"><a class="more" href="https://danielherrodri.github.io/calculadora-precios/">Abrir calculadora <span class="arr" aria-hidden="true">→</span></a></div>
         </div>
       </article>
-      <article class="proj reveal" style="--d:.16s" data-term="pymes">
-        <div class="shot banner">
-          <svg xmlns="http://www.w3.org/2000/svg" class="bn" viewBox="0 0 1500 500" role="img" aria-label="Limpiador de metadatos. Quita la ubicación y los datos ocultos de tus fotos antes de compartirlas.">
+      <article class="tool">
+        <a class="tool-art" href="https://danielherrodri.github.io/limpiador-metadatos/" tabindex="-1" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" class="bn" viewBox="0 0 1500 500" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet">
 <rect width="1500" height="500" fill="#f7f5ef"/>
 <circle cx="0" cy="500" r="120" fill="#d5f88a"/>
 <path d="M760 500C700 420 744 336 812 268C884 196 868 92 930 34C962 6 1000 0 1040 0H1500V500Z" fill="#1d4a36"/>
@@ -462,143 +573,34 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 <text class="h" x="80" y="250">Fotos sin</text>
 <text class="h" x="80" y="336">datos ocultos</text>
 <text class="s" x="80" y="400">GPS, teléfono y marcas de IA fuera, en tu navegador.</text>
-</svg>
-        </div>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Limpiador de metadatos</h3><span class="state ok">disponible</span></div>
-          <p>Antes de publicar una foto de tu producto o tu local, quítale la ubicación GPS, el modelo del teléfono, las fechas y las marcas de IA. Limpia sin perder calidad y verifica que no quede nada. Tus fotos no salen de tu dispositivo.</p>
-          <div class="tags"><span>HTML</span><span>JavaScript</span><span>EXIF</span><span>C2PA</span></div>
-          <div class="links"><a href="https://danielherrodri.github.io/limpiador-metadatos/">Abrir limpiador →</a><a href="https://github.com/danielherrodri/limpiador-metadatos">Código →</a></div>
+</svg></a>
+        <div class="tool-body">
+          <div class="proj-head"><h3>Limpiador de metadatos</h3><span class="state prod">En producción</span></div>
+          <p>Quita GPS, modelo del teléfono, fechas y marcas de IA de tus fotos antes de publicarlas.</p>
+          <div class="links"><a class="more" href="https://danielherrodri.github.io/limpiador-metadatos/">Abrir limpiador <span class="arr" aria-hidden="true">→</span></a><a class="more" href="https://github.com/danielherrodri/limpiador-metadatos">Código <span class="arr" aria-hidden="true">→</span></a></div>
         </div>
       </article>
     </div>
   </section>
 
-  <section id="avance">
-    <p class="eyebrow reveal">Avance</p>
-    <h2 class="reveal" style="--d:.06s">Avance de los proyectos</h2>
-    <figure class="progress reveal" style="--d:.1s" aria-labelledby="avance-cap">
-      <ul class="pg-list">
-        <li class="pg-row">
-          <div class="pg-head"><span class="pg-name">Plumazo</span><span class="pg-val">70&nbsp;%</span></div>
-          <div class="pg-track" aria-hidden="true"><i style="--v:70%"></i></div>
-          <p class="pg-note">Los tres módulos están construidos; falta probarlos contra los sistemas reales.</p>
-        </li>
-        <li class="pg-row">
-          <div class="pg-head"><span class="pg-name">Shalom</span><span class="pg-val">45&nbsp;%</span></div>
-          <div class="pg-track" aria-hidden="true"><i style="--v:45%"></i></div>
-          <p class="pg-note">Demo pública, app y API en staging; varios requisitos esperan decisiones.</p>
-        </li>
-        <li class="pg-row">
-          <div class="pg-head"><span class="pg-name">Nexo</span><span class="pg-val">35&nbsp;%</span></div>
-          <div class="pg-track" aria-hidden="true"><i style="--v:35%"></i></div>
-          <p class="pg-note">Base del servidor lista; la mayoría de los requisitos sigue pendiente.</p>
-        </li>
-      </ul>
-      <figcaption id="avance-cap" class="pg-cap">Estimación aproximada al 3 de noviembre de 2026, medida hacia el uso real y no hacia la demo. Cada requisito cuenta 100&nbsp;% si está hecho, 50&nbsp;% si está parcial o solo en la demo, y 0&nbsp;% si está pendiente.</figcaption>
-    </figure>
+  <section id="stack" aria-labelledby="stack-t">
+    <div class="sec-head"><div><h2 id="stack-t">Stack de todos los días</h2></div></div>
+    <dl class="stack">
+      <div><dt>QA</dt><dd><ul><li>Playwright</li><li>pytest</li></ul></dd></div>
+      <div><dt>Backend</dt><dd><ul><li>Java</li><li>Python</li><li>PHP / Laravel</li><li>FastAPI</li><li>Django</li></ul></dd></div>
+      <div><dt>Datos</dt><dd><ul><li>SQL Server</li><li>PostgreSQL</li><li>MySQL</li><li>NoSQL</li></ul></dd></div>
+      <div><dt>Nube y CI</dt><dd><ul><li>Docker</li><li>Cloud Run</li><li>GitHub Actions</li></ul></dd></div>
+    </dl>
   </section>
 
-  <section id="caso">
-    <p class="eyebrow reveal">Casos destacados</p>
-    <h2 class="reveal" style="--d:.06s">Problemas reales, resueltos de punta a punta</h2>
-    <div class="projects">
-      <article class="proj reveal" style="--d:.08s" data-term="datahub">
-        <a class="shot banner caso-shot" href="caso-datahub/" aria-label="Ver recorrido animado del caso Data Hub y QA Ops Toolkit">
-          <img src="caso-datahub/portada.svg" width="1920" height="1080" loading="lazy" alt="Ilustración editorial de la arquitectura conceptual Data Hub, organizada en tres capas y nueve módulos.">
-          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>Ver recorrido</span>
-        </a>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Data Hub · QA Ops Toolkit · BBVA México</h3><span class="state idea">caso conceptual</span></div>
-          <p>Diseño de una arquitectura para control operativo, asistencia contextual, integración y aseguramiento de calidad. El recorrido animado resume nueve módulos en tres capas mediante una recreación visual sin datos internos.</p>
-          <div class="tags"><span>React</span><span>TypeScript</span><span>Python</span><span>Playwright</span><span>IA híbrida</span><span>QA E2E</span></div>
-          <div class="links"><a href="caso-datahub/">Explorar el diagrama animado y sus módulos →</a></div>
-        </div>
-      </article>
-      <article class="proj reveal" style="--d:.1s" data-term="caso">
-        <a class="shot banner caso-shot" href="caso-notificaciones/" aria-label="Ver el caso: notificaciones que ya no se pierden">
-          <img src="caso-notificaciones/diagrama.jpg" width="1920" height="1080" loading="lazy" alt="Diagrama de la arquitectura de notificaciones: eventos de negocio, patrón Outbox, despacho HTTP, bifurcación inteligente y self-healing.">
-          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>Ver video</span>
-        </a>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Rediseño de notificaciones · BBVA México</h3><span class="state wip">en producción parcial</span></div>
-          <p>El envío de correos era síncrono y de «mejor esfuerzo»: con un 429 del proveedor, la notificación se perdía sin rastro. Lo rediseñé como un sistema asíncrono y resiliente, coordinando revisiones entre México y España en un sprint de 8 semanas.</p>
-          <div class="tags"><span>Patrón Outbox</span><span>NoSQL</span><span>Token bucket</span><span>Colas de prioridad</span><span>Webhooks</span><span>Self-healing</span></div>
-          <div class="links"><a href="caso-notificaciones/">Ver la necesidad, el problema y la solución →</a></div>
-        </div>
-      </article>
-
-      <article class="proj reveal" style="--d:.15s" data-term="reconocimiento">
-        <a class="shot banner caso-shot" href="caso-reconocimiento/" aria-label="Ver el caso: plataforma de reconocimiento con pines y Coinx">
-          <img src="caso-reconocimiento/panel.jpg" width="1920" height="1080" loading="lazy" alt="Recreación del panel de reconocimiento: estado de cuenta con saldo de Coinx y pines, marketplace de productos e inventario.">
-          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#d5f88a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Ver caso</span>
-        </a>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Plataforma de reconocimiento · izzi telecom</h3><span class="state ok">se usó en producción</span></div>
-          <p>Recursos Humanos llevaba en Excel la entrega de pines y Coinx a quienes participaban en sus actividades. Construí la plataforma completa: estado de cuenta, marketplace para canjear Coinx por productos, eventos personalizados, álbum de fotos, inventario y panel administrativo.</p>
-          <div class="tags"><span>Laravel</span><span>PHP</span><span>SQL Server</span><span>Panel administrativo</span><span>Marketplace</span><span>Inventario</span></div>
-          <div class="links"><a href="caso-reconocimiento/">Ver la necesidad, el problema y la solución →</a></div>
-        </div>
-      </article>
-
-      <article class="proj reveal" style="--d:.2s" data-term="asignacion">
-        <a class="shot banner caso-shot" href="caso-asignacion/" aria-label="Ver el caso: asignación de actividades para el call center">
-          <img src="caso-asignacion/panel.jpg" width="1920" height="1080" loading="lazy" alt="Recreación del sistema de asignación: bandeja del agente con tres actividades y temporizadores, reglas del manager, productividad y bitácora de estado.">
-          <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#d5f88a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Ver caso</span>
-        </a>
-        <div class="proj-body">
-          <div class="proj-head"><h3>Asignación de actividades · izzi telecom</h3><span class="state ok">en producción a nivel nacional</span></div>
-          <p>Repartía entre los agentes del call center la carga que Inbound depositaba en Excel o en base de datos, según las reglas de cada manager. Con temporizador en tiempo real, cierre con ticket, estados del agente con bitácora y reportes que llegaban por correo. Lo hice solo, de punta a punta, y lo optimicé hasta quitarle la lentitud con un servidor de recursos limitados.</p>
-          <div class="tags"><span>Laravel</span><span>PHP</span><span>SQL Server</span><span>Tailwind CSS</span><span>Tiempo real</span><span>Optimización</span></div>
-          <div class="links"><a href="caso-asignacion/">Ver la necesidad, el problema y la solución →</a></div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <section id="experiencia">
-    <p class="eyebrow reveal">Experiencia</p>
-    <h2 class="reveal" style="--d:.06s">Dónde aprendí a resolver problemas de operación</h2>
-    <div class="xp">
-      <article class="xp-item reveal" style="--d:.1s">
-        <div class="xp-when">2024 — hoy</div>
-        <div>
-          <h3>BBVA México</h3>
-          <p>Desarrollo e integración de soluciones: análisis de incidencias y causa raíz, propuestas de mejora estructural, automatización e integración de sistemas y APIs.</p>
-          <p class="xp-note">Rediseñé el envío de notificaciones de síncrono a asíncrono y resiliente: patrón Outbox, colas de prioridad y self-healing. Ya opera en parte de los módulos. <a class="inline" href="caso-notificaciones/">Ver caso →</a></p>
-        </div>
-      </article>
-      <article class="xp-item reveal" style="--d:.16s">
-        <div class="xp-when">2021 — 2024</div>
-        <div>
-          <h3>izzi telecom</h3>
-          <p>Desarrollo y mantenimiento de aplicaciones web full stack con Laravel, PHP, JavaScript, Node.js, Vue.js, MySQL y SQL Server.</p>
-          <p class="xp-note">Construí, solo y de punta a punta, un sistema que asigna actividades a los agentes del call center a nivel nacional según las reglas de cada manager. <a class="inline" href="caso-asignacion/">Ver caso →</a></p>
-          <p class="xp-note">Desarrollé la plataforma de reconocimiento de pines y Coinx: estado de cuenta, marketplace de canje, eventos, inventario y panel administrativo. <a class="inline" href="caso-reconocimiento/">Ver caso →</a></p>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <section id="stack">
-    <p class="eyebrow reveal">Stack</p>
-    <h2 class="reveal" style="--d:.06s">Herramientas de todos los días</h2>
-    <div class="marquee reveal" style="--d:.1s" aria-label="Tecnologías: Python, PHP, Laravel, FastAPI, Django, Node.js, Vue.js, React, TypeScript, PostgreSQL, MySQL, SQL Server, Docker, Cloud Run, GitHub Actions, Playwright">
-      <div class="track" aria-hidden="true">
-        <span>Python</span><span>PHP</span><span>Laravel</span><span>FastAPI</span><span>Django + DRF</span><span>Node.js</span><span>Vue.js</span><span>React</span><span>TypeScript</span><span>PostgreSQL</span><span>MySQL</span><span>SQL Server</span><span>Docker</span><span>Cloud Run</span><span>GitHub Actions</span><span>Playwright</span>
-        <span>Python</span><span>PHP</span><span>Laravel</span><span>FastAPI</span><span>Django + DRF</span><span>Node.js</span><span>Vue.js</span><span>React</span><span>TypeScript</span><span>PostgreSQL</span><span>MySQL</span><span>SQL Server</span><span>Docker</span><span>Cloud Run</span><span>GitHub Actions</span><span>Playwright</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="final reveal" id="contacto">
+  <section class="final" id="contacto" aria-labelledby="contacto-t">
     <p class="eyebrow">Contacto</p>
-    <h2>¿Buscas a alguien que entienda el problema antes de programar?</h2>
+    <h2 id="contacto-t">¿Buscas a alguien que entienda el problema antes de programar?</h2>
     <p>Estoy abierto a conversar sobre oportunidades, colaboraciones y proyectos. LinkedIn es la forma más rápida de contactarme.</p>
     <div class="cta"><a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera">Escríbeme en LinkedIn</a></div>
     <div class="mail">
-      <code id="mail">daniel199907@gmail.com</code>
-      <button type="button" id="copy" class="btn ghost">Copiar correo</button>
+      <code id="mail" translate="no">daniel199907@gmail.com</code>
+      <button type="button" id="copy" class="btn ghost" aria-live="polite">Copiar correo</button>
     </div>
     <div class="cta">
       <a class="btn ghost" href="https://github.com/danielherrodri">github.com/danielherrodri</a>
@@ -606,44 +608,30 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   </section>
 
   <footer><span>© 2026 Daniel Rodriguez Herrera</span><span>Cuernavaca · CDMX · México</span></footer>
-</div>
+</main>
 
 <script>
-document.documentElement.classList.add('js');
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const wait = ms => new Promise(r => setTimeout(r, ms));
+// Encabezado: línea inferior al desplazarse
+const top_ = document.getElementById('top');
+const onScroll = () => top_.classList.toggle('scrolled', scrollY > 8);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-// Aparición al hacer scroll
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-// El banner de Tools for Pymes se anima cuando aparece en pantalla
-document.querySelectorAll('svg.bn').forEach(el => new IntersectionObserver(([e], o) => { if (e.isIntersecting) { el.classList.add('play'); o.disconnect(); } }, { threshold: .35 }).observe(el));
-setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('in')), 3000);
-
-// Nombre letra por letra (el lector de pantalla lee el nombre completo)
-(() => {
-  const h = document.querySelector('h1'); if (!h) return;
-  h.setAttribute('aria-label', h.textContent.replace(/\s+/g, ' ').trim());
-  let i = 0;
-  const split = node => {
-    [...node.childNodes].forEach(n => {
-      if (n.nodeType === 3) {
-        const frag = document.createDocumentFragment();
-        n.textContent.split(/(\s+)/).forEach(part => {
-          if (!part) return;
-          if (/^\s+$/.test(part)) { frag.append(' '); return; }
-          const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
-          [...part].forEach(c => { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; s.style.setProperty('--i', i++); w.append(s); });
-          frag.append(w);
-        });
-        n.replaceWith(frag);
-      } else split(n);
-    });
-  };
-  split(h); h.classList.add('split');
-  // Al tocar una letra en el celular también salta
-  h.addEventListener('pointerdown', e => { const c = e.target.closest('.ch'); if (!c || reduce) return; c.animate([{transform:'none'},{transform:'translateY(-.2em) rotate(-8deg)'},{transform:'none'}], {duration: 450, easing: 'cubic-bezier(.3,1.6,.5,1)'}); });
-})();
+// Menú móvil a pantalla completa
+const sheet = document.getElementById('sheet'), openBtn = document.getElementById('menu-open'), closeBtn = document.getElementById('menu-close');
+const focusables = () => [...sheet.querySelectorAll('a[href],button')];
+function openMenu(){ sheet.hidden = false; openBtn.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; focusables()[0].focus(); }
+function closeMenu(restore = true){ sheet.hidden = true; openBtn.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; if (restore) openBtn.focus(); }
+openBtn.addEventListener('click', openMenu);
+closeBtn.addEventListener('click', () => closeMenu());
+sheet.querySelectorAll('nav a').forEach(a => a.addEventListener('click', () => closeMenu(false)));
+sheet.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeMenu(); return; }
+  if (e.key !== 'Tab') return;
+  const f = focusables(), first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+matchMedia('(min-width: 761px)').addEventListener('change', e => { if (e.matches && !sheet.hidden) closeMenu(false); });
 
 // Copiar correo
 const copyBtn = document.getElementById('copy'), mailEl = document.getElementById('mail');
@@ -653,121 +641,6 @@ copyBtn.addEventListener('click', () => {
   try { navigator.clipboard.writeText(mailEl.textContent).then(done, pick); } catch { pick(); }
 });
 
-// Contadores
-document.querySelectorAll('[data-count]').forEach(el => {
-  const n = +el.dataset.count, pre = el.dataset.prefix || '';
-  if (reduce) return;
-  new IntersectionObserver(([e], o) => {
-    if (!e.isIntersecting) return; o.disconnect();
-    const t0 = performance.now();
-    (function step(t){ const k = Math.min(1,(t-t0)/1400); el.textContent = pre + Math.round(n*(1-Math.pow(1-k,3))); if (k<1) requestAnimationFrame(step); })(t0);
-  }).observe(el);
-});
-
-// Rol rotativo
-const roles = ['software que se usa', 'integraciones confiables', 'procesos automatizados', 'productos completos'];
-const rot = document.getElementById('rot');
-if (!reduce) { let r = 0; setInterval(() => { rot.style.transition='opacity .3s'; rot.style.opacity=0; setTimeout(()=>{ r=(r+1)%roles.length; rot.textContent=roles[r]; rot.style.opacity=1; },300); }, 2600); }
-
-// Terminal
-const term = document.getElementById('term');
-// Cada proyecto tiene su sesión; la terminal cambia según lo que estás viendo
-const scripts = {
-  inicio: { dir: '~/proyectos', lines: [
-    ['$ ', 'pytest -q'], ['ok', '222 passed in 41.2s'],
-    ['$ ', 'git push origin feat/portal'], ['dim', 'CI: pr-main ✓  security ✓  e2e ✓'],
-    ['$ ', 'gh pr merge --squash'], ['ok', 'release publicado'],
-    ['$ ', 'deploy --env prod'], ['ok', 'Cloud Run · servicio activo ✓'],
-  ]},
-  nexo: { dir: '~/nexo', lines: [
-    ['$ ', 'alembic upgrade head'], ['ok', 'migraciones aplicadas ✓'],
-    ['$ ', 'pytest -q tests/'], ['ok', 'todas las pruebas en verde'],
-    ['$ ', 'gh workflow run deploy --ref main'], ['dim', 'dev ✓ → pruebas ✓ → producción ⏳'],
-  ]},
-  shalom: { dir: '~/shalom-plataforma', lines: [
-    ['$ ', 'python manage.py test'], ['ok', 'Ran 222 tests · OK'],
-    ['$ ', 'npm run test:e2e'], ['ok', 'Playwright · recorridos y accesibilidad ✓'],
-    ['$ ', 'open danielherrodri.github.io/shalom-plataforma'], ['dim', 'demo pública con datos ficticios'],
-  ]},
-  pymes: { dir: '~/calculadora-precios', lines: [
-    ['$ ', 'subir catalogo.xlsx'], ['ok', '98 productos cargados ✓'],
-    ['$ ', 'dictar "dos plumas de gel negras y un cuaderno"'], ['dim', '2 × Pluma de gel · Negra, 1 × Cuaderno'],
-    ['$ ', 'open danielherrodri.github.io/calculadora-precios'], ['dim', 'gratis, sin servidor'],
-  ]},
-  asignacion: { dir: '~/asignacion', lines: [
-    ['$ ', 'importar --origen inbound'], ['ok', 'actividades cargadas ✓'],
-    ['$ ', 'asignar --regla "max 3 por agente"'], ['dim', 'solo agentes disponibles'],
-    ['$ ', 'reporte --productividad --correo'], ['ok', 'reporte enviado al correo ✓'],
-  ]},
-  reconocimiento: { dir: '~/reconocimiento', lines: [
-    ['$ ', 'registrar --actividad capacitacion'], ['ok', '+1 pin · +150 Coinx ✓'],
-    ['$ ', 'canjear --producto audifonos'], ['dim', 'saldo actualizado · inventario −1'],
-    ['$ ', 'enviar --evento "14 de febrero"'], ['ok', 'tarjetas enviadas ✓'],
-  ]},
-  caso: { dir: '~/notificaciones', lines: [
-    ['$ ', 'notificar --evento'], ['ok', 'PENDING · guardado en Outbox ✓'],
-    ['$ ', 'despachar --rate-limit token-bucket'], ['dim', '202 Accepted · QUEUED'],
-    ['ok', 'webhook: SENT ✓'],
-    ['$ ', 'reconciliar --huerfanos'], ['dim', 'self-healing: nada se queda atrás'],
-  ]},
-  data: { dir: '~/plumazo', lines: [
-    ['$ ', 'plumazo pulir --tono formal'], ['dim', 'entrada: "no puedo ir a la junta"'],
-    ['ok', '"Agradezco la invitación; esta vez no podré asistir."'],
-    ['$ ', 'plumazo reporte --semana'], ['dim', 'borrador listo para revisar'],
-  ]},
-};
-// Un reproductor por terminal: la grande del encabezado y la mini flotante
-function player(body, dirEl){
-  let gen = 0, key = null;
-  const line = (k, t) => { const d = document.createElement('div'); if (k === '$ ') { d.innerHTML = '<span class="p">daniel@mx</span>:' + scripts[key].dir + '$ <span></span>'; } else { d.className = k; d.textContent = t; } body.appendChild(d); return d; };
-  async function run(next){
-    if (next === key) return; key = next;
-    const my = ++gen, s = scripts[key];
-    if (dirEl) dirEl.textContent = s.dir;
-    body.textContent = '';
-    if (reduce) { s.lines.forEach(([k,t]) => { const d = line(k,t); if (k === '$ ') d.lastChild.textContent = t; }); return; }
-    for(;;){
-      for (const [k,t] of s.lines){
-        if (my !== gen) return;
-        if (k === '$ '){ const d = line(k); const sp = d.lastChild; const c = document.createElement('span'); c.className = 'caret'; d.appendChild(c);
-          for (let i = 1; i <= t.length; i++){ if (my !== gen) return; sp.textContent = t.slice(0,i); await wait(38); } await wait(250); c.remove(); }
-        else { line(k,t); await wait(450); }
-      }
-      await wait(3500); if (my !== gen) return;
-      body.textContent = '';
-    }
-  }
-  return run;
-}
-player(term, document.querySelector('.term .term-bar span'))('inicio');
-
-const mini = document.getElementById('mini'), miniRun = player(document.getElementById('mini-body'), document.getElementById('mini-dir'));
-const ratios = new Map();
-const pick = () => {
-  let best = null, top = .3;
-  ratios.forEach((r, el) => { if (r > top) { top = r; best = el.dataset.term; } });
-  if (best) { miniRun(best); mini.dataset.on = best; }
-  toggleMini();
-};
-const projIO = new IntersectionObserver(es => { es.forEach(e => ratios.set(e.target, e.intersectionRatio)); pick(); }, { threshold: [0, .3, .6, .9] });
-document.querySelectorAll('[data-term]').forEach(el => projIO.observe(el));
-// La mini aparece cuando la terminal grande sale de vista y se va al llegar al contacto
-let heroGone = false, atEnd = false;
-const toggleMini = () => mini.classList.toggle('show', heroGone && !atEnd && !!mini.dataset.on);
-new IntersectionObserver(([e]) => { heroGone = !e.isIntersecting; toggleMini(); }).observe(document.querySelector('.term'));
-new IntersectionObserver(([e]) => { atEnd = e.isIntersecting; toggleMini(); }).observe(document.getElementById('contacto'));
-
-// Línea de tiempo: se dibuja con el scroll y enciende cada empresa
-const xp = document.querySelector('.xp');
-function drawLine(){
-  const r = xp.getBoundingClientRect(), mid = innerHeight * .6;
-  const p = Math.min(1, Math.max(0, (mid - r.top) / r.height));
-  xp.style.setProperty('--p', p.toFixed(3));
-  xp.querySelectorAll('.xp-item').forEach(it => { const t = it.getBoundingClientRect().top + 34; it.classList.toggle('lit', t < mid); });
-}
-if (reduce) { xp.style.setProperty('--p', 1); xp.querySelectorAll('.xp-item').forEach(it => it.classList.add('lit')); }
-else { addEventListener('scroll', drawLine, { passive: true }); drawLine(); }
-
 // Tema: sigue al sistema hasta que eliges uno
 const root = document.documentElement, themeBtn = document.getElementById('theme');
 const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
@@ -775,35 +648,10 @@ const syncBtn = () => { const d = isDark(); themeBtn.setAttribute('aria-pressed'
 try { const saved = localStorage.getItem('tema'); if (saved) root.dataset.theme = saved; } catch {}
 syncBtn();
 themeBtn.addEventListener('click', () => {
-  const next = isDark() ? 'light' : 'dark';
-  root.classList.add('theming'); root.dataset.theme = next; syncBtn();
-  try { localStorage.setItem('tema', next); } catch {}
-  setTimeout(() => root.classList.remove('theming'), 500);
+  root.dataset.theme = isDark() ? 'light' : 'dark'; syncBtn();
+  try { localStorage.setItem('tema', root.dataset.theme); } catch {}
 });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncBtn);
-
-// Retícula de puntos
-const c = document.getElementById('grid'), ctx = c.getContext('2d');
-let w, h, mx=-999, my=-999, visible=true;
-const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-function size(){ const d=devicePixelRatio||1; w=innerWidth; h=innerHeight; c.width=w*d; c.height=h*d; ctx.setTransform(d,0,0,d,0,0); draw(0); }
-function draw(t){
-  ctx.clearRect(0,0,w,h);
-  const dot=css('--dot'), acc=css('--accent'), gap=30;
-  for (let x=gap/2;x<w;x+=gap) for (let y=gap/2;y<h;y+=gap){
-    const d=Math.hypot(x-mx,y-my), near=Math.max(0,1-d/170);
-    const wave=reduce?0:Math.sin(x*.02+y*.015+t*.001)*.5+.5;
-    ctx.fillStyle=near>0?acc:dot; ctx.globalAlpha=near>0?.2+near*.8:.35+wave*.35;
-    ctx.beginPath(); ctx.arc(x,y,1.1+near*2,0,7); ctx.fill();
-  }
-  ctx.globalAlpha=1;
-}
-addEventListener('resize', size);
-addEventListener('pointermove', e => { mx=e.clientX; my=e.clientY; if(reduce) draw(0); });
-document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
-size();
-if (!reduce) { let last=0; (function loop(t){ if(visible && t-last>33){ draw(t); last=t; } requestAnimationFrame(loop); })(0); }
 </script>
-
 </body>
 </html>

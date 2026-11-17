@@ -129,7 +129,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .card.before .k{color:var(--err)}.card.after .k{color:var(--ok)}
 .card h3{margin:6px 0}
 .card p{margin:0;color:var(--muted);font-size:16px}
-.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2-text);margin:30px 0 12px}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
 .steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
@@ -153,6 +153,12 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal,.js .app .mov li,.js .app .item,.js .app .inv li,.js .app .pin{opacity:1;transform:none}.js .app .lvl i{transform:none}}
 </style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+<style>/* Alineación con la paleta del portafolio: turquesa legible en modo claro, «En producción» en turquesa y sin verde ni lima fuera de Tools for Pymes */
+:root{--accent-2-text:#0b7a6b;--nx-verde:var(--fg);--nx-texto:var(--bg);--nx-suave:color-mix(in srgb,var(--bg) 76%,transparent);--nx-linea:color-mix(in srgb,var(--bg) 22%,transparent);--nx-lima:var(--accent-2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent-2-text:#4fd6c2}}
+:root[data-theme="dark"]{--accent-2-text:#4fd6c2}
+.state.ok{color:var(--accent-2-text)}
+</style>
 </head>
 <body>
 <div class="wrap">
