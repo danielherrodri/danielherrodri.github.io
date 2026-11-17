@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Caso de arquitectura en BBVA México: la necesidad, el problema y cómo pasé de envíos síncronos best effort a un sistema de notificaciones asíncrono y resiliente con patrón Outbox, colas de prioridad y self-healing.">
+<meta name="description" content="Caso de arquitectura en BBVA Technology en América: la necesidad, el problema y cómo pasé de envíos síncronos best effort a un sistema de notificaciones asíncrono y resiliente con patrón Outbox, colas de prioridad y self-healing.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Notificaciones que ya no se pierden · Daniel Rodriguez Herrera">
@@ -86,7 +86,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .card.before .k{color:var(--err)}.card.after .k{color:var(--ok)}
 .card h3{margin:6px 0}
 .card p{margin:0;color:var(--muted);font-size:16px}
-.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2-text);margin:30px 0 12px}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
 .steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
@@ -110,20 +110,22 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal{opacity:1;transform:none}}
 </style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+<link rel="stylesheet" href="../casos.css">
 </head>
 <body>
 <div class="wrap">
   <nav>
     <a class="logo" href="../">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#caso">← Volver</a></div>
+    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#casos">← Volver a casos</a></div>
   </nav>
 
   <header>
-    <p class="eyebrow reveal">Caso de arquitectura · BBVA México</p>
+    <p class="eyebrow reveal">Caso de ingeniería · BBVA Technology en América</p>
     <h1 class="reveal" style="--d:.06s">Notificaciones que <span class="hl">ya no se pierden</span></h1>
     <p class="lead reveal" style="--d:.12s">Cómo pasé de envíos síncronos y de «mejor esfuerzo» a un sistema distribuido con patrón Outbox, colas de prioridad y self-healing.</p>
     <div class="meta reveal" style="--d:.18s">
-      <span class="state wip">en producción parcial</span>
+      <span class="state prod">En producción</span>
+      <span class="state co">En parte de los módulos</span>
       <span class="state co">México – España · revisiones asíncronas</span>
     </div>
   </header>
@@ -190,7 +192,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <li><div><h3>Resiliencia y self-healing</h3><p>Un cron de reconciliación rescata mensajes huérfanos en <code>PENDING</code> o en <code>QUEUED</code> sin respuesta de webhook. El reproceso de dead letters reencola por lotes con un delay por índice (staggering) para evitar el thundering herd sobre el proveedor.</p></div></li>
       </ol>
 
-      <p class="sub">La ejecución</p>
+      <p class="sub">Cómo se hizo</p>
       <p>La implementación se coordinó con revisiones de código y arquitectura a distancia entre México y España, con pocas horas de horario en común, en un sprint de 8 semanas en paralelo a otro proyecto.</p>
 
       <p class="sub">El resultado</p>

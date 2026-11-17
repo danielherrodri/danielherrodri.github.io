@@ -120,8 +120,8 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .opt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:4px}
 .opt div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:16px;color:var(--muted)}
 .opt b{display:block;color:var(--fg);font:800 18px/1.25 var(--f-display);margin-bottom:4px}
-.opt i{display:block;font:500 12px var(--f-mono);font-style:normal;color:var(--accent-2);margin-bottom:6px}
-.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
+.opt i{display:block;font:500 12px var(--f-mono);font-style:normal;color:var(--accent-2-text);margin-bottom:6px}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2-text);margin:30px 0 12px}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
 .steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
@@ -144,20 +144,22 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal,.js .app .act,.js .app .rules li,.js .app .log li{opacity:1;transform:none}.js .app .bars i{transform:none}}
 </style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+<link rel="stylesheet" href="../casos.css">
 </head>
 <body>
 <div class="wrap">
   <nav>
     <a class="logo" href="../">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#caso">← Volver</a></div>
+    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#casos">← Volver a casos</a></div>
   </nav>
 
   <header>
-    <p class="eyebrow reveal">Caso de producto · izzi telecom</p>
+    <p class="eyebrow reveal">Caso de ingeniería · izzi telecom</p>
     <h1 class="reveal" style="--d:.06s">Cada actividad, a quien <span class="hl">sí puede atenderla</span></h1>
     <p class="lead reveal" style="--d:.12s">Un sistema que tomaba la carga de Inbound y la repartía entre los agentes del call center según las reglas de cada manager, con temporizador en tiempo real, estados del agente, bitácora y reportes.</p>
     <div class="meta reveal" style="--d:.18s">
-      <span class="state ok">en producción a nivel nacional</span>
+      <span class="state prod">En producción</span>
+      <span class="state co">Usado a nivel nacional</span>
       <span class="state co">hecho solo, de punta a punta</span>
     </div>
   </header>
@@ -236,6 +238,10 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <div><b>Saber quién estaba disponible</b>No asignar trabajo a quien estaba en comida o indispuesto.</div>
         <div><b>Medir y documentar</b>Cuánto tardaba cada actividad, la productividad y el uso de los estados.</div>
         <div class="wide"><b>Con pocos recursos de servidor</b>Los recursos del servidor eran limitados y el sistema se volvía lento; tenía que responder bien con lo que había.</div>
+      </div>
+      <div class="compare">
+        <div class="card before"><span class="k">Antes</span><h3>Reparto sin visibilidad</h3><p>La carga llegaba en Excel o en base de datos y cada manager la repartía a su manera, sin medir tiempos ni disponibilidad.</p></div>
+        <div class="card after"><span class="k">Ahora</span><h3>Asignación por reglas</h3><p>El sistema asigna según las reglas de cada manager, solo a agentes disponibles, con temporizador, bitácora y reportes.</p></div>
       </div>
     </div>
   </section>
