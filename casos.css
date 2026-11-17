@@ -6,11 +6,13 @@
 
 :root{
   --accent-2-text:#0b7a6b; /* turquesa para texto en modo claro: 4.8:1 sobre --bg */
-  /* El bloque destacado usa la paleta del portafolio, sin verde ni lima */
-  --nx-verde:var(--fg); --nx-texto:var(--bg);
-  --nx-suave:color-mix(in srgb,var(--bg) 76%,transparent);
-  --nx-linea:color-mix(in srgb,var(--bg) 22%,transparent);
-  --nx-lima:var(--accent-2);
+  /* Bloque destacado: panel oscuro de Herrodri, igual en claro y oscuro.
+     La ventana de la recreación usa los tokens claros del sistema. */
+  --nx-verde:#0f1520; --nx-texto:#eaf0f6; --nx-suave:#9aa7b6; --nx-linea:#253040; --nx-lima:#4fd6c2;
+  --nx-papel:#f3f5f9; --nx-muted:#566172; --nx-borde:#dbe0e8; --nx-alt:#e2eafd;
+  --nx-ok:#127a49; --nx-okbg:color-mix(in srgb,#127a49 14%,#fff);
+  --nx-dif:#9a5600; --nx-difbg:color-mix(in srgb,#9a5600 14%,#fff);
+  --nx-err:#a3302a; --nx-errbg:color-mix(in srgb,#a3302a 12%,#fff);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent-2-text:#4fd6c2}}
 :root[data-theme="dark"]{--accent-2-text:#4fd6c2}
@@ -43,12 +45,39 @@ h1 .hl{color:inherit;background:linear-gradient(transparent 64%,color-mix(in srg
 .state.co::before{display:none}
 
 /* Bloque destacado (video, recreación o diagrama) */
-.nexo{border-radius:24px;padding:clamp(22px,4vw,36px);gap:20px}
+.nexo{border:1px solid var(--nx-linea);border-radius:24px;padding:clamp(22px,4vw,36px);gap:20px}
 .nexo .k{font:500 13px var(--f-mono);letter-spacing:.1em;padding:4px 10px;color:#0b0f15}
 .nexo h2{font:800 clamp(26px,3.2vw,34px)/1.1 var(--f-display);margin:12px 0 0}
 .nexo p,.nexo > p,.nexo figcaption{font-size:16px;line-height:1.55}
 .frame{border-radius:16px}
 .disclaimer{font:500 13px/1.5 var(--f-mono);color:var(--nx-suave);margin:0}
+
+/* Bloque destacado con video vertical (4:5) */
+.split{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(22px,4vw,44px);align-items:center}
+.split-body{display:flex;flex-direction:column;gap:16px;min-width:0}
+.split-body h2{margin:6px 0 0}
+.frame.v{background:#0b0f15}
+.frame.v video,.pieza-media video,.pieza-media img{display:block;width:100%;height:auto;aspect-ratio:4/5;background:#0b0f15}
+.chain{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.chain li{font:500 13px/1.3 var(--f-mono);color:var(--nx-texto);border:1px solid var(--nx-linea);border-radius:999px;padding:7px 12px}
+.chain li.on{border-color:var(--nx-lima);color:var(--nx-lima)}
+.nexo .more{color:var(--nx-lima)}
+
+/* Pieza publicada (infografía o video de LinkedIn) */
+.pieza{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:clamp(22px,4vw,44px);align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,3vw,28px)}
+.pieza-media{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.pieza-media a{display:block}
+.pieza-body h2{font:800 clamp(26px,3.2vw,34px)/1.1 var(--f-display);letter-spacing:-.035em;margin:8px 0 12px}
+.pieza-body p{color:var(--muted);margin:0 0 14px;max-width:56ch;font-size:17px}
+.pieza .disclaimer,.pieza-body p.disclaimer{color:var(--muted);font:500 13px/1.5 var(--f-mono);margin:0 0 6px}
+.nexo .disclaimer{font:500 13px/1.5 var(--f-mono)}
+.pieza.wide{display:block}
+.pieza.wide figure{margin:0}
+.pieza.wide img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}
+.pieza.wide figcaption{font:400 13px/1.55 var(--f-mono);color:var(--muted);padding-top:12px}
+.pieza.wide h2{font:800 clamp(26px,3.2vw,34px)/1.1 var(--f-display);letter-spacing:-.035em;margin:8px 0 18px}
+.more{display:inline-flex;align-items:center;gap:8px;min-height:44px;font:600 16px var(--f-body);color:var(--accent);text-decoration:none}
+.more:hover{text-decoration:underline;text-underline-offset:3px}
 
 /* Cifras */
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
@@ -101,6 +130,8 @@ footer{font:400 14px var(--f-mono)}
   .stat:nth-child(n+3){border-top:1px solid var(--line)}
   .compare,.need,.opt{grid-template-columns:1fr}
   .chapter{grid-template-columns:1fr;gap:4px}
+  .split,.pieza{grid-template-columns:1fr}
+  .split .frame,.pieza-media{max-width:420px;width:100%;margin:0 auto}
   .chap-n{font-size:44px}
 }
 @media (max-width:420px){
