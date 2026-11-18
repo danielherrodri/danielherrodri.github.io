@@ -182,6 +182,19 @@ h1{font:800 clamp(46px,7vw,88px)/.95 var(--f-display);letter-spacing:-.045em;mar
 .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .case{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:border-color .25s,box-shadow .25s,transform .25s}
 .case:hover{border-color:var(--accent);box-shadow:0 30px 60px -44px var(--accent);transform:translateY(-3px)}
+/* Próximamente: Plumazo */
+.soon{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(24px,5vw,56px);align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,3vw,32px)}
+.soon-media{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#0b0f15}
+.soon-media video{display:block;width:100%;height:auto;aspect-ratio:9/16;background:#0b0f15}
+.soon-body{display:flex;flex-direction:column;gap:14px;min-width:0}
+.soon-body h3{font:800 clamp(28px,3.6vw,40px)/1.05 var(--f-display);letter-spacing:-.035em;margin:0}
+.soon-body h3 em{font-style:normal;color:var(--accent)}
+.soon-body p{margin:0;color:var(--muted);max-width:52ch}
+.soon-steps{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:8px}
+.soon-steps li{display:flex;gap:12px;align-items:baseline;font-size:16px}
+.soon-steps b{font:500 12px var(--f-mono);color:var(--accent-2-text);min-width:22px}
+.soon-note{font:500 13px/1.5 var(--f-mono);color:var(--muted)}
+@media (max-width:760px){.soon{grid-template-columns:1fr}.soon-media{max-width:320px;width:100%;margin:0 auto}}
 .case-media{display:block;aspect-ratio:3/2;background:#0b0f15;overflow:hidden;border-bottom:1px solid var(--line)}
 .case-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .case:hover .case-media img{transform:scale(1.02)}
@@ -450,6 +463,33 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
           </div>
         </div>
       </article>
+    </div>
+  </section>
+
+  <section id="plumazo" aria-labelledby="plumazo-t">
+    <div class="sec-head">
+      <div><p class="eyebrow">Próximamente</p><h2 id="plumazo-t">Plumazo</h2></div>
+      <p class="intro">Uno de mis sistemas en camino: un asistente de comunicación para contadores y despachos pequeños en México.</p>
+    </div>
+    <div class="soon">
+      <div class="soon-media">
+        <video controls muted playsinline loop preload="none" poster="plumazo/poster-motor.jpg" width="720" height="1280" aria-describedby="plumazo-desc">
+          <source src="plumazo/motor-conversacional.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="soon-body">
+        <div class="case-meta"><span class="org">Proyecto propio · Producto</span><span class="state dev">En desarrollo</span></div>
+        <h3>¿Qué pasa cuando una conversación <em>sube de tono?</em></h3>
+        <p id="plumazo-desc">El motor de análisis conversacional de Plumazo combina tres capas antes de sugerir qué hacer: reglas deterministas de baja latencia, recuperación de contexto (RAG) e IA que contrasta las señales con esa evidencia. La IA no sustituye la lógica; la complementa.</p>
+        <ol class="soon-steps" aria-label="Capas del motor">
+          <li><b>01</b>Motor heurístico: léxico, métricas y contexto</li>
+          <li><b>02</b>RAG: fragmentos y evidencia que respaldan la señal</li>
+          <li><b>03</b>IA: tono, frustración implícita y ambigüedad</li>
+          <li><b>04</b>Decidir y actuar: detectar, interpretar y recomendar</li>
+        </ol>
+        <p class="soon-note">Demostración visual con datos de ejemplo; no son resultados de clientes. Video de 44 segundos, sin audio.</p>
+        <a class="more" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_softwareengineering-artificialintelligence-activity-7528494892810014721-FCMo">Ver la publicación en LinkedIn <span class="arr" aria-hidden="true">↗</span></a>
+      </div>
     </div>
   </section>
 
