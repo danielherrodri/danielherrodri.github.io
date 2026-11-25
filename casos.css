@@ -1,0 +1,142 @@
+/* Estilos compartidos de las páginas de caso.
+   Se carga después del estilo propio de cada página para que las cuatro tengan
+   el mismo formato: encabezado, estados, cifras, capítulos, tarjetas y cierre.
+   Paleta con roles: azul para acciones y enlaces, turquesa para acentos y
+   «En producción», ámbar solo para «En desarrollo». */
+
+:root{
+  --accent-2-text:#0b7a6b; /* turquesa para texto en modo claro: 4.8:1 sobre --bg */
+  /* Bloque destacado: panel oscuro de Herrodri, igual en claro y oscuro.
+     La ventana de la recreación usa los tokens claros del sistema. */
+  --nx-verde:#0f1520; --nx-texto:#eaf0f6; --nx-suave:#9aa7b6; --nx-linea:#253040; --nx-lima:#4fd6c2;
+  --nx-papel:#f3f5f9; --nx-muted:#566172; --nx-borde:#dbe0e8; --nx-alt:#e2eafd;
+  --nx-ok:#127a49; --nx-okbg:color-mix(in srgb,#127a49 14%,#fff);
+  --nx-dif:#9a5600; --nx-difbg:color-mix(in srgb,#9a5600 14%,#fff);
+  --nx-err:#a3302a; --nx-errbg:color-mix(in srgb,#a3302a 12%,#fff);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent-2-text:#4fd6c2}}
+:root[data-theme="dark"]{--accent-2-text:#4fd6c2}
+
+body{font:18px/1.65 var(--f-body)}
+.wrap{max-width:980px;gap:80px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* Navegación */
+nav{min-height:56px}
+.logo{display:inline-flex;align-items:center;min-height:44px}
+.nav-links{gap:4px}
+.nav-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font:600 15px var(--f-body);border-radius:10px}
+
+/* Encabezado */
+.eyebrow{font:500 13px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2-text)}
+h1{font:800 clamp(42px,6.4vw,74px)/1 var(--f-display);letter-spacing:-.04em}
+h1 .hl{color:inherit;background:linear-gradient(transparent 64%,color-mix(in srgb,var(--accent-2) 30%,transparent) 64%)}
+.lead{font-size:20px;color:var(--muted);max-width:58ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+
+/* Estados: solo tres, mismo formato; los demás chips son contexto */
+.state{display:inline-flex;align-items:center;gap:8px;min-height:30px;padding:0 12px;border-radius:999px;border:1px solid currentColor;font:500 13px/1 var(--f-mono);white-space:nowrap}
+.state::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;flex:none;animation:none!important}
+.state.prod{color:var(--accent-2-text)}
+.state.dev{color:var(--wip)}
+.state.exp{color:var(--muted);border-style:dashed}
+.state.exp::before{background:transparent;border:1.5px solid currentColor;width:8px;height:8px}
+.state.co{color:var(--muted);border-color:var(--line);background:var(--surface)}
+.state.co::before{display:none}
+
+/* Bloque destacado (video, recreación o diagrama) */
+.nexo{border:1px solid var(--nx-linea);border-radius:24px;padding:clamp(22px,4vw,36px);gap:20px}
+.nexo .k{font:500 13px var(--f-mono);letter-spacing:.1em;padding:4px 10px;color:#0b0f15}
+.nexo h2{font:800 clamp(26px,3.2vw,34px)/1.1 var(--f-display);margin:12px 0 0}
+.nexo p,.nexo > p,.nexo figcaption{font-size:16px;line-height:1.55}
+.frame{border-radius:16px}
+.disclaimer{font:500 13px/1.5 var(--f-mono);color:var(--nx-suave);margin:0}
+
+/* Bloque destacado con video vertical (4:5) */
+.split{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(22px,4vw,44px);align-items:center}
+.split-body{display:flex;flex-direction:column;gap:16px;min-width:0}
+.split-body h2{margin:6px 0 0}
+.frame.v{background:#0b0f15}
+.frame.v video,.pieza-media video,.pieza-media img{display:block;width:100%;height:auto;aspect-ratio:4/5;background:#0b0f15}
+.chain{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.chain li{font:500 13px/1.3 var(--f-mono);color:var(--nx-texto);border:1px solid var(--nx-linea);border-radius:999px;padding:7px 12px}
+.chain li.on{border-color:var(--nx-lima);color:var(--nx-lima)}
+.nexo .more{color:var(--nx-lima)}
+
+/* Pieza publicada (infografía o video de LinkedIn) */
+.pieza{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:clamp(22px,4vw,44px);align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(18px,3vw,28px)}
+.pieza-media{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.pieza-media a{display:block}
+.pieza-body h2{font:800 clamp(26px,3.2vw,34px)/1.1 var(--f-display);letter-spacing:-.035em;margin:8px 0 12px}
+.pieza-body p{color:var(--muted);margin:0 0 14px;max-width:56ch;font-size:17px}
+.pieza .disclaimer,.pieza-body p.disclaimer{color:var(--muted);font:500 13px/1.5 var(--f-mono);margin:0 0 6px}
+.nexo .disclaimer{font:500 13px/1.5 var(--f-mono)}
+.pieza.wide{display:block}
+.pieza.wide figure{margin:0}
+.pieza.wide img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}
+.pieza.wide figcaption{font:400 13px/1.55 var(--f-mono);color:var(--muted);padding-top:12px}
+.pieza.wide h2{font:800 clamp(26px,3.2vw,34px)/1.1 var(--f-display);letter-spacing:-.035em;margin:8px 0 18px}
+.more{display:inline-flex;align-items:center;gap:8px;min-height:44px;font:600 16px var(--f-body);color:var(--accent);text-decoration:none}
+.more:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* Cifras */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+.stat{padding:24px 22px;border-left:1px solid var(--line);min-width:0}
+.stat:first-child{border-left:0}
+.stat b{display:block;font:800 clamp(22px,2.3vw,30px)/1.1 var(--f-display);letter-spacing:-.025em;color:var(--fg);font-variant-numeric:tabular-nums;hyphens:none;overflow-wrap:normal}
+.stat span{display:block;margin-top:10px;font-size:15px;line-height:1.45;color:var(--muted)}
+
+/* Capítulos: 01 necesidad, 02 problema, 03 solución */
+.chapter{display:grid;grid-template-columns:120px minmax(0,1fr);gap:28px}
+.chap-n{font:800 64px/1 var(--f-display);letter-spacing:-.04em;color:var(--line)}
+.chapter h2{font:800 clamp(30px,3.8vw,42px)/1.08 var(--f-display);letter-spacing:-.035em;margin:8px 0 20px}
+.prose p{max-width:68ch}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2-text);margin:32px 0 12px}
+
+/* Tarjetas: antes y ahora, retos y optimizaciones con el mismo formato */
+.compare,.need,.opt{display:grid;gap:14px;margin-top:22px}
+.compare,.need{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:4px}
+.card,.need div,.opt div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;font-size:16px;color:var(--muted)}
+.card .k,.opt i{display:block;font:500 13px var(--f-mono);font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.card.after .k{color:var(--accent-2-text)}
+.card h3,.need b,.opt b{display:block;font:800 20px/1.25 var(--f-display);letter-spacing:-.02em;color:var(--fg);margin:6px 0 4px}
+.need b{margin-top:0}
+.card p{margin:0;color:var(--muted);font-size:16px}
+
+/* Piezas de la solución */
+.steps li{border-radius:16px;padding:18px 20px}
+.steps li::before{color:var(--accent-2-text);background:color-mix(in srgb,var(--accent-2) 14%,transparent)}
+.steps h3{font:800 20px/1.25 var(--f-display);margin:0 0 4px}
+.steps p{font-size:16px}
+.note{padding-left:14px;border-left:2px solid var(--accent-2)}
+.tags span{font:400 13px/1.4 var(--f-mono);color:var(--muted);background:color-mix(in srgb,var(--line) 45%,transparent)}
+
+/* Cierre */
+.credit{font:400 14px var(--f-mono);color:var(--muted)}
+.btn{min-height:48px;transition:background-color .2s,border-color .2s,box-shadow .2s,transform .2s}
+.btn.primary{background:var(--accent);color:#fff;border:1px solid var(--accent)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+:root[data-theme="dark"] .btn.primary{color:#0b0f15}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#0b0f15}}
+footer{font:400 14px var(--f-mono)}
+
+/* Sin aparición al hacer scroll */
+.js .reveal,.js .reveal.in{opacity:1!important;transform:none!important;transition:none!important}
+
+@media (max-width:760px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .compare,.need,.opt{grid-template-columns:1fr}
+  .chapter{grid-template-columns:1fr;gap:4px}
+  .split,.pieza{grid-template-columns:1fr}
+  .split .frame,.pieza-media{max-width:420px;width:100%;margin:0 auto}
+  .chap-n{font-size:44px}
+}
+@media (max-width:420px){
+  .stats{grid-template-columns:1fr}
+  .stat{border-left:0!important;border-top:1px solid var(--line)}
+  .stat:first-child{border-top:0}
+}
+@media (prefers-reduced-motion:reduce){.btn:hover{transform:none}}

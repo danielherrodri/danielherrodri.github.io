@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Caso de arquitectura en BBVA México: la necesidad, el problema y cómo pasé de envíos síncronos best effort a un sistema de notificaciones asíncrono y resiliente con patrón Outbox, colas de prioridad y self-healing.">
+<meta name="description" content="Caso de arquitectura en BBVA Technology en América: la necesidad, el problema y cómo pasé de envíos síncronos best effort a un sistema de notificaciones asíncrono y resiliente con patrón Outbox, colas de prioridad y self-healing.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Notificaciones que ya no se pierden · Daniel Rodriguez Herrera">
@@ -24,8 +24,6 @@
   --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
-  /* Paleta de Nexo, solo para el bloque del video */
-  --nx-verde:#1d3a30; --nx-texto:#eaf2e6; --nx-suave:#c9dfb4; --nx-linea:#3b5a4a; --nx-lima:#d5f88a; --nx-papel:#f8f8f3;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}}
@@ -62,7 +60,6 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font:500 13px var(--f-mono);color:var(--nx-suave)}
 .legend span{display:inline-flex;align-items:center;gap:8px}
 .legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
-.legend .r{background:#f09a92}.legend .g{background:#7fd1b0}
 .frame{border-radius:16px;overflow:hidden;border:1px solid var(--nx-linea);background:var(--nx-papel)}
 .frame video{width:100%;height:auto;aspect-ratio:16/9;background:var(--nx-papel)}
 .nexo p{margin:0;color:var(--nx-suave);font-size:16px}
@@ -86,7 +83,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .card.before .k{color:var(--err)}.card.after .k{color:var(--ok)}
 .card h3{margin:6px 0}
 .card p{margin:0;color:var(--muted);font-size:16px}
-.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2-text);margin:30px 0 12px}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
 .steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
@@ -110,40 +107,49 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal{opacity:1;transform:none}}
 </style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+<link rel="stylesheet" href="../casos.css">
 </head>
 <body>
 <div class="wrap">
   <nav>
     <a class="logo" href="../">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#caso">← Volver</a></div>
+    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#casos">← Volver a casos</a></div>
   </nav>
 
   <header>
-    <p class="eyebrow reveal">Caso de arquitectura · BBVA México</p>
+    <p class="eyebrow reveal">Caso de ingeniería · BBVA Technology en América</p>
     <h1 class="reveal" style="--d:.06s">Notificaciones que <span class="hl">ya no se pierden</span></h1>
     <p class="lead reveal" style="--d:.12s">Cómo pasé de envíos síncronos y de «mejor esfuerzo» a un sistema distribuido con patrón Outbox, colas de prioridad y self-healing.</p>
     <div class="meta reveal" style="--d:.18s">
-      <span class="state wip">en producción parcial</span>
+      <span class="state prod">En producción</span>
+      <span class="state co">En parte de los módulos</span>
       <span class="state co">México – España · revisiones asíncronas</span>
+      <span class="state co">Recreación ilustrativa</span>
     </div>
   </header>
 
   <section class="nexo reveal" style="--d:.1s" aria-labelledby="video-t">
-    <div class="nexo-head">
-      <div><span class="k">El flujo en 16 segundos</span><h2 id="video-t">Antes y ahora, paso a paso</h2></div>
-      <div class="legend" aria-hidden="true"><span><i class="r"></i>antes · se pierde</span><span><i class="g"></i>ahora · se entrega</span></div>
+    <div class="split">
+      <div class="frame v">
+        <video controls muted playsinline loop preload="metadata" poster="poster-arquitectura.jpg" width="1080" height="1350" aria-describedby="video-desc">
+          <source src="arquitectura.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="split-body">
+        <div><span class="k">El flujo en 27 segundos</span><h2 id="video-t">Antes y ahora, paso a paso</h2></div>
+        <ol class="chain" aria-label="Etapas del flujo actual">
+          <li>Evento de negocio</li><li class="on">Outbox · PENDING</li><li>Despacho controlado</li><li>Webhook · SENT</li>
+        </ol>
+        <p id="video-desc">Antes, el correo salía en el momento y un 429 o un 5xx del proveedor hacía que el mensaje se perdiera sin rastro. Ahora el evento entra por un solo punto, se guarda en el Outbox antes del envío, se despacha con rate limit y backoff y se confirma por webhook. Los 429 y 5xx se reintentan en 4 colas de prioridad, los 422 van a dead letter y una reconciliación rescata los mensajes huérfanos.</p>
+        <div class="rail" aria-hidden="true"></div>
+        <p class="disclaimer">Recreación ilustrativa con nombres, flujos y datos ficticios para proteger la operación interna; no es el sistema original ni su código.</p>
+        <a class="more" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_ingenieriadesoftware-arquitecturadesoftware-activity-7527444412281311232-Ah0s">Ver la publicación en LinkedIn <span aria-hidden="true">↗</span></a>
+      </div>
     </div>
-    <div class="frame">
-      <video controls muted playsinline loop preload="metadata" poster="diagrama.jpg" aria-describedby="video-desc">
-        <source src="arquitectura-notificaciones.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="rail" aria-hidden="true"></div>
-    <p id="video-desc">Antes: cada módulo llama directo al proveedor y un 429 hace que el mensaje se pierda. Ahora: el mensaje se guarda, se despacha con control de flujo y se confirma como entregado. Activa el sonido: un tono positivo marca el camino correcto y uno negativo, el incorrecto.</p>
   </section>
 
   <section class="stats reveal" aria-label="Cifras del proyecto">
-    <div class="stat"><b>8</b><span>semanas de sprint, en paralelo a otro proyecto</span></div>
+    <div class="stat"><b>12</b><span>semanas de implementación, en paralelo a otro proyecto</span></div>
     <div class="stat"><b>+7 h</b><span>de diferencia entre México y España</span></div>
     <div class="stat"><b>4</b><span>colas de prioridad independientes</span></div>
     <div class="stat"><b>5</b><span>piezas: de la fachada al self-healing</span></div>
@@ -190,8 +196,8 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <li><div><h3>Resiliencia y self-healing</h3><p>Un cron de reconciliación rescata mensajes huérfanos en <code>PENDING</code> o en <code>QUEUED</code> sin respuesta de webhook. El reproceso de dead letters reencola por lotes con un delay por índice (staggering) para evitar el thundering herd sobre el proveedor.</p></div></li>
       </ol>
 
-      <p class="sub">La ejecución</p>
-      <p>La implementación se coordinó con revisiones de código y arquitectura a distancia entre México y España, con pocas horas de horario en común, en un sprint de 8 semanas en paralelo a otro proyecto.</p>
+      <p class="sub">Cómo se hizo</p>
+      <p>La implementación se coordinó con revisiones de código y arquitectura a distancia entre México y España, con pocas horas de horario en común, en 12 semanas de implementación en paralelo a otro proyecto.</p>
 
       <p class="sub">El resultado</p>
       <p>Donde ya corre, no hay pérdidas silenciosas: cada mensaje termina entregado o registrado.</p>
@@ -199,7 +205,22 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
     </div>
   </section>
 
-  <p class="credit">El diagrama y la animación los hice con ayuda de Claude (IA); la arquitectura y el sistema, con mi equipo.</p>
+  <section class="pieza reveal" aria-labelledby="pieza-t">
+    <div class="pieza-media">
+      <video controls muted playsinline loop preload="none" poster="poster-historia.jpg" width="1080" height="1350" aria-describedby="pieza-desc">
+        <source src="historia.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="pieza-body">
+      <p class="eyebrow">Resumen visual</p>
+      <h2 id="pieza-t">La historia en 37 segundos</h2>
+      <p id="pieza-desc">Del síntoma a la propuesta: correos que a veces no llegaban y sin un ticket para rediseñar nada, el diagnóstico de la causa raíz y la implementación por etapas: Outbox, rate limiter con backoff exponencial, clasificación de errores y reproceso escalonado de dead letters.</p>
+      <p class="disclaimer">Recreación ilustrativa, no el sistema original.</p>
+      <a class="more" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_arquitecturadesoftware-sistemasdistribuidos-activity-7523962557322403840-8O1L">Ver la publicación en LinkedIn <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <p class="credit">Los videos y las imágenes los hice con ayuda de Claude (IA) con el sistema de diseño Herrodri; la arquitectura y el sistema, con mi equipo.</p>
 
   <section class="cta" aria-label="Siguientes pasos">
     <a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera">Conversemos en LinkedIn</a>

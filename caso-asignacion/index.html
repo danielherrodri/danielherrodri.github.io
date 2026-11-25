@@ -24,9 +24,6 @@
   --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
-  /* Paleta de Nexo, solo para el bloque de la recreación */
-  --nx-verde:#1d3a30; --nx-texto:#eaf2e6; --nx-suave:#c9dfb4; --nx-linea:#3b5a4a; --nx-lima:#d5f88a; --nx-papel:#f8f8f3;
-  --nx-muted:#56665d; --nx-borde:#dce3d9; --nx-alt:#eef2e9; --nx-ok:#14684f; --nx-okbg:#ddf2e8; --nx-dif:#7f5300; --nx-difbg:#fbefd3; --nx-err:#a3302a; --nx-errbg:#fbe4e2;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}}
@@ -55,7 +52,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .state.ok{color:var(--ok)}
 .state.co{color:var(--muted)}
 
-/* Bloque de la recreación con los colores de Nexo */
+/* Bloque de la recreación (colores en casos.css) */
 .nexo{background:var(--nx-verde);color:var(--nx-texto);border-radius:28px;padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:20px}
 .nexo .k{display:inline-block;font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--nx-verde);background:var(--nx-lima);border-radius:6px;padding:3px 9px}
 .nexo h2{color:var(--nx-texto);margin:12px 0 0;font-size:clamp(26px,3.4vw,36px)}
@@ -89,7 +86,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .rules li::before{content:"→";font-family:var(--f-mono);color:var(--nx-ok)}
 .bars{display:flex;align-items:flex-end;gap:8px;height:76px;margin:4px 0 10px}
 .bars i{flex:1;background:var(--nx-verde);border-radius:4px 4px 0 0;height:var(--h);transform-origin:bottom}
-.bars i:nth-child(even){background:#a6c98a}
+.bars i:nth-child(even){background:var(--accent-2)}
 .acts-row{display:flex;gap:8px;flex-wrap:wrap}
 .acts-row span{font:600 12px var(--f-body);border:1px solid var(--nx-borde);border-radius:8px;padding:6px 10px}
 .acts-row span.mail{background:var(--nx-lima);border-color:transparent}
@@ -120,8 +117,8 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .opt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:4px}
 .opt div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:16px;color:var(--muted)}
 .opt b{display:block;color:var(--fg);font:800 18px/1.25 var(--f-display);margin-bottom:4px}
-.opt i{display:block;font:500 12px var(--f-mono);font-style:normal;color:var(--accent-2);margin-bottom:6px}
-.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
+.opt i{display:block;font:500 12px var(--f-mono);font-style:normal;color:var(--accent-2-text);margin-bottom:6px}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2-text);margin:30px 0 12px}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
 .steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
@@ -144,20 +141,22 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal,.js .app .act,.js .app .rules li,.js .app .log li{opacity:1;transform:none}.js .app .bars i{transform:none}}
 </style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+<link rel="stylesheet" href="../casos.css">
 </head>
 <body>
 <div class="wrap">
   <nav>
     <a class="logo" href="../">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#caso">← Volver</a></div>
+    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#casos">← Volver a casos</a></div>
   </nav>
 
   <header>
-    <p class="eyebrow reveal">Caso de producto · izzi telecom</p>
+    <p class="eyebrow reveal">Caso de ingeniería · izzi telecom</p>
     <h1 class="reveal" style="--d:.06s">Cada actividad, a quien <span class="hl">sí puede atenderla</span></h1>
     <p class="lead reveal" style="--d:.12s">Un sistema que tomaba la carga de Inbound y la repartía entre los agentes del call center según las reglas de cada manager, con temporizador en tiempo real, estados del agente, bitácora y reportes.</p>
     <div class="meta reveal" style="--d:.18s">
-      <span class="state ok">en producción a nivel nacional</span>
+      <span class="state prod">En producción</span>
+      <span class="state co">Usado a nivel nacional</span>
       <span class="state co">hecho solo, de punta a punta</span>
     </div>
   </header>
@@ -237,6 +236,10 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <div><b>Medir y documentar</b>Cuánto tardaba cada actividad, la productividad y el uso de los estados.</div>
         <div class="wide"><b>Con pocos recursos de servidor</b>Los recursos del servidor eran limitados y el sistema se volvía lento; tenía que responder bien con lo que había.</div>
       </div>
+      <div class="compare">
+        <div class="card before"><span class="k">Antes</span><h3>Reparto sin visibilidad</h3><p>La carga llegaba en Excel o en base de datos y cada manager la repartía a su manera, sin medir tiempos ni disponibilidad.</p></div>
+        <div class="card after"><span class="k">Ahora</span><h3>Asignación por reglas</h3><p>El sistema asigna según las reglas de cada manager, solo a agentes disponibles, con temporizador, bitácora y reportes.</p></div>
+      </div>
     </div>
   </section>
 
@@ -272,7 +275,20 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
     </div>
   </section>
 
-  <p class="credit">La recreación del sistema la hice con ayuda de Claude (IA) y usa datos ficticios; el sistema original lo desarrollé en izzi.</p>
+  <section class="pieza reveal" aria-labelledby="pieza-t">
+    <div class="pieza-media">
+      <a href="infografia.jpg"><img src="infografia.jpg" width="1080" height="1350" loading="lazy" alt="Infografía del caso de asignación: operación en tiempo real con actividades en proceso y asignadas, el antes y el ahora de la asignación, la arquitectura con un motor de distribución por reglas de negocio, disponibilidad de agentes, control de tiempos y cierre con ticket, los seis módulos principales, el stack Laravel, SQL Server, JavaScript y colas, y los resultados."></a>
+    </div>
+    <div class="pieza-body">
+      <p class="eyebrow">Resumen visual</p>
+      <h2 id="pieza-t">Cada actividad, en una sola lámina</h2>
+      <p>La infografía resume el caso para LinkedIn: problema, solución, arquitectura con el motor de distribución, módulos principales, stack y resultados.</p>
+      <p class="disclaimer">Recreación ilustrativa, no el sistema original.</p>
+      <a class="more" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_softwareengineering-backenddevelopment-laravel-activity-7527465533567520768-_XPX">Ver la publicación en LinkedIn <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <p class="credit">La recreación y la infografía las hice con ayuda de Claude (IA) con el sistema de diseño Herrodri y datos ficticios; el sistema original lo desarrollé en izzi.</p>
 
   <section class="cta" aria-label="Siguientes pasos">
     <a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera">Conversemos en LinkedIn</a>

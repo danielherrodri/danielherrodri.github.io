@@ -1,851 +1,2076 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Rodriguez Herrera · Software Engineer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0f1419;
-            --bg-secondary: #1a1f2e;
-            --bg-tertiary: #252d3d;
-            --text-primary: #e8ecf1;
-            --text-secondary: #a8b0bc;
-            --text-muted: #7a8291;
-            --accent: #3b82f6;
-            --accent-light: #60a5fa;
-            --border: #3a4556;
-            --success: #10b981;
-            --danger: #ef4444;
-            
-            --space-xs: 0.25rem;
-            --space-sm: 0.5rem;
-            --space-md: 1rem;
-            --space-lg: 1.5rem;
-            --space-xl: 2rem;
-            --space-2xl: 3rem;
-            
-            --font-mono: 'Courier New', monospace;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            
-            --radius-sm: 0.375rem;
-            --radius-md: 0.5rem;
-            --radius-lg: 0.75rem;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 20, 25, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            padding: var(--space-md) var(--space-xl);
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--accent);
-            letter-spacing: -0.02em;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: var(--space-xl);
-        }
-
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-            padding: 8px 0;
-            display: inline-block;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-        }
-
-        nav a:hover {
-            color: var(--accent);
-        }
-
-        nav a:focus {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
-
-        /* Hero */
-        .hero {
-            margin-top: 70px;
-            padding: var(--space-2xl) var(--space-xl);
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -40%;
-            right: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            opacity: 0.08;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content {
-            max-width: 700px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: var(--space-md);
-            letter-spacing: -0.03em;
-        }
-
-        .hero .subtitle {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-xl);
-            font-weight: 300;
-            line-height: 1.4;
-        }
-
-        .hero-desc {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-xl);
-            max-width: 600px;
-            line-height: 1.8;
-        }
-
-        .cta-group {
-            display: flex;
-            gap: var(--space-lg);
-            margin-bottom: var(--space-2xl);
-            flex-wrap: wrap;
-        }
-
-        .cta {
-            padding: var(--space-md) var(--space-lg);
-            border-radius: var(--radius-md);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s;
-            display: inline-block;
-            border: 2px solid transparent;
-            cursor: pointer;
-        }
-
-        .cta-primary {
-            background: var(--accent);
-            color: var(--bg-primary);
-        }
-
-        .cta-primary:hover {
-            background: var(--accent-light);
-            transform: translateY(-2px);
-        }
-
-        .cta:focus {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
-
-        .cta-secondary {
-            background: transparent;
-            color: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .cta-secondary:hover {
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-xl);
-            margin-top: var(--space-2xl);
-            padding-top: var(--space-2xl);
-            border-top: 1px solid var(--border);
-        }
-
-        .stat {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .stat-label {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-top: var(--space-sm);
-        }
-
-        /* Section */
-        section {
-            padding: var(--space-2xl) var(--space-xl);
-        }
-
-        .section-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: var(--space-xl);
-            letter-spacing: -0.02em;
-        }
-
-        .section-desc {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-2xl);
-            max-width: 700px;
-            line-height: 1.8;
-        }
-
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: var(--space-xl);
-        }
-
-        .project-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: var(--space-xl);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-card:hover {
-            border-color: var(--accent);
-            background: var(--bg-tertiary);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
-        }
-
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: var(--space-md);
-        }
-
-        .project-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .project-status {
-            font-size: 0.75rem;
-            padding: var(--space-xs) var(--space-sm);
-            border-radius: var(--radius-sm);
-            background: rgba(59, 130, 246, 0.15);
-            color: var(--accent);
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .project-status.production {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-        }
-
-        .project-desc {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-lg);
-            flex-grow: 1;
-            line-height: 1.6;
-        }
-
-        .project-type {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: var(--space-md);
-            font-weight: 500;
-        }
-
-        .project-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-sm);
-            margin-bottom: var(--space-lg);
-        }
-
-        .tech-badge {
-            font-size: 0.8rem;
-            padding: var(--space-xs) var(--space-sm);
-            background: rgba(168, 176, 188, 0.1);
-            color: var(--text-secondary);
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(168, 176, 188, 0.2);
-        }
-
-        .project-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            transition: gap 0.2s;
-        }
-
-        .project-link:hover {
-            gap: var(--space-md);
-        }
-
-        /* Experience Section */
-        .timeline {
-            display: grid;
-            gap: var(--space-2xl);
-        }
-
-        .timeline-item {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: var(--space-lg);
-            padding: var(--space-lg);
-            border-left: 2px solid var(--border);
-            padding-left: var(--space-xl);
-            margin-left: 75px;
-            position: relative;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -8px;
-            top: var(--space-lg);
-            width: 14px;
-            height: 14px;
-            background: var(--accent);
-            border-radius: 50%;
-            border: 2px solid var(--bg-secondary);
-        }
-
-        .timeline-date {
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .timeline-content h3 {
-            font-size: 1.25rem;
-            margin-bottom: var(--space-sm);
-            color: var(--text-primary);
-        }
-
-        .timeline-role {
-            color: var(--accent);
-            font-weight: 500;
-            font-size: 0.95rem;
-            margin-bottom: var(--space-md);
-        }
-
-        .timeline-desc {
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* Skills Section */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-lg);
-        }
-
-        .skill-category {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: var(--space-lg);
-        }
-
-        .skill-category h3 {
-            font-size: 1.1rem;
-            margin-bottom: var(--space-md);
-            color: var(--accent);
-        }
-
-        .skill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-sm);
-        }
-
-        .skill-item {
-            font-size: 0.9rem;
-            padding: var(--space-sm) var(--space-md);
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--text-secondary);
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: var(--space-2xl);
-            text-align: center;
-            margin-top: var(--space-2xl);
-        }
-
-        .cta-section h2 {
-            font-size: 2rem;
-            margin-bottom: var(--space-lg);
-            color: var(--text-primary);
-        }
-
-        .cta-section p {
-            color: var(--text-secondary);
-            margin-bottom: var(--space-xl);
-            font-size: 1.125rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: var(--space-2xl) var(--space-xl);
-            margin-top: var(--space-2xl);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--space-xl);
-            margin-bottom: var(--space-xl);
-        }
-
-        .footer-col h3 {
-            font-size: 1rem;
-            margin-bottom: var(--space-md);
-            color: var(--text-primary);
-        }
-
-        .footer-col ul {
-            list-style: none;
-        }
-
-        .footer-col li {
-            margin-bottom: var(--space-sm);
-        }
-
-        .footer-col a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-col a:hover {
-            color: var(--accent);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid var(--border);
-            padding-top: var(--space-xl);
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav ul {
-                gap: var(--space-lg);
-            }
-
-            .hero {
-                min-height: 70vh;
-                padding: var(--space-xl) var(--space-md);
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.25rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .cta-group {
-                flex-direction: column;
-            }
-
-            .cta {
-                width: 100%;
-                text-align: center;
-            }
-
-            .timeline-item {
-                grid-template-columns: 1fr;
-                margin-left: var(--space-md);
-            }
-
-            .hero-stats {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daniel Rodriguez Herrera · QA Automation &amp; Data Operations Engineer</title>
+<meta name="description" content="Daniel Rodriguez Herrera, QA Automation &amp; Data Operations Engineer en México. Automatización de pruebas E2E, operaciones de datos e integración de sistemas en banca y telecomunicaciones.">
+<script>try{var t=localStorage.getItem("tema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0f15" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:site_name" content="Daniel Rodriguez Herrera">
+<meta property="og:title" content="Daniel Rodriguez Herrera · QA Automation &amp; Data Operations Engineer">
+<meta property="og:description" content="Convierto procesos complejos en sistemas confiables. Casos de ingeniería en banca y telecomunicaciones, experiencia y contacto.">
+<meta property="og:url" content="https://danielherrodri.github.io/">
+<meta property="og:image" content="https://danielherrodri.github.io/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Daniel Rodriguez Herrera, QA Automation &amp; Data Operations Engineer: convierto procesos complejos en sistemas confiables.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://danielherrodri.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232457e6'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' font-weight='700' fill='white' text-anchor='middle'%3Ed.%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+
+/* =========================================================
+   PALETA ORIGINAL DE DANIEL RODRIGUEZ HERRERA (INTACTA)
+   ========================================================= */
+:root{
+  --bg:#f3f5f9;
+  --surface:#ffffff;
+  --surface-2:#f8fafd;
+  --fg:#0f1520;
+  --muted:#566172;
+  --line:#dbe0e8;
+  --dot:#c4ccd7;
+  --accent:#2457e6;
+  --accent-2:#0f9d8a;
+  --accent-2-text:#0b7a6b;
+  --accent-soft:#e2eafd;
+  --ok:#127a49;
+  --wip:#9a5600;
+  --err:#a3302a;
+  /* Tokens oscuros Herrodri / Nexo */
+  --nx-verde:#0f1520;
+  --nx-texto:#eaf0f6;
+  --nx-suave:#9aa7b6;
+  --nx-linea:#253040;
+  --nx-lima:#4fd6c2;
+  --nx-papel:#f3f5f9;
+  --nx-muted:#566172;
+  --nx-borde:#dbe0e8;
+  --nx-alt:#e2eafd;
+  --nx-ok:#127a49;
+  --nx-okbg:color-mix(in srgb,#127a49 14%,#fff);
+  --nx-dif:#9a5600;
+  --nx-difbg:color-mix(in srgb,#9a5600 14%,#fff);
+  --nx-err:#a3302a;
+  --nx-errbg:color-mix(in srgb,#a3302a 12%,#fff);
+  /* Tipografía original */
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --radius:20px;
+  --shadow-sm:0 4px 16px -8px rgba(15,21,32,.08);
+  --shadow-md:0 20px 50px -30px rgba(15,21,32,.22);
+  --shadow-lg:0 32px 72px -36px rgba(15,21,32,.32);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b0f15;--surface:#131a23;--surface-2:#17202c;--fg:#eaf0f6;--muted:#9aa7b6;
+    --line:#253040;--dot:#1f2935;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-2-text:#4fd6c2;
+    --accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;
+    --shadow-sm:0 4px 16px -8px rgba(0,0,0,.45);
+    --shadow-md:0 24px 56px -28px rgba(0,0,0,.6);
+    --shadow-lg:0 36px 80px -30px rgba(0,0,0,.75);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b0f15;--surface:#131a23;--surface-2:#17202c;--fg:#eaf0f6;--muted:#9aa7b6;
+  --line:#253040;--dot:#1f2935;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-2-text:#4fd6c2;
+  --accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;
+  --shadow-sm:0 4px 16px -8px rgba(0,0,0,.45);
+  --shadow-md:0 24px 56px -28px rgba(0,0,0,.6);
+  --shadow-lg:0 36px 80px -30px rgba(0,0,0,.75);
+  color-scheme:dark;
+}
+
+html{scroll-behavior:smooth;scroll-padding-top:86px;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font:17px/1.62 var(--f-body);
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb,var(--accent) 8%,transparent), transparent 42%),
+    radial-gradient(circle at 88% 8%, color-mix(in srgb,var(--accent-2) 8%,transparent), transparent 38%),
+    radial-gradient(var(--dot) 1px,transparent 1.3px);
+  background-size:100% 900px, 100% 900px, 28px 28px;
+  background-repeat:no-repeat, no-repeat, repeat;
+  background-attachment:scroll, scroll, fixed;
+}
+img{max-width:100%;height:auto;display:block}
+[hidden]{display:none!important}
+a{color:var(--accent);text-decoration-thickness:1.5px;text-underline-offset:3px}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+main.wrap{display:flex;flex-direction:column;gap:92px;padding-top:28px;padding-bottom:76px}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+.top{
+  position:sticky;top:0;z-index:40;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:saturate(1.6) blur(14px);
+  -webkit-backdrop-filter:saturate(1.6) blur(14px);
+  border-bottom:1px solid transparent;
+  transition:border-color .25s,box-shadow .25s;
+}
+.top.scrolled{border-bottom-color:var(--line);box-shadow:var(--shadow-sm)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:70px}
+.logo{
+  display:inline-flex;align-items:center;gap:10px;min-height:44px;
+  font:800 20px var(--f-display);letter-spacing:-.025em;text-decoration:none;color:var(--fg);
+}
+.logo-mark{
+  width:30px;height:30px;border-radius:9px;background:var(--accent);color:#fff;
+  display:grid;place-items:center;font:700 14px var(--f-mono);
+  box-shadow:0 6px 16px -6px var(--accent);
+}
+:root[data-theme="dark"] .logo-mark{color:#0b0f15}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo-mark{color:#0b0f15}}
+.logo span.dot{color:var(--accent)}
+
+.nav{display:flex;align-items:center;gap:4px}
+.nav a.nav-link{
+  display:inline-flex;align-items:center;min-height:40px;padding:0 13px;border-radius:10px;
+  font:600 15px var(--f-body);color:var(--muted);text-decoration:none;
+  transition:color .2s,background-color .2s;
+}
+.nav a.nav-link:hover,.nav a.nav-link.active{color:var(--fg);background:var(--accent-soft)}
+.nav a.nav-link.active{color:var(--accent)}
+
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:8px}
+.cv-pill{
+  display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 14px;
+  border-radius:11px;border:1px solid var(--line);background:var(--surface);
+  color:var(--fg);font:600 14px var(--f-mono);cursor:pointer;
+  transition:border-color .2s,color .2s,background-color .2s,transform .15s;
+}
+.cv-pill:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.cv-pill svg{width:15px;height:15px}
+
+.icon-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;border:1px solid var(--line);border-radius:11px;
+  background:var(--surface);color:var(--fg);cursor:pointer;
+  transition:border-color .2s,transform .15s;
+}
+.icon-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.icon-btn svg{width:20px;height:20px;overflow:visible}
+.theme .core{fill:currentColor;transition:r .35s ease}
+.theme .bite{transition:cx .35s ease,cy .35s ease}
+.theme .rays{stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none;transform-origin:12px 12px;transition:transform .35s ease,opacity .25s}
+.theme[aria-pressed="true"] .core{r:8px}
+.theme[aria-pressed="true"] .bite{cx:17px;cy:7px}
+.theme[aria-pressed="true"] .rays{transform:rotate(90deg) scale(.4);opacity:0}
+.menu-btn{display:none}
+.menu-btn svg{stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+
+/* Menú móvil */
+.sheet{
+  position:fixed;inset:0;z-index:60;background:var(--bg);
+  display:flex;flex-direction:column;padding:18px 20px 28px;overflow-y:auto;
+}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.sheet nav{display:flex;flex-direction:column;margin-top:20px}
+.sheet nav a,.sheet nav button{
+  display:flex;align-items:center;justify-content:space-between;min-height:60px;width:100%;
+  background:none;border:0;border-bottom:1px solid var(--line);text-align:left;cursor:pointer;
+  font:800 clamp(26px,7vw,36px)/1.1 var(--f-display);letter-spacing:-.03em;color:var(--fg);text-decoration:none;
+}
+.sheet nav a:hover,.sheet nav button:hover{color:var(--accent)}
+.sheet-foot{margin-top:auto;padding-top:20px;font:500 13px var(--f-mono);color:var(--muted)}
+
+/* =========================================================
+   TIPOGRAFÍA Y COMPONENTES COMPARTIDOS
+   ========================================================= */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font:600 12px var(--f-mono);text-transform:uppercase;letter-spacing:.12em;
+  color:var(--accent-2-text);margin:0;
+}
+.eyebrow::before{content:"";width:18px;height:2px;background:var(--accent-2);border-radius:2px}
+h1,h2,h3{text-wrap:balance}
+h2.sec-title{font:800 clamp(30px,4vw,46px)/1.06 var(--f-display);letter-spacing:-.035em;margin:10px 0 0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.sec-intro{margin:0;max-width:48ch;color:var(--muted);font-size:17px}
+
+/* Badges de estado */
+.state{
+  display:inline-flex;align-items:center;gap:7px;min-height:26px;padding:0 11px;
+  border-radius:999px;border:1px solid currentColor;font:500 12px/1 var(--f-mono);white-space:nowrap;
+}
+.state::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+.state.prod{color:var(--accent-2-text);background:color-mix(in srgb,var(--accent-2) 10%,transparent)}
+.state.dev{color:var(--wip);background:color-mix(in srgb,var(--wip) 10%,transparent)}
+.state.exp{color:var(--muted);border-style:dashed}
+.state.exp::before{background:transparent;border:1.5px solid currentColor;width:7px;height:7px}
+
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.tags li{
+  font:500 12px/1.35 var(--f-mono);color:var(--muted);
+  background:color-mix(in srgb,var(--line) 48%,transparent);
+  border:1px solid color-mix(in srgb,var(--line) 80%,transparent);
+  border-radius:7px;padding:3px 9px;
+}
+
+/* Botones */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  min-height:46px;padding:0 20px;border-radius:12px;
+  font:600 15.5px var(--f-body);text-decoration:none;cursor:pointer;
+  transition:background-color .2s,border-color .2s,box-shadow .2s,transform .2s,color .2s;
+}
+.btn svg{width:17px;height:17px;flex:none}
+.btn.primary{
+  background:var(--accent);color:#fff;border:1px solid var(--accent);
+  box-shadow:0 12px 26px -14px var(--accent);
+}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 18px 34px -14px var(--accent)}
+:root[data-theme="dark"] .btn.primary{color:#0b0f15}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#0b0f15}}
+.btn.ghost{border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.btn.subtle{border:1px solid transparent;background:var(--accent-soft);color:var(--accent)}
+.btn.subtle:hover{border-color:var(--accent)}
+
+.more-btn{
+  display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0;
+  background:none;border:0;font:600 15.5px var(--f-body);color:var(--accent);
+  text-decoration:none;cursor:pointer;transition:gap .2s;
+}
+.more-btn:hover{text-decoration:underline;gap:10px}
+
+/* =========================================================
+   HERO REDISEÑADO
+   ========================================================= */
+.hero-wrap{display:flex;flex-direction:column;gap:32px}
+.hero{
+  display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+  gap:44px;align-items:center;padding-top:12px;
+}
+.id-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:20px}
+.me{
+  position:relative;width:108px;height:108px;flex:none;border-radius:24px;
+  overflow:hidden;background:var(--line);
+  box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--line),0 18px 36px -20px rgba(15,21,32,.45);
+  cursor:crosshair;
+}
+.me img,.me canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.me canvas{image-rendering:pixelated}
+.id-badges{display:flex;flex-direction:column;gap:7px;align-items:flex-start}
+.badge{
+  display:inline-flex;align-items:center;gap:9px;min-height:32px;padding:0 13px;
+  border:1px solid var(--line);border-radius:999px;background:var(--surface);
+  font:500 12.5px var(--f-mono);color:var(--fg);margin:0;box-shadow:var(--shadow-sm);
+}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent-2) 25%,transparent)}
+.loc-pill{
+  font:500 12px var(--f-mono);color:var(--muted);padding-left:4px;
+}
+
+.hero h1{
+  font:800 clamp(40px,6vw,74px)/.97 var(--f-display);letter-spacing:-.045em;margin:0;
+}
+.hero .role{
+  font:700 clamp(20px,2.3vw,26px)/1.28 var(--f-display);letter-spacing:-.015em;
+  margin:18px 0 0;color:var(--fg);
+}
+.hero .role span{
+  background:linear-gradient(transparent 64%, color-mix(in srgb,var(--accent-2) 28%,transparent) 64%);
+  padding:0 2px;
+}
+.hero .lead{font-size:18px;color:var(--muted);max-width:52ch;margin:14px 0 0;line-height:1.6}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+
+/* Tarjeta-diagrama interactiva del Hero */
+.flow{
+  background:var(--surface);border:1px solid var(--line);border-radius:24px;
+  padding:22px 22px 18px;box-shadow:var(--shadow-md);position:relative;overflow:hidden;
+}
+.flow::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+}
+.flow-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.flow-head b{font:600 12px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.09em}
+.flow h2.flow-title{font:800 22px/1.15 var(--f-display);letter-spacing:-.02em;margin:10px 0 14px}
+.steps-wrap{position:relative}
+.steps{list-style:none;margin:0;padding:0;position:relative}
+.steps::before{
+  content:"";position:absolute;left:17px;top:18px;bottom:18px;width:2px;
+  background:linear-gradient(var(--accent),var(--accent-2));opacity:.65;
+}
+.steps li{
+  position:relative;display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;
+  align-items:start;padding:7px 8px 7px 0;border-radius:12px;cursor:pointer;
+  transition:background-color .2s;
+}
+.steps li:hover{background:color-mix(in srgb,var(--accent-soft) 45%,transparent)}
+.steps .n{
+  position:relative;z-index:1;display:grid;place-items:center;width:36px;height:36px;
+  border-radius:10px;background:var(--surface);border:1.5px solid var(--line);
+  font:600 12.5px var(--f-mono);color:var(--fg);
+  transition:border-color .3s,color .3s,background-color .3s,box-shadow .3s;
+}
+.steps li:last-child .n{border-color:var(--accent-2);color:var(--accent-2-text)}
+.steps strong{display:block;font:600 15.5px/1.3 var(--f-body)}
+.steps code{font:500 12.5px var(--f-mono);color:var(--accent);background:var(--accent-soft);padding:1px 5px;border-radius:5px}
+.steps span{display:block;font-size:14px;color:var(--muted);line-height:1.4;margin-top:2px}
+
+.steps-wrap .packet{
+  position:absolute;left:11px;top:0;z-index:2;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 22%,transparent);
+  opacity:0;transform:translate(0,var(--y,0px));
+  transition:transform .65s cubic-bezier(.4,0,.2,1),opacity .3s,background-color .3s;
+  pointer-events:none;
+}
+.flow.anim .packet{opacity:1}
+.flow[data-step="4"] .packet{background:var(--accent-2);box-shadow:0 0 0 5px color-mix(in srgb,var(--accent-2) 25%,transparent)}
+.flow.retry .packet{transform:translate(24px,var(--y,0px))}
+.flow[data-step="1"] .steps li:nth-of-type(1) .n,
+.flow[data-step="2"] .steps li:nth-of-type(2) .n,
+.flow[data-step="3"] .steps li:nth-of-type(3) .n{
+  border-color:var(--accent);color:var(--accent);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 14%,transparent);
+}
+.flow[data-step="4"] .steps li:nth-of-type(4) .n{
+  background:color-mix(in srgb,var(--accent-2) 15%,var(--surface));
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--accent-2) 18%,transparent);
+}
+
+.forks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 0 48px}
+.fork{
+  border:1px dashed var(--line);border-radius:12px;padding:8px 10px;
+  font-size:13.5px;line-height:1.35;color:var(--muted);margin:0;
+  transition:border-color .3s,background-color .3s,color .3s;
+}
+.fork code{display:block;font:600 12px var(--f-mono);color:var(--fg);margin-bottom:2px}
+.flow.retry .fork.r{border-style:solid;border-color:var(--accent);background:var(--accent-soft);color:var(--fg)}
+.heal{display:flex;gap:9px;align-items:center;margin:12px 0 0 48px;font-size:13.5px;color:var(--muted);line-height:1.35}
+.heal svg{width:19px;height:19px;flex:none;stroke:var(--accent-2-text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.flow-note{margin:10px 0 0;font:500 12px/1.4 var(--f-mono);color:var(--muted)}
+.flow-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.pause{
+  display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 11px;
+  border:1px solid var(--line);border-radius:9px;background:var(--surface-2);
+  color:var(--muted);font:500 12.5px var(--f-mono);cursor:pointer;transition:border-color .2s,color .2s;
+}
+.pause:hover{border-color:var(--accent);color:var(--fg)}
+.pause svg{width:13px;height:13px;fill:currentColor}
+
+/* Cifras Bento Strip */
+.stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--surface);overflow:hidden;margin:0;box-shadow:var(--shadow-sm);
+}
+.stat{padding:22px 22px;border-left:1px solid var(--line);min-width:0;position:relative}
+.stat:first-child{border-left:0}
+.stat dt{
+  font:800 clamp(26px,3vw,36px)/1 var(--f-display);letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;color:var(--fg);
+}
+.stat:nth-child(1) dt{color:var(--accent)}
+.stat:nth-child(4) dt{color:var(--accent-2-text)}
+.stat dd{margin:8px 0 0;font-size:14.5px;line-height:1.45;color:var(--muted)}
+
+/* =========================================================
+   FILTROS Y CASOS DE INGENIERÍA (BENTO FEATURED + 2x2)
+   ========================================================= */
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.filter-pill{
+  display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 15px;
+  border-radius:999px;border:1px solid var(--line);background:var(--surface);
+  color:var(--muted);font:600 14px var(--f-body);cursor:pointer;
+  transition:all .2s;
+}
+.filter-pill:hover{border-color:var(--accent);color:var(--fg)}
+.filter-pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .filter-pill.active{color:#0b0f15}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .filter-pill.active{color:#0b0f15}}
+.filter-pill .cnt{
+  font:600 11.5px var(--f-mono);padding:2px 6px;border-radius:999px;
+  background:color-mix(in srgb,currentColor 14%,transparent);
+}
+
+.cases-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.case-card{
+  display:flex;flex-direction:column;background:var(--surface);
+  border:1px solid var(--line);border-radius:22px;overflow:hidden;
+  box-shadow:var(--shadow-sm);transition:border-color .25s,box-shadow .25s,transform .25s;
+}
+.case-card:hover{border-color:var(--accent);box-shadow:0 24px 54px -34px var(--accent);transform:translateY(-3px)}
+.case-card.featured{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+.case-card.featured .case-media{aspect-ratio:auto;min-height:300px;border-bottom:0;border-right:1px solid var(--line)}
+
+.case-media{
+  position:relative;display:block;aspect-ratio:16/10;background:#0b0f15;
+  overflow:hidden;border-bottom:1px solid var(--line);cursor:pointer;border:0;padding:0;width:100%;
+}
+.case-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.case-media.fit img{object-fit:contain;padding:8px}
+.case-card:hover .case-media img{transform:scale(1.03)}
+.case-media-badge{
+  position:absolute;top:12px;left:12px;z-index:2;
+  background:rgba(15,21,32,.84);color:#eaf0f6;backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);border-radius:999px;
+  padding:4px 10px;font:500 11.5px var(--f-mono);
+}
+
+.case-body{display:flex;flex-direction:column;gap:14px;padding:24px 26px 22px;flex:1}
+.case-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.case-meta .org{font:500 12.5px var(--f-mono);color:var(--muted)}
+.case-card h3{font:800 clamp(22px,2.2vw,27px)/1.14 var(--f-display);letter-spacing:-.025em;margin:0}
+.pdr{margin:0;display:grid;gap:9px}
+.pdr div{display:grid;grid-template-columns:86px minmax(0,1fr);gap:10px;align-items:baseline}
+.pdr dt{font:600 11.5px/1.6 var(--f-mono);color:var(--accent-2-text);text-transform:uppercase;letter-spacing:.07em}
+.pdr dd{margin:0;font-size:15.5px;line-height:1.5;color:var(--muted)}
+.pdr div:last-child dd{color:var(--fg);font-weight:500}
+.case-foot{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:auto;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--line) 65%,transparent);
+}
+
+/* =========================================================
+   EXPERIENCIA Y FORMACIÓN (TIMELINE EDITORIAL)
+   ========================================================= */
+.xp-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,.75fr);gap:28px;align-items:start}
+.timeline{display:flex;flex-direction:column;gap:20px;position:relative;padding-left:26px}
+.timeline::before{
+  content:"";position:absolute;left:7px;top:14px;bottom:14px;width:2px;
+  background:linear-gradient(var(--accent),var(--accent-2));opacity:.45;
+}
+.xp-card{
+  position:relative;background:var(--surface);border:1px solid var(--line);
+  border-radius:20px;padding:24px 26px;box-shadow:var(--shadow-sm);
+}
+.xp-card::before{
+  content:"";position:absolute;left:-25px;top:28px;width:12px;height:12px;
+  border-radius:50%;background:var(--accent);border:3px solid var(--bg);
+  box-shadow:0 0 0 2px var(--accent);
+}
+.xp-card.past::before{background:var(--accent-2);box-shadow:0 0 0 2px var(--accent-2)}
+.xp-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.xp-card h3{font:800 clamp(22px,2.3vw,26px)/1.15 var(--f-display);letter-spacing:-.025em;margin:0}
+.xp-when{
+  font:500 12.5px var(--f-mono);color:var(--accent-2-text);
+  background:color-mix(in srgb,var(--accent-2) 10%,transparent);
+  padding:4px 10px;border-radius:999px;white-space:nowrap;
+}
+.xp-role{font:600 17.5px/1.3 var(--f-display);color:var(--fg);margin:6px 0 12px}
+.xp-summary{margin:0 0 14px;color:var(--muted);font-size:15.5px}
+.xp-highlights{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.xp-highlights li{
+  padding:10px 14px;border-left:2.5px solid var(--accent-2);
+  background:var(--surface-2);border-radius:0 12px 12px 0;font-size:15px;color:var(--fg);
+}
+.xp-highlights .inline-link{
+  display:inline-flex;align-items:center;gap:4px;margin-left:6px;
+  background:none;border:0;padding:0;color:var(--accent);font:600 14.5px var(--f-body);cursor:pointer;
+}
+.xp-highlights .inline-link:hover{text-decoration:underline}
+.xp-disc{margin:12px 0 0;font:500 12px var(--f-mono);color:var(--muted)}
+
+/* Columna lateral: Formación y enfoque */
+.side-col{display:flex;flex-direction:column;gap:18px;position:sticky;top:92px}
+.edu-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:20px;
+  padding:22px 24px;box-shadow:var(--shadow-sm);
+}
+.edu-card h3{font:800 19px/1.2 var(--f-display);margin:8px 0 10px}
+.edu-card p{margin:0;font-size:15px;color:var(--muted);line-height:1.5}
+.edu-meta{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;
+  font:500 12px var(--f-mono);color:var(--accent-2-text);
+}
+.edu-meta span{background:color-mix(in srgb,var(--accent-2) 10%,transparent);padding:3px 9px;border-radius:7px}
+.courses-list{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.courses-list li{
+  font-size:14.5px;color:var(--fg);padding-left:14px;position:relative;
+}
+.courses-list li::before{
+  content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent);
+}
+
+/* =========================================================
+   LABORATORIO: PRODUCTOS PROPIOS + TOOLS FOR PYMES (UNIFICADO)
+   ========================================================= */
+.lab-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.plumazo-spotlight{
+  display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:32px;align-items:center;
+  background:var(--nx-verde);color:var(--nx-texto);border:1px solid var(--nx-linea);
+  border-radius:24px;padding:clamp(20px,3vw,32px);margin-bottom:22px;box-shadow:var(--shadow-md);
+}
+.plumazo-poster{
+  border-radius:16px;overflow:hidden;border:1px solid var(--nx-linea);background:#0b0f15;
+  aspect-ratio:9/14;max-height:380px;width:100%;
+}
+.plumazo-poster img{width:100%;height:100%;object-fit:cover}
+.plumazo-body{display:flex;flex-direction:column;gap:14px}
+.plumazo-body h3{font:800 clamp(26px,3.2vw,36px)/1.08 var(--f-display);letter-spacing:-.03em;margin:0;color:var(--nx-texto)}
+.plumazo-body h3 em{font-style:normal;color:var(--nx-lima)}
+.plumazo-body p{margin:0;color:var(--nx-suave);max-width:58ch;font-size:16px}
+.plumazo-layers{
+  list-style:none;margin:2px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+}
+.plumazo-layers li{
+  background:rgba(255,255,255,.04);border:1px solid var(--nx-linea);border-radius:12px;
+  padding:10px 12px;font-size:14.5px;color:var(--nx-texto);
+}
+.plumazo-layers b{display:block;font:600 11.5px var(--f-mono);color:var(--nx-lima);margin-bottom:2px}
+.plumazo-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+.plumazo-foot a{color:var(--nx-lima);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.plumazo-foot a:hover{text-decoration:underline}
+.plumazo-note{font:500 12px var(--f-mono);color:var(--nx-suave);margin:0}
+
+.lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.proj-card{
+  display:flex;flex-direction:column;gap:12px;background:var(--surface);
+  border:1px solid var(--line);border-radius:20px;padding:24px;
+  box-shadow:var(--shadow-sm);transition:border-color .25s,transform .25s;
+}
+.proj-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.proj-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.proj-card h3{font:800 23px/1.12 var(--f-display);letter-spacing:-.02em;margin:0}
+.proj-card p{margin:0;color:var(--muted);font-size:15.5px}
+.proj-card .tags{margin-top:auto;padding-top:6px}
+
+.tool-card{
+  display:flex;flex-direction:column;background:var(--surface);
+  border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  box-shadow:var(--shadow-sm);transition:border-color .25s,transform .25s;
+}
+.tool-card:hover{border-color:var(--accent-2);transform:translateY(-2px)}
+.tool-art{display:block;aspect-ratio:3/1;background:#f3f5f9;border-bottom:1px solid var(--line);overflow:hidden}
+.tool-art svg{display:block;width:100%;height:100%}
+.tool-body{display:flex;flex-direction:column;gap:9px;padding:20px 22px 18px;flex:1}
+.tool-body h3{font:800 21px/1.15 var(--f-display);margin:0}
+.tool-body p{margin:0;font-size:15px;color:var(--muted);line-height:1.48}
+.tool-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+
+/* =========================================================
+   STACK TÉCNICO (5 CATEGORÍAS INTERACTIVAS)
+   ========================================================= */
+.stack-grid{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;
+}
+.stack-box{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  padding:20px;box-shadow:var(--shadow-sm);transition:border-color .2s,transform .2s;
+}
+.stack-box:hover{border-color:var(--accent);transform:translateY(-2px)}
+.stack-box h3{
+  font:600 12px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;
+  color:var(--accent-2-text);margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);
+}
+.stack-box ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.stack-box li{
+  font:600 15.5px var(--f-body);color:var(--fg);display:flex;align-items:center;gap:8px;
+}
+.stack-box li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.7}
+
+/* =========================================================
+   CONTACTO (BLOQUE INVERTIDO SIGNATURE)
+   ========================================================= */
+.final{
+  position:relative;text-align:center;background:var(--fg);color:var(--bg);
+  border-radius:28px;padding:clamp(42px,6vw,68px) 24px;overflow:hidden;
+  box-shadow:var(--shadow-lg);
+}
+.final::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 20% 0%, color-mix(in srgb,var(--accent) 26%,transparent), transparent 50%),
+             radial-gradient(circle at 80% 100%, color-mix(in srgb,var(--accent-2) 24%,transparent), transparent 50%);
+}
+.final > *{position:relative;z-index:1}
+.final .eyebrow{color:var(--accent-2);justify-content:center}
+:root[data-theme="dark"] .final .eyebrow{color:#0b7a6b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .final .eyebrow{color:#0b7a6b}}
+.final h2{font:800 clamp(28px,4vw,44px)/1.08 var(--f-display);letter-spacing:-.035em;color:var(--bg);margin:12px auto 14px;max-width:24ch}
+.final p{color:color-mix(in srgb,var(--bg) 76%,transparent);max-width:48ch;margin:0 auto}
+.final .cta{justify-content:center}
+.final .btn.ghost{background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 35%,transparent)}
+.final .btn.ghost:hover{border-color:var(--bg);color:var(--bg)}
+.mail-row{
+  display:inline-flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:24px;padding:8px 10px 8px 18px;border-radius:16px;
+  background:color-mix(in srgb,var(--bg) 10%,transparent);
+  border:1px solid color-mix(in srgb,var(--bg) 20%,transparent);
+}
+.mail-row code{font:500 clamp(15px,2.1vw,19px) var(--f-mono);color:var(--bg);user-select:all;word-break:break-all}
+.mail-row .btn{min-height:38px;padding:0 14px;font-size:14px}
+
+footer{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  font:400 13.5px var(--f-mono);color:var(--muted);padding-top:8px;border-top:1px solid var(--line);
+}
+
+/* =========================================================
+   MODAL / DRAWER PARA CASOS COMPLETOS Y CV INTERACTIVO
+   ========================================================= */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:80;background:rgba(11,15,21,.68);
+  backdrop-filter:blur(6px);display:flex;justify-content:center;align-items:flex-start;
+  padding:24px 16px;overflow-y:auto;
+}
+.modal-panel{
+  width:100%;max-width:940px;background:var(--bg);color:var(--fg);
+  border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow-lg);
+  overflow:hidden;margin:auto 0;
+}
+.modal-bar{
+  position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:14px 22px;background:color-mix(in srgb,var(--surface) 92%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+.modal-bar .m-label{font:600 12.5px var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.modal-body{padding:clamp(22px,4vw,38px);display:flex;flex-direction:column;gap:34px}
+.m-hero h2{font:800 clamp(28px,4.5vw,48px)/1.04 var(--f-display);letter-spacing:-.035em;margin:10px 0 12px}
+.m-hero h2 .hl{background:linear-gradient(transparent 64%,color-mix(in srgb,var(--accent-2) 28%,transparent) 64%)}
+.m-hero p.lead{font-size:18.5px;color:var(--muted);margin:0;max-width:62ch}
+.m-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.m-chip{font:500 12px var(--f-mono);color:var(--muted);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 11px}
+
+.m-stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden;
+}
+.m-stat{padding:16px;border-left:1px solid var(--line)}
+.m-stat:first-child{border-left:0}
+.m-stat b{display:block;font:800 clamp(20px,2.2vw,26px)/1.1 var(--f-display);color:var(--fg)}
+.m-stat span{display:block;margin-top:6px;font-size:13.5px;color:var(--muted);line-height:1.35}
+
+.m-chapter{display:grid;grid-template-columns:76px minmax(0,1fr);gap:20px}
+.m-chap-n{font:800 46px/1 var(--f-display);color:var(--line);letter-spacing:-.04em}
+.m-chapter h3{font:800 clamp(22px,2.8vw,30px)/1.12 var(--f-display);letter-spacing:-.025em;margin:6px 0 12px}
+.m-chapter p{margin:0 0 12px;color:var(--muted);max-width:66ch}
+.m-compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.m-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.m-card .k{display:block;font:600 11.5px var(--f-mono);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px}
+.m-card.before .k{color:var(--err)}
+.m-card.after .k{color:var(--accent-2-text)}
+.m-card b{display:block;font:800 18px var(--f-display);color:var(--fg);margin-bottom:4px}
+.m-card p{margin:0;font-size:15px;color:var(--muted)}
+
+.m-steps{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;counter-reset:ms}
+.m-steps li{
+  counter-increment:ms;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;
+}
+.m-steps li::before{
+  content:counter(ms,decimal-leading-zero);font:600 13px var(--f-mono);
+  color:var(--accent-2-text);background:color-mix(in srgb,var(--accent-2) 14%,transparent);
+  border-radius:8px;height:28px;display:grid;place-items:center;
+}
+.m-steps h4{font:800 17px/1.25 var(--f-display);margin:0 0 3px;color:var(--fg)}
+.m-steps p{margin:0;font-size:15px;color:var(--muted)}
+
+/* Recreaciones interactivas dentro de los modales */
+.nexo-box{
+  background:var(--nx-verde);color:var(--nx-texto);border:1px solid var(--nx-linea);
+  border-radius:20px;padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;gap:16px;
+}
+.nexo-box .k-pill{
+  display:inline-block;font:600 11.5px var(--f-mono);text-transform:uppercase;letter-spacing:.09em;
+  background:var(--nx-lima);color:var(--nx-verde);padding:3px 9px;border-radius:6px;
+}
+.nexo-box h3{font:800 22px/1.15 var(--f-display);margin:8px 0 0;color:var(--nx-texto)}
+.demo-app{
+  background:var(--nx-papel);color:var(--nx-verde);border-radius:14px;border:1px solid var(--nx-linea);
+  overflow:hidden;font:400 14.5px/1.45 var(--f-body);
+}
+.demo-bar{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:10px 16px;background:#fff;border-bottom:1px solid var(--nx-borde);
+}
+.demo-bar b{font:800 15px var(--f-display)}
+.demo-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;padding:14px}
+.demo-pane{background:#fff;border:1px solid var(--nx-borde);border-radius:12px;padding:14px}
+.demo-pane-t{font:600 11px var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--nx-muted);margin:0 0 10px;display:flex;justify-content:space-between;align-items:center}
+.status-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.status-btn{
+  display:inline-flex;align-items:center;gap:6px;font:500 12px var(--f-mono);
+  border:1px solid var(--nx-borde);border-radius:999px;padding:4px 10px;background:#fff;color:var(--nx-muted);cursor:pointer;
+}
+.status-btn.on{background:var(--nx-okbg);border-color:transparent;color:var(--nx-ok);font-weight:600}
+.demo-act{
+  border:1px solid var(--nx-borde);border-radius:10px;padding:10px 12px;margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.demo-timer{font:600 16px var(--f-mono);background:var(--nx-alt);color:var(--nx-verde);padding:4px 8px;border-radius:8px;font-variant-numeric:tabular-nums}
+.demo-timer.long{background:var(--nx-difbg);color:var(--nx-dif)}
+.demo-log{list-style:none;margin:0;padding:0;font:400 12px/1.6 var(--f-mono);color:var(--nx-muted)}
+.demo-log b{color:var(--nx-verde)}
+.demo-shop{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.demo-item{border:1px solid var(--nx-borde);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:5px}
+.demo-item button{
+  margin-top:4px;border:0;border-radius:7px;padding:6px 8px;
+  background:var(--nx-verde);color:#fff;font:600 12px var(--f-body);cursor:pointer;
+}
+.demo-item button:disabled{opacity:.45;cursor:not-allowed}
+.demo-mov{list-style:none;margin:10px 0 0;padding:0}
+.demo-mov li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--nx-borde);font-size:13.5px}
+.demo-mov .plus{color:var(--nx-ok);font:600 12.5px var(--f-mono)}
+.demo-mov .minus{color:var(--nx-verde);font:600 12.5px var(--f-mono)}
+
+.m-figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.m-figure img{width:100%;height:auto;display:block}
+.m-figure figcaption{padding:12px 16px;font:400 12.5px var(--f-mono);color:var(--muted);border-top:1px solid var(--line)}
+
+/* CV dentro del modal */
+.cv-sheet{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,36px);
+}
+.cv-header{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-bottom:16px;border-bottom:2px solid var(--fg)}
+.cv-header img{width:68px;height:68px;border-radius:16px;object-fit:cover}
+.cv-header h2{font:800 26px/1.05 var(--f-display);margin:0}
+.cv-sec-t{
+  font:600 12px var(--f-mono);text-transform:uppercase;letter-spacing:.12em;
+  color:var(--accent-2-text);margin:22px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--line);
+}
+.cv-list{margin:6px 0 0;padding-left:18px}
+.cv-list li{margin:4px 0;font-size:15px;color:var(--muted)}
+.cv-list li::marker{color:var(--accent-2-text)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:22px;right:22px;z-index:100;
+  background:var(--fg);color:var(--bg);padding:12px 18px;border-radius:12px;
+  font:600 14px var(--f-mono);box-shadow:var(--shadow-md);
+  opacity:0;transform:translateY(12px);pointer-events:none;
+  transition:opacity .25s,transform .25s;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width:1020px){
+  .hero{grid-template-columns:1fr;gap:32px}
+  .flow{max-width:640px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .case-card.featured{grid-template-columns:1fr}
+  .case-card.featured .case-media{border-right:0;border-bottom:1px solid var(--line);min-height:220px}
+  .xp-layout{grid-template-columns:1fr}
+  .side-col{position:static}
+  .stack-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:780px){
+  .nav a.nav-link,.cv-pill{display:none}
+  .menu-btn{display:inline-flex}
+  main.wrap{gap:68px}
+  .cases-grid,.lab-grid,.m-compare,.demo-grid{grid-template-columns:1fr}
+  .plumazo-spotlight{grid-template-columns:1fr}
+  .plumazo-poster{max-width:260px;margin:0 auto}
+  .plumazo-layers{grid-template-columns:1fr}
+  .stack-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .m-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .m-stat:nth-child(3){border-left:0}
+  .m-stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .m-chapter{grid-template-columns:1fr;gap:4px}
+  .m-chap-n{font-size:34px}
+}
+@media (max-width:520px){
+  .stats,.stack-grid,.m-stats,.forks{grid-template-columns:1fr}
+  .stat,.m-stat{border-left:0!important;border-top:1px solid var(--line)}
+  .stat:first-child,.m-stat:first-child{border-top:0}
+  .forks,.heal{margin-left:0}
+  .pdr div{grid-template-columns:1fr;gap:2px}
+  .cta .btn{flex:1 1 100%}
+}
+@media print{
+  header.top,main.wrap,.toast{display:none!important}
+  .modal-backdrop{position:static;background:none;padding:0}
+  .modal-bar{display:none!important}
+  .modal-panel{box-shadow:none;border:0}
+}
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <div class="logo">daniel.dev</div>
-            <ul>
-                <li><a href="#projects">Proyectos</a></li>
-                <li><a href="#experience">Experiencia</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#contact">Contacto</a></li>
-            </ul>
-        </div>
+
+<!-- =========================================================
+     ENCABEZADO PEGAJOSO
+     ========================================================= -->
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Daniel Rodriguez Herrera, inicio">
+      <span class="logo-mark" aria-hidden="true">d.</span>
+      <span>daniel<span class="dot">.dev</span></span>
+    </a>
+    <nav class="nav" aria-label="Navegación principal">
+      <a class="nav-link" href="#casos">Casos</a>
+      <a class="nav-link" href="#experiencia">Experiencia</a>
+      <a class="nav-link" href="#laboratorio">Laboratorio</a>
+      <a class="nav-link" href="#stack">Stack</a>
+      <a class="nav-link" href="#contacto">Contacto</a>
+      <div class="nav-actions">
+        <button type="button" class="cv-pill" id="open-cv-nav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Ver CV
+        </button>
+        <button type="button" id="theme" class="icon-btn theme" aria-label="Cambiar a tema oscuro" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <mask id="moon"><rect width="24" height="24" fill="#fff"/><circle class="bite" cx="24" cy="6" r="7" fill="#000"/></mask>
+            <circle class="core" cx="12" cy="12" r="5" mask="url(#moon)"/>
+            <g class="rays"><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></g>
+          </svg>
+        </button>
+        <button type="button" id="menu-open" class="icon-btn menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="sheet">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
     </nav>
+  </div>
+</header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Convierto procesos complejos en software que funciona</h1>
-                <div class="subtitle">Software Engineer · Backend · Integración · México</div>
-                <p class="hero-desc">
-                    Especialista en diseño de sistemas backend, integración de procesos y automatización. 
-                    5+ años construyendo software en producción para telecomunicaciones y servicios financieros. 
-                    Ahora trabajo en soluciones propias donde controlo la arquitectura de punta a punta.
-                </p>
-                <div class="cta-group">
-                    <a href="#projects" class="cta cta-primary">Ver Proyectos</a>
-                    <a href="https://linkedin.com/in/daniel-rodriguez-herrera" target="_blank" class="cta cta-secondary">LinkedIn</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <div class="stat-value">5+</div>
-                        <div class="stat-label">Años en producción</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">2</div>
-                        <div class="stat-label">Industrias: telco y banca</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">Productos propios</div>
-                    </div>
-                </div>
-            </div>
+<!-- Menú móvil -->
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menú móvil" hidden>
+  <div class="sheet-head">
+    <span class="logo"><span class="logo-mark">d.</span><span>daniel<span class="dot">.dev</span></span></span>
+    <button type="button" id="menu-close" class="icon-btn" aria-label="Cerrar menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav aria-label="Enlaces móviles">
+    <a href="#casos">Casos de ingeniería</a>
+    <a href="#experiencia">Experiencia y formación</a>
+    <a href="#laboratorio">Laboratorio y herramientas</a>
+    <a href="#stack">Stack técnico</a>
+    <a href="#contacto">Contacto</a>
+    <button type="button" id="open-cv-mobile">Ver CV interactivo →</button>
+  </nav>
+  <p class="sheet-foot">Cuernavaca · CDMX · México</p>
+</div>
+
+<main class="wrap" id="inicio">
+
+  <!-- =========================================================
+       HERO + DIAGRAMA VIVO + CIFRAS
+       ========================================================= -->
+  <section class="hero-wrap" aria-labelledby="nombre">
+    <div class="hero">
+      <div>
+        <div class="id-row">
+          <div class="me" id="me" title="Pasa el cursor o toca para ver el efecto pixelado">
+            <img src="retrato.webp" width="480" height="480" alt="Retrato de Daniel Rodriguez Herrera">
+            <canvas aria-hidden="true"></canvas>
+          </div>
+          <div class="id-badges">
+            <p class="badge">QA Automation &amp; Data Operations Engineer</p>
+            <span class="loc-pill">Cuernavaca · CDMX · México</span>
+          </div>
         </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="section-container">
-            <h2 class="section-title">Proyectos</h2>
-            <p class="section-desc">
-                Productos de punta a punta: diseño técnico, arquitectura, implementación y operación en producción.
-            </p>
-            <div class="projects-grid">
-                <!-- Nexo -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-name">Nexo</div>
-                        <div class="project-status">En desarrollo</div>
-                    </div>
-                    <div class="project-type">SaaS • Administración</div>
-                    <p class="project-desc">
-                        Plataforma para simplificar la operación administrativa de profesionistas y prestadores 
-                        de servicios en México. Gestión de pacientes, citas, documentos y facturación integrada.
-                    </p>
-                    <div class="project-stack">
-                        <span class="tech-badge">FastAPI</span>
-                        <span class="tech-badge">PostgreSQL</span>
-                        <span class="tech-badge">React</span>
-                        <span class="tech-badge">Cloud Run</span>
-                        <span class="tech-badge">GitHub Actions</span>
-                    </div>
-                    <a href="#" class="project-link">Ver proyecto →</a>
-                </div>
-
-                <!-- Shalom Kids -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-name">Shalom Kids</div>
-                        <div class="project-status production">Producción</div>
-                    </div>
-                    <div class="project-type">Plataforma • Ministerio</div>
-                    <p class="project-desc">
-                        Gestión integral del ministerio infantil: registro de asistencia, formación de grupos, 
-                        comunicación con familias. Integración con Apps Script y automatización de reportes.
-                    </p>
-                    <div class="project-stack">
-                        <span class="tech-badge">React</span>
-                        <span class="tech-badge">Django</span>
-                        <span class="tech-badge">Apps Script</span>
-                        <span class="tech-badge">Playwright</span>
-                    </div>
-                    <a href="#" class="project-link">Ver demo →</a>
-                </div>
-
-                <!-- Plumazo -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <div class="project-name">Plumazo</div>
-                        <div class="project-status">Beta</div>
-                    </div>
-                    <div class="project-type">Extensión • Productividad</div>
-                    <p class="project-desc">
-                        Extensión de navegador para escribir mejor en el trabajo. Pulir mensajes a tono corporativo 
-                        y generar speeches. Integración con APIs de IA y análisis de tono en tiempo real.
-                    </p>
-                    <div class="project-stack">
-                        <span class="tech-badge">JavaScript</span>
-                        <span class="tech-badge">FastAPI</span>
-                        <span class="tech-badge">MySQL</span>
-                        <span class="tech-badge">pytest</span>
-                    </div>
-                    <a href="#" class="project-link">Ver demo →</a>
-                </div>
-            </div>
+        <h1 id="nombre">Daniel Rodriguez Herrera</h1>
+        <p class="role">Convierto procesos complejos en <span>sistemas confiables</span></p>
+        <p class="lead">Automatizo pruebas de extremo a extremo y flujos de datos en banca; antes construí sistemas backend en producción para telecomunicaciones. Empiezo por la causa del problema y termino con algo que se puede verificar.</p>
+        <div class="cta">
+          <a class="btn primary" href="#casos">
+            Explorar casos
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+          </a>
+          <button type="button" class="btn ghost" id="open-cv-hero">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Ver CV interactivo
+          </button>
+          <a class="btn subtle" href="https://www.linkedin.com/in/daniel-rodriguez-herrera" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
         </div>
-    </section>
+      </div>
 
-    <!-- Experience Section -->
-    <section id="experience">
-        <div class="section-container">
-            <h2 class="section-title">Experiencia</h2>
-            <p class="section-desc">
-                Especialista en backend engineering, sistemas integrados y automatización de procesos.
-            </p>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-date">2021 — Presente</div>
-                    <div class="timeline-content">
-                        <h3>Backend Engineer</h3>
-                        <div class="timeline-role">Empresas: BBVA Bancomer | Telco MX</div>
-                        <div class="timeline-desc">
-                            Diseño e implementación de microservicios backend en Java y Python. 
-                            Integración de sistemas legados con APIs modernas. Automatización de procesos 
-                            empresariales usando reglas configurables. Mejora de confiabilidad en servicios 
-                            de notificación bajo fallos intermitentes.
-                        </div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2020 — 2021</div>
-                    <div class="timeline-content">
-                        <h3>Developer</h3>
-                        <div class="timeline-role">Startups • Outsourcing</div>
-                        <div class="timeline-desc">
-                            Full stack development en proyectos de corta duración. 
-                            Iniciación en arquitectura de sistemas y decisiones técnicas. 
-                            Experiencia en metodologías ágiles y desarrollo test-driven.
-                        </div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2019 — 2020</div>
-                    <div class="timeline-content">
-                        <h3>Ingeniero en Prácticas</h3>
-                        <div class="timeline-role">Empresa de Telecomunicaciones</div>
-                        <div class="timeline-desc">
-                            Primera experiencia profesional. Desarrollo de reports y mejoras menores 
-                            en sistemas de CRM. Bases en SQL, queries de performance y mantenimiento 
-                            de código legado.
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- Tarjeta-diagrama interactiva del caso flagship -->
+      <aside class="flow" id="hero-flow" aria-labelledby="flow-title">
+        <div class="flow-head">
+          <b>Caso destacado · BBVA Technology en América</b>
+          <span class="state prod">En producción</span>
         </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="section-container">
-            <h2 class="section-title">Stack Técnico</h2>
-            <p class="section-desc">
-                Especialidades en backend, integración y automatización de procesos.
-            </p>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>Lenguajes</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">Java</span>
-                        <span class="skill-item">Python</span>
-                        <span class="skill-item">SQL</span>
-                        <span class="skill-item">JavaScript</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Backend</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">FastAPI</span>
-                        <span class="skill-item">Django</span>
-                        <span class="skill-item">Spring Boot</span>
-                        <span class="skill-item">Microservicios</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Bases de Datos</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">PostgreSQL</span>
-                        <span class="skill-item">MySQL</span>
-                        <span class="skill-item">Firebase</span>
-                        <span class="skill-item">Redis</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Frontend</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">React</span>
-                        <span class="skill-item">HTML/CSS</span>
-                        <span class="skill-item">Responsive Design</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Devops</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">Cloud Run</span>
-                        <span class="skill-item">GitHub Actions</span>
-                        <span class="skill-item">Docker</span>
-                        <span class="skill-item">CI/CD</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Testing & QA</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">pytest</span>
-                        <span class="skill-item">Unit Testing</span>
-                        <span class="skill-item">Playwright</span>
-                        <span class="skill-item">TDD</span>
-                    </div>
-                </div>
-            </div>
+        <h2 class="flow-title" id="flow-title">Notificaciones que ya no se pierden</h2>
+        <div class="steps-wrap">
+          <span class="packet" aria-hidden="true"></span>
+          <ol class="steps" aria-label="Pasos del flujo">
+            <li data-goto="1"><span class="n" aria-hidden="true">01</span><div><strong>Evento de negocio</strong><span>Una fachada única filtra el entorno y prevalida dominios.</span></div></li>
+            <li data-goto="2"><span class="n" aria-hidden="true">02</span><div><strong>Outbox · <code>PENDING</code></strong><span>El mensaje se guarda antes de intentar enviarse.</span></div></li>
+            <li data-goto="3"><span class="n" aria-hidden="true">03</span><div><strong>Despacho con control de flujo</strong><span>Token bucket y backoff exponencial hacia el proveedor.</span></div></li>
+            <li data-goto="4"><span class="n" aria-hidden="true">04</span><div><strong>Webhook · <code>SENT</code></strong><span>El resultado se confirma de forma asíncrona.</span></div></li>
+          </ol>
         </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section>
-        <div class="section-container">
-            <div class="cta-section">
-                <h2>¿Hablamos?</h2>
-                <p>Disponible para conversaciones sobre proyectos, arquitectura y oportunidades.</p>
-                <div class="cta-group">
-                    <a href="mailto:daniel@example.com" class="cta cta-primary">Enviar correo</a>
-                    <a href="https://linkedin.com/in/daniel-rodriguez-herrera" target="_blank" class="cta cta-secondary">LinkedIn</a>
-                </div>
-            </div>
+        <div class="forks">
+          <p class="fork r"><code>429 · 5xx</code>4 colas de prioridad con reintento</p>
+          <p class="fork"><code>422</code>Cola de errores, sin reintento</p>
         </div>
-    </section>
+        <p class="heal">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4h-4"/></svg>
+          Una reconciliación periódica rescata los mensajes huérfanos.
+        </p>
+        <p class="flow-note">Recreación ilustrativa, no el sistema original. Haz clic en cualquier paso para enfocarlo.</p>
+        <div class="flow-foot">
+          <button type="button" class="more-btn" data-open-case="notificaciones">Leer caso completo <span aria-hidden="true">→</span></button>
+          <button type="button" class="pause" id="pause" aria-pressed="false">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg>
+            <span>Pausar</span>
+          </button>
+        </div>
+      </aside>
+    </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-col">
-                <h3>Navegación</h3>
-                <ul>
-                    <li><a href="#projects">Proyectos</a></li>
-                    <li><a href="#experience">Experiencia</a></li>
-                    <li><a href="#skills">Skills</a></li>
+    <dl class="stats" aria-label="Cifras clave">
+      <div class="stat"><dt>+5 años</dt><dd>construyendo y automatizando software en producción</dd></div>
+      <div class="stat"><dt>2 industrias</dt><dd>telecomunicaciones (izzi) y banca (BBVA)</dd></div>
+      <div class="stat"><dt>Nacional</dt><dd>sistema de asignación de call center en producción</dd></div>
+      <div class="stat"><dt>Outbox</dt><dd>rediseño asíncrono de notificaciones en banca</dd></div>
+    </dl>
+  </section>
+
+  <!-- =========================================================
+       SECCIÓN 1: CASOS DE INGENIERÍA (FILTRABLES + LECTOR COMPLETO)
+       ========================================================= -->
+  <section id="casos" aria-labelledby="casos-t">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Casos de ingeniería</p>
+        <h2 class="sec-title" id="casos-t">Problemas reales, de la causa a la solución</h2>
+      </div>
+      <p class="sec-intro">Cada caso resume problema, decisión y resultado. Abre cualquiera para explorar la arquitectura completa y las recreaciones interactivas con datos ficticios.</p>
+    </div>
+
+    <div class="filter-bar" role="tablist" aria-label="Filtrar casos por industria">
+      <button type="button" class="filter-pill active" data-filter="all" role="tab" aria-selected="true">Todos <span class="cnt">5</span></button>
+      <button type="button" class="filter-pill" data-filter="banca" role="tab" aria-selected="false">BBVA · Banca <span class="cnt">1</span></button>
+      <button type="button" class="filter-pill" data-filter="telecom" role="tab" aria-selected="false">izzi · Telecom <span class="cnt">3</span></button>
+      <button type="button" class="filter-pill" data-filter="qa" role="tab" aria-selected="false">Arquitectura &amp; QA <span class="cnt">1</span></button>
+    </div>
+
+    <div class="cases-grid" id="cases-grid">
+      <!-- Caso 1: Flagship Featured (BBVA Notificaciones) -->
+      <article class="case-card featured" data-cat="banca">
+        <button type="button" class="case-media fit" data-open-case="notificaciones" aria-label="Abrir caso Notificaciones que ya no se pierden">
+          <span class="case-media-badge">Caso destacado · 12 semanas</span>
+          <img src="caso-notificaciones/diagrama.jpg" alt="Diagrama del sistema de notificaciones con patrón Outbox">
+        </button>
+        <div class="case-body">
+          <div class="case-meta">
+            <span class="org">BBVA Technology en América · Arquitectura</span>
+            <span class="state prod">En producción</span>
+          </div>
+          <h3>Notificaciones que ya no se pierden</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>El envío de correos era síncrono y de mejor esfuerzo: con un 429 o un 5xx del proveedor, la notificación se perdía sin rastro ni reintento.</dd></div>
+            <div><dt>Decisión</dt><dd>Diseñé la propuesta de rediseño, aprobada por mi líder: cada mensaje se guarda antes de enviarse (patrón Outbox), sale con control de flujo y los errores recuperables pasan a cuatro colas de prioridad.</dd></div>
+            <div><dt>Resultado</dt><dd>Cada mensaje termina entregado o registrado con su motivo. Ya opera en parte de los módulos.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags"><li>Patrón Outbox</li><li>Token bucket</li><li>Colas de prioridad</li><li>Webhooks</li></ul>
+            <button type="button" class="more-btn" data-open-case="notificaciones">Leer caso completo <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Caso 2: izzi Asignación -->
+      <article class="case-card" data-cat="telecom">
+        <button type="button" class="case-media" data-open-case="asignacion" aria-label="Abrir caso Cada actividad, a quien sí puede atenderla">
+          <span class="case-media-badge">Demo interactiva incluida</span>
+          <img src="caso-asignacion/panel.jpg" alt="Panel ilustrativo del sistema de asignación">
+        </button>
+        <div class="case-body">
+          <div class="case-meta">
+            <span class="org">izzi telecom · Producto</span>
+            <span class="state prod">En producción</span>
+          </div>
+          <h3>Cada actividad, a quien sí puede atenderla</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>Inbound dejaba la carga en Excel o en base de datos y cada manager repartía el trabajo con sus propias reglas, sin medir tiempos ni disponibilidad.</dd></div>
+            <div><dt>Decisión</dt><dd>Lo construí solo, de punta a punta: asigna según reglas de cada manager, solo a agentes disponibles y con cierre obligatorio por ticket. Optimicé consultas, índices y procedimientos para un servidor limitado.</dd></div>
+            <div><dt>Resultado</dt><dd>Se usó en producción a nivel nacional, con temporizador en vivo, bitácora de estados y reportes por correo.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags"><li>Laravel</li><li>SQL Server</li><li>Motor de reglas</li><li>Tiempo real</li></ul>
+            <button type="button" class="more-btn" data-open-case="asignacion">Leer caso y probar demo <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Caso 3: izzi Reconocimiento -->
+      <article class="case-card" data-cat="telecom">
+        <button type="button" class="case-media fit" data-open-case="reconocimiento" aria-label="Abrir caso Reconocimiento que se puede canjear">
+          <span class="case-media-badge">Marketplace interactivo</span>
+          <img src="caso-reconocimiento/panel.jpg" alt="Panel de reconocimiento con pines y Coinx">
+        </button>
+        <div class="case-body">
+          <div class="case-meta">
+            <span class="org">izzi telecom · Producto</span>
+            <span class="state prod">En producción</span>
+          </div>
+          <h3>Reconocimiento que se puede canjear</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>Recursos Humanos llevaba en Excel las entregas de pines y Coinx, los saldos, los canjes y el inventario; cada consulta implicaba revisar archivos.</dd></div>
+            <div><dt>Decisión</dt><dd>Junté todo el ciclo en una plataforma: estado de cuenta, marketplace que descuenta saldo y existencia, eventos, inventario y panel administrativo. Empecé solo y mantuve la mayor parte del desarrollo.</dd></div>
+            <div><dt>Resultado</dt><dd>Se usó en producción: cada entrega y cada canje quedan registrados y el saldo se calcula solo.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags"><li>Laravel</li><li>PHP</li><li>SQL Server</li><li>Marketplace</li></ul>
+            <button type="button" class="more-btn" data-open-case="reconocimiento">Leer caso y probar demo <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Caso 4: izzi Cobranza -->
+      <article class="case-card" data-cat="telecom" id="caso-cobranza">
+        <button type="button" class="case-media fit" data-open-case="cobranza" aria-label="Abrir caso de Cobranza e infografía">
+          <span class="case-media-badge">Infografía técnica</span>
+          <img src="caso-cobranza/infografia.png" alt="Infografía del sistema de cobranza en izzi">
+        </button>
+        <div class="case-body">
+          <div class="case-meta">
+            <span class="org">izzi telecom · Cobranza</span>
+            <span class="state prod">En producción</span>
+          </div>
+          <h3>Cada llamada, a la hora y al destino correctos</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>En horas pico, las consultas de reportes y la asignación de llamadas saturaban la infraestructura.</dd></div>
+            <div><dt>Decisión</dt><dd>Optimicé ambos procesos. El sistema programaba llamadas según la zona horaria y el área del cliente, daba seguimiento a las promesas de pago y calculaba bonos por cumplimiento.</dd></div>
+            <div><dt>Resultado</dt><dd>El equipo mantuvo la operación de cobranza en horas de alta demanda con el hardware disponible.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags"><li>Enrutamiento IVR</li><li>Promesas de pago</li><li>Optimización SQL</li></ul>
+            <button type="button" class="more-btn" data-open-case="cobranza">Ver infografía y detalle <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Caso 5: Data Hub QA Ops Toolkit -->
+      <article class="case-card" data-cat="qa">
+        <button type="button" class="case-media fit" data-open-case="datahub" aria-label="Abrir caso Data Hub QA Ops Toolkit">
+          <span class="case-media-badge">3 capas · 9 módulos</span>
+          <img src="caso-datahub/diagrama.jpg" alt="Diagrama conceptual Data Hub QA Ops Toolkit">
+        </button>
+        <div class="case-body">
+          <div class="case-meta">
+            <span class="org">Arquitectura · QA</span>
+            <span class="state exp">Exploración</span>
+          </div>
+          <h3>Data Hub · QA Ops Toolkit</h3>
+          <dl class="pdr">
+            <div><dt>Problema</dt><dd>Preparar tareas, revisar incidencias, ejecutar pruebas y guardar evidencia dependía de herramientas separadas y de revisiones manuales.</dd></div>
+            <div><dt>Decisión</dt><dd>Organicé el flujo en nueve módulos y tres capas (operación, orquestación, y datos y QA), con controles de acceso, evidencia y trazabilidad.</dd></div>
+            <div><dt>Resultado</dt><dd>Recreación conceptual sin datos internos: explica responsabilidades y conexiones, no reporta métricas.</dd></div>
+          </dl>
+          <div class="case-foot">
+            <ul class="tags"><li>React</li><li>TypeScript</li><li>Python</li><li>Playwright</li></ul>
+            <button type="button" class="more-btn" data-open-case="datahub">Explorar arquitectura <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECCIÓN 2: EXPERIENCIA Y FORMACIÓN
+       ========================================================= -->
+  <section id="experiencia" aria-labelledby="xp-t">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Trayectoria</p>
+        <h2 class="sec-title" id="xp-t">Dónde aprendí a resolver problemas de operación</h2>
+      </div>
+      <p class="sec-intro">Más de cinco años pasando del desarrollo full stack en telecomunicaciones a la automatización de pruebas y operaciones de datos en banca.</p>
+    </div>
+
+    <div class="xp-layout">
+      <div class="timeline">
+        <article class="xp-card">
+          <div class="xp-top">
+            <h3>BBVA Technology en América</h3>
+            <span class="xp-when">oct. 2024 — hoy · CDMX, híbrido</span>
+          </div>
+          <p class="xp-role">Software Associate II — QA Automation &amp; Data Ops</p>
+          <p class="xp-summary">Automatización de pruebas E2E con Python y Playwright, runners CLI, validación de datos estructurados (OpenPyXL), análisis de causa raíz e integración de sistemas y APIs para plataformas empresariales.</p>
+          <ul class="xp-highlights">
+            <li>Diseñé la propuesta de rediseño de notificaciones —patrón Outbox, control de flujo, colas de prioridad y reconciliación—, aprobada por mi líder y ya en operación en parte de los módulos. <button type="button" class="inline-link" data-open-case="notificaciones">Ver caso →</button></li>
+            <li>Implementé un motor heurístico local de respaldo para la asistencia con IA: si el servicio externo falla o alcanza su límite de uso, las respuestas siguen saliendo con reglas y la operación no se detiene.</li>
+            <li>Construyo selectores robustos e inspección automatizada para aplicaciones en React, con controles pre-commit, reportes y evidencias de ejecución por requerimiento.</li>
+          </ul>
+          <p class="xp-disc">Ejemplos descritos de forma general para proteger información interna.</p>
+        </article>
+
+        <article class="xp-card past">
+          <div class="xp-top">
+            <h3>izzi telecom</h3>
+            <span class="xp-when">abr. 2021 — sept. 2024 · Cuernavaca</span>
+          </div>
+          <p class="xp-role">Desarrollador web</p>
+          <p class="xp-summary">Desarrollo y mantenimiento de aplicaciones web full stack con Laravel, PHP, JavaScript, Node.js, Vue.js, Tailwind CSS, MySQL y SQL Server bajo Scrum.</p>
+          <ul class="xp-highlights">
+            <li>Construí, solo y de punta a punta, el sistema que asignaba actividades a los agentes del call center a nivel nacional. <button type="button" class="inline-link" data-open-case="asignacion">Ver caso →</button></li>
+            <li>Desarrollé el sistema de llamadas de cobranza y seguimiento de promesas de pago, optimizando reportes y asignación para horas pico. <button type="button" class="inline-link" data-open-case="cobranza">Ver caso →</button></li>
+            <li>Desarrollé la plataforma de reconocimiento con pines y Coinx: estado de cuenta, marketplace de canje, eventos, inventario y panel administrativo. <button type="button" class="inline-link" data-open-case="reconocimiento">Ver caso →</button></li>
+          </ul>
+        </article>
+      </div>
+
+      <aside class="side-col" aria-label="Formación y cursos">
+        <div class="edu-card">
+          <p class="eyebrow">Formación académica</p>
+          <h3>Ingeniería en Tecnologías de la Información</h3>
+          <p>Universidad Tecnológica Emiliano Zapata del Estado de Morelos (UTEZ)</p>
+          <div class="edu-meta">
+            <span>Titulado · 2021</span>
+            <span>Con cédula profesional</span>
+          </div>
+        </div>
+
+        <div class="edu-card">
+          <p class="eyebrow">Formación complementaria</p>
+          <h3>Liderazgo y enfoque operativo</h3>
+          <ul class="courses-list">
+            <li>Harvard ManageMentor</li>
+            <li>Interacciones difíciles</li>
+            <li>Enfoque en el cliente</li>
+          </ul>
+        </div>
+
+        <div class="edu-card">
+          <p class="eyebrow">Currículum</p>
+          <h3>Versión ejecutiva lista para imprimir</h3>
+          <p>Consulta el resumen completo en formato hoja carta o guárdalo como PDF directo desde el navegador.</p>
+          <div style="margin-top:14px">
+            <button type="button" class="btn ghost" id="open-cv-side" style="width:100%">Abrir CV interactivo →</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECCIÓN 3: LABORATORIO (PRODUCTOS + TOOLS FOR PYMES UNIFICADO)
+       ========================================================= -->
+  <section id="laboratorio" aria-labelledby="lab-t">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Laboratorio y herramientas</p>
+        <h2 class="sec-title" id="lab-t">Productos propios y Tools for Pymes</h2>
+      </div>
+      <p class="sec-intro">Sistemas que diseño, programo y pruebo de punta a punta — junto a herramientas gratuitas, sin cuenta y sin servidor para pymes.</p>
+    </div>
+
+    <div class="lab-tabs" role="tablist" aria-label="Filtrar laboratorio">
+      <button type="button" class="filter-pill active" data-lab="all" role="tab" aria-selected="true">Todo el laboratorio <span class="cnt">5</span></button>
+      <button type="button" class="filter-pill" data-lab="dev" role="tab" aria-selected="false">En desarrollo <span class="cnt">3</span></button>
+      <button type="button" class="filter-pill" data-lab="pymes" role="tab" aria-selected="false">Tools for Pymes <span class="cnt">2</span></button>
+    </div>
+
+    <!-- Spotlight Plumazo (unifica "Próximamente" y la tarjeta de Plumazo sin duplicidad) -->
+    <article class="plumazo-spotlight" data-lab-item="dev" id="plumazo">
+      <div class="plumazo-poster">
+        <video controls muted playsinline loop preload="none" poster="plumazo/poster-motor.jpg" width="720" height="1280" style="width:100%;height:100%;object-fit:cover;display:block">
+          <source src="plumazo/motor-conversacional.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="plumazo-body">
+        <div class="case-meta">
+          <span class="org" style="color:var(--nx-suave)">Proyecto propio · Producto destacado</span>
+          <span class="state dev">En desarrollo</span>
+        </div>
+        <h3>Plumazo · ¿Qué pasa cuando una conversación <em>sube de tono?</em></h3>
+        <p>Asistente de comunicación para contadores, despachos pequeños y trabajo diario: pasa un mensaje a tono corporativo y combina reglas deterministas, RAG e IA antes de sugerir qué responder. La IA no sustituye la lógica; la complementa.</p>
+        <ol class="plumazo-layers" aria-label="Capas del motor conversacional">
+          <li><b>01 · Motor heurístico</b>Léxico, métricas y contexto de baja latencia</li>
+          <li><b>02 · RAG</b>Fragmentos y evidencia que respaldan la señal</li>
+          <li><b>03 · IA</b>Tono, frustración implícita y ambigüedad</li>
+          <li><b>04 · Decidir y actuar</b>Detectar, interpretar y recomendar respuesta</li>
+        </ol>
+        <ul class="tags" aria-label="Tecnologías de Plumazo">
+          <li style="background:rgba(255,255,255,.08);border-color:var(--nx-linea);color:var(--nx-texto)">JavaScript</li>
+          <li style="background:rgba(255,255,255,.08);border-color:var(--nx-linea);color:var(--nx-texto)">FastAPI</li>
+          <li style="background:rgba(255,255,255,.08);border-color:var(--nx-linea);color:var(--nx-texto)">MySQL</li>
+          <li style="background:rgba(255,255,255,.08);border-color:var(--nx-linea);color:var(--nx-texto)">pytest</li>
+        </ul>
+        <p class="plumazo-note">Demostración visual con datos de ejemplo; no son resultados de clientes.</p>
+        <div class="plumazo-foot">
+          <a href="https://danielherrodri.github.io/Plumazo/" target="_blank" rel="noopener noreferrer">Ver demo de Plumazo →</a>
+          <a href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_softwareengineering-artificialintelligence-activity-7528494892810014721-FCMo" target="_blank" rel="noopener noreferrer">Ver publicación en LinkedIn ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <div class="lab-grid">
+      <!-- Nexo -->
+      <article class="proj-card" data-lab-item="dev">
+        <div class="proj-head">
+          <h3>Nexo</h3>
+          <span class="state dev">En desarrollo</span>
+        </div>
+        <p>SaaS para simplificar la operación administrativa de profesionistas y prestadores de servicios en México, con prioridad en simplicidad, privacidad y costos controlados.</p>
+        <ul class="tags"><li>FastAPI</li><li>PostgreSQL</li><li>Cloud Run</li><li>GitHub Actions</li></ul>
+        <span style="font:500 13px var(--f-mono);color:var(--muted);padding-top:4px">Demo aún no pública</span>
+      </article>
+
+      <!-- Shalom -->
+      <article class="proj-card" data-lab-item="dev">
+        <div class="proj-head">
+          <h3>Shalom</h3>
+          <span class="state dev">En desarrollo</span>
+        </div>
+        <p>Plataforma para el ministerio infantil de una iglesia: registro de asistencia, grupos y comunicación con las familias. La demo pública usa datos ficticios.</p>
+        <ul class="tags"><li>Django</li><li>React</li><li>Apps Script</li><li>Playwright</li></ul>
+        <a class="more-btn" href="https://danielherrodri.github.io/shalom-plataforma/" target="_blank" rel="noopener noreferrer">Ver demo de Shalom <span aria-hidden="true">↗</span></a>
+      </article>
+
+      <!-- Tool 1: Calculadora de precios (SVG original preservado) -->
+      <article class="tool-card" data-lab-item="pymes">
+        <a class="tool-art" href="https://danielherrodri.github.io/calculadora-precios/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Calculadora de precios">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+            <rect width="1500" height="500" fill="#f3f5f9"/>
+            <circle cx="0" cy="500" r="120" fill="#4fd6c2"/>
+            <path d="M760 500C700 420 744 336 812 268C884 196 868 92 930 34C962 6 1000 0 1040 0H1500V500Z" fill="#18284a"/>
+            <text x="70" y="80" font-family="Bricolage Grotesque,sans-serif" font-size="25" font-weight="600" letter-spacing="2.5" fill="#0f1520">TOOLS FOR PYMES</text>
+            <rect x="70" y="98" width="112" height="7" rx="3.5" fill="#4fd6c2"/>
+            <text x="66" y="205" font-family="Bricolage Grotesque,sans-serif" font-size="84" font-weight="800" fill="#0f1520">Arma pedidos</text>
+            <text x="66" y="290" font-family="Bricolage Grotesque,sans-serif" font-size="84" font-weight="800" fill="#0f1520">en segundos</text>
+            <text x="70" y="350" font-family="Source Sans 3,sans-serif" font-size="25" fill="#566172">Tu catálogo, tus precios y el total al instante.</text>
+            <g transform="translate(40 0)">
+              <rect x="770" y="104" width="260" height="285" rx="42" fill="#0f1520" stroke="#7ca4ff" stroke-width="3"/>
+              <rect x="795" y="128" width="210" height="80" rx="16" fill="#f3f5f9"/>
+              <rect x="878" y="161" width="104" height="14" rx="7" fill="#0f1520"/>
+              <rect x="795" y="232" width="62" height="60" rx="14" fill="#f3f5f9"/>
+              <rect x="867" y="232" width="62" height="60" rx="14" fill="#f3f5f9"/>
+              <rect x="795" y="302" width="62" height="60" rx="14" fill="#f3f5f9"/>
+              <rect x="867" y="302" width="62" height="60" rx="14" fill="#f3f5f9"/>
+              <rect x="939" y="232" width="66" height="130" rx="16" fill="#4fd6c2"/>
+              <path d="M972 279v36M954 297h36" stroke="#0f1520" stroke-width="8" stroke-linecap="round"/>
+              <rect x="1070" y="80" width="270" height="64" rx="16" fill="#f3f5f9"/>
+              <rect x="1120" y="100" width="150" height="9" rx="4.5" fill="#0f1520"/>
+              <rect x="1120" y="118" width="90" height="9" rx="4.5" fill="#4fd6c2"/>
+              <rect x="1070" y="164" width="270" height="64" rx="16" fill="#f3f5f9"/>
+              <rect x="1120" y="184" width="140" height="9" rx="4.5" fill="#0f1520"/>
+              <rect x="1120" y="202" width="80" height="9" rx="4.5" fill="#4fd6c2"/>
+              <rect x="1064" y="264" width="290" height="76" rx="18" fill="#f3f5f9"/>
+              <text x="1090" y="313" font-family="Bricolage Grotesque,sans-serif" font-size="31" font-weight="800" fill="#0f1520">Total</text>
+              <rect x="1202" y="295" width="128" height="16" rx="8" fill="#4fd6c2"/>
+            </g>
+          </svg>
+        </a>
+        <div class="tool-body">
+          <div class="proj-head">
+            <h3>Calculadora de precios</h3>
+            <span class="state prod">En producción</span>
+          </div>
+          <p>Arma pedidos desde tu catálogo en Excel: busca con abreviaturas o por voz, ve el total al instante y mándalo por WhatsApp. Sin cuenta y sin servidor.</p>
+          <div class="tool-links">
+            <a class="more-btn" href="https://danielherrodri.github.io/calculadora-precios/" target="_blank" rel="noopener noreferrer">Abrir calculadora <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tool 2: Limpiador de metadatos (SVG original preservado) -->
+      <article class="tool-card" data-lab-item="pymes">
+        <a class="tool-art" href="https://danielherrodri.github.io/limpiador-metadatos/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Limpiador de metadatos">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+            <rect width="1500" height="500" fill="#f3f5f9"/>
+            <circle cx="0" cy="500" r="120" fill="#4fd6c2"/>
+            <path d="M760 500C700 420 744 336 812 268C884 196 868 92 930 34C962 6 1000 0 1040 0H1500V500Z" fill="#18284a"/>
+            <g transform="translate(1050 90)">
+              <rect x="0" y="0" width="300" height="320" rx="28" fill="#f3f5f9"/>
+              <rect x="24" y="24" width="252" height="160" rx="16" fill="#4fd6c2"/>
+              <path d="M24 160l70-62 54 44 40-30 88 66v6a16 16 0 0 1-16 16H40a16 16 0 0 1-16-16z" fill="#18284a"/>
+              <circle cx="214" cy="70" r="20" fill="#f3f5f9"/>
+              <path d="M40 216h170M40 248h120M40 280h150" stroke="#18284a" stroke-width="5" stroke-linecap="round" stroke-dasharray="8 12"/>
+              <g transform="translate(200 210)"><path d="M40 0l36 15v26c0 23-15 42-36 51C19 83 4 64 4 41V15z" fill="#0f1520"/><path d="M24 44l11 11 22-22" fill="none" stroke="#4fd6c2" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></g>
+            </g>
+            <text x="80" y="145" font-family="Bricolage Grotesque,sans-serif" font-size="25" font-weight="600" letter-spacing="2.5" fill="#0f1520">TOOLS FOR PYMES</text>
+            <rect x="80" y="165" width="78" height="6" rx="3" fill="#4fd6c2"/>
+            <text x="80" y="250" font-family="Bricolage Grotesque,sans-serif" font-size="84" font-weight="800" fill="#0f1520">Fotos sin</text>
+            <text x="80" y="336" font-family="Bricolage Grotesque,sans-serif" font-size="84" font-weight="800" fill="#0f1520">datos ocultos</text>
+            <text x="80" y="400" font-family="Source Sans 3,sans-serif" font-size="25" fill="#566172">GPS, teléfono y marcas de IA fuera, en tu navegador.</text>
+          </svg>
+        </a>
+        <div class="tool-body">
+          <div class="proj-head">
+            <h3>Limpiador de metadatos</h3>
+            <span class="state prod">En producción</span>
+          </div>
+          <p>Quita GPS, modelo del teléfono, fechas y marcas de IA de tus fotos antes de publicarlas. Todo ocurre en tu navegador.</p>
+          <div class="tool-links">
+            <a class="more-btn" href="https://danielherrodri.github.io/limpiador-metadatos/" target="_blank" rel="noopener noreferrer">Abrir limpiador <span aria-hidden="true">↗</span></a>
+            <a class="more-btn" href="https://github.com/danielherrodri/limpiador-metadatos" target="_blank" rel="noopener noreferrer">Código <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECCIÓN 4: STACK TÉCNICO COMPLETO (5 CATEGORÍAS)
+       ========================================================= -->
+  <section id="stack" aria-labelledby="stack-t">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Herramientas</p>
+        <h2 class="sec-title" id="stack-t">Stack de todos los días</h2>
+      </div>
+      <p class="sec-intro">Tecnologías que uso en automatización de pruebas, backend, datos, nube y desarrollo de interfaces.</p>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-box">
+        <h3>QA &amp; Ops</h3>
+        <ul><li>Playwright</li><li>pytest</li><li>Pruebas E2E</li><li>OpenPyXL</li></ul>
+      </div>
+      <div class="stack-box">
+        <h3>Backend</h3>
+        <ul><li>Python</li><li>Java</li><li>PHP / Laravel</li><li>FastAPI</li><li>Django</li><li>Node.js</li></ul>
+      </div>
+      <div class="stack-box">
+        <h3>Datos</h3>
+        <ul><li>SQL Server</li><li>PostgreSQL</li><li>MySQL</li><li>NoSQL</li></ul>
+      </div>
+      <div class="stack-box">
+        <h3>Nube y CI</h3>
+        <ul><li>Docker</li><li>Cloud Run</li><li>GitHub Actions</li></ul>
+      </div>
+      <div class="stack-box">
+        <h3>Frontend</h3>
+        <ul><li>JavaScript</li><li>TypeScript</li><li>React</li><li>Vue.js</li><li>Tailwind CSS</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       SECCIÓN 5: CONTACTO
+       ========================================================= -->
+  <section class="final" id="contacto" aria-labelledby="contacto-t">
+    <p class="eyebrow">Contacto</p>
+    <h2 id="contacto-t">¿Buscas a alguien que entienda el problema antes de programar?</h2>
+    <p>Estoy abierto a conversar sobre oportunidades, colaboraciones y proyectos. LinkedIn es la forma más rápida de contactarme.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera" target="_blank" rel="noopener noreferrer">Escríbeme en LinkedIn ↗</a>
+      <a class="btn ghost" href="https://github.com/danielherrodri" target="_blank" rel="noopener noreferrer">github.com/danielherrodri</a>
+      <button type="button" class="btn ghost" id="open-cv-footer">Ver CV completo</button>
+    </div>
+    <div class="mail-row">
+      <code id="mail">daniel199907@gmail.com</code>
+      <button type="button" id="copy" class="btn ghost">Copiar correo</button>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Daniel Rodriguez Herrera</span>
+    <span>Cuernavaca · CDMX · México</span>
+  </footer>
+</main>
+
+<!-- =========================================================
+     MODAL UNIVERSAL (CASOS COMPLETOS + CV INTERACTIVO)
+     ========================================================= -->
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+  <div class="modal-panel">
+    <div class="modal-bar">
+      <span class="m-label" id="modal-bar-label">Caso de ingeniería</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a class="btn ghost" id="modal-pdf" href="cv.pdf" download style="min-height:36px;padding:0 12px;font-size:13.5px" hidden>Descargar PDF</a>
+        <button type="button" class="btn ghost" id="modal-print" style="min-height:36px;padding:0 12px;font-size:13.5px" hidden>Imprimir</button>
+        <button type="button" class="icon-btn" id="modal-close" aria-label="Cerrar ventana">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const root = document.documentElement;
+
+  /* ---------------------------------------------------------
+     1. TEMA CLARO / OSCURO (RESPETA PALETA ORIGINAL)
+     --------------------------------------------------------- */
+  const themeBtn = document.getElementById('theme');
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  const syncThemeBtn = () => {
+    const d = isDark();
+    themeBtn.setAttribute('aria-pressed', String(d));
+    themeBtn.setAttribute('aria-label', d ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+  };
+  try { const saved = localStorage.getItem('tema'); if (saved) root.dataset.theme = saved; } catch {}
+  syncThemeBtn();
+  themeBtn.addEventListener('click', () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    syncThemeBtn();
+    try { localStorage.setItem('tema', root.dataset.theme); } catch {}
+  });
+
+  /* ---------------------------------------------------------
+     2. SCROLL HEADER + ACTIVE NAV LINK
+     --------------------------------------------------------- */
+  const topHeader = document.getElementById('top');
+  const navLinks = [...document.querySelectorAll('.nav a.nav-link')];
+  const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const onScroll = () => {
+    topHeader.classList.toggle('scrolled', scrollY > 8);
+    let current = '';
+    const y = scrollY + 130;
+    for (const s of sections) { if (s.offsetTop <= y) current = '#' + s.id; }
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === current));
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------------------------------------------------------
+     3. MENÚ MÓVIL
+     --------------------------------------------------------- */
+  const sheet = document.getElementById('sheet');
+  const openMenuBtn = document.getElementById('menu-open');
+  const closeMenuBtn = document.getElementById('menu-close');
+  const openMenu = () => { sheet.hidden = false; openMenuBtn.setAttribute('aria-expanded', 'true'); document.body.style.overflow = 'hidden'; };
+  const closeMenu = () => { sheet.hidden = true; openMenuBtn.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; };
+  openMenuBtn.addEventListener('click', openMenu);
+  closeMenuBtn.addEventListener('click', closeMenu);
+  sheet.querySelectorAll('nav a').forEach(a => a.addEventListener('click', closeMenu));
+
+  /* ---------------------------------------------------------
+     4. RETRATO CON EFECTO PIXELADO SIGNATURE
+     --------------------------------------------------------- */
+  (() => {
+    const box = document.getElementById('me');
+    const img = box.querySelector('img');
+    const cv = box.querySelector('canvas');
+    const ctx = cv.getContext('2d');
+    const tmp = document.createElement('canvas');
+    const tctx = tmp.getContext('2d');
+    let raf = 0;
+    const size = () => { const d = Math.min(2, devicePixelRatio || 1); cv.width = cv.height = Math.round(box.clientWidth * d) || 216; };
+    const draw = block => {
+      if (!img.naturalWidth) return;
+      const n = Math.max(1, Math.round(cv.width / block));
+      tmp.width = tmp.height = n;
+      tctx.drawImage(img, 0, 0, n, n);
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.drawImage(tmp, 0, 0, n, n, 0, 0, cv.width, cv.height);
+    };
+    const play = (from, to, ms, done) => {
+      cancelAnimationFrame(raf);
+      cv.style.opacity = 1;
+      const t0 = performance.now();
+      const step = t => {
+        const k = Math.min(1, (t - t0) / ms);
+        const e = 1 - Math.pow(1 - k, 3);
+        draw(from + (to - from) * e);
+        if (k < 1) raf = requestAnimationFrame(step);
+        else if (done) done();
+      };
+      raf = requestAnimationFrame(step);
+    };
+    const hide = () => { cv.style.opacity = 0; };
+    const start = () => { size(); if (reduce.matches) { hide(); return; } play(cv.width / 6, 1, 950, hide); };
+    const glitch = () => { if (reduce.matches) return; play(1, cv.width / 12, 220, () => play(cv.width / 12, 1, 380, hide)); };
+    if (img.complete && img.naturalWidth) start();
+    else img.addEventListener('load', start, { once: true });
+    box.addEventListener('pointerenter', glitch);
+    box.addEventListener('pointerdown', glitch);
+    addEventListener('resize', size);
+  })();
+
+  /* ---------------------------------------------------------
+     5. DIAGRAMA ANIMADO DEL HERO (CON CLICK EN PASOS)
+     --------------------------------------------------------- */
+  (() => {
+    const flow = document.getElementById('hero-flow');
+    const steps = flow.querySelector('.steps');
+    const pkt = flow.querySelector('.packet');
+    const btn = document.getElementById('pause');
+    const nodes = [...steps.querySelectorAll('.n')];
+    const ys = () => nodes.map(n => n.closest('li').offsetTop + n.offsetTop + n.offsetHeight / 2 - 7);
+    const seq = [[1, 1300], [2, 1300], [3, 900], ['retry', 1100], [3, 700], [4, 2400], [0, 600]];
+    let i = 0, timer = 0, paused = false, y = ys();
+
+    const setStep = s => {
+      flow.classList.toggle('retry', s === 'retry');
+      if (s !== 'retry') {
+        if (s === 0) { flow.classList.remove('anim'); flow.dataset.step = ''; }
+        else { flow.dataset.step = s; pkt.style.setProperty('--y', (y[s - 1] || 0) + 'px'); flow.classList.add('anim'); }
+      }
+    };
+    const tick = () => {
+      if (!paused && !document.hidden) {
+        const [s, ms] = seq[i];
+        setStep(s);
+        i = (i + 1) % seq.length;
+        timer = setTimeout(tick, ms);
+      } else {
+        timer = setTimeout(tick, 400);
+      }
+    };
+    const updatePauseBtn = () => {
+      btn.setAttribute('aria-pressed', String(paused));
+      btn.querySelector('span').textContent = paused ? 'Reanudar' : 'Pausar';
+      btn.querySelector('svg').innerHTML = paused ? '<path d="M4 2.5v11l9-5.5z"/>' : '<path d="M4 3h3v10H4zM9 3h3v10H9z"/>';
+    };
+    btn.addEventListener('click', () => { paused = !paused; updatePauseBtn(); });
+    steps.querySelectorAll('li[data-goto]').forEach(li => {
+      li.addEventListener('click', () => {
+        y = ys();
+        paused = true;
+        updatePauseBtn();
+        setStep(Number(li.dataset.goto));
+      });
+    });
+    addEventListener('resize', () => { y = ys(); });
+    if (!reduce.matches) { setTimeout(() => { y = ys(); tick(); }, 250); }
+  })();
+
+  /* ---------------------------------------------------------
+     6. FILTROS DE CASOS Y LABORATORIO
+     --------------------------------------------------------- */
+  const caseFilterBtns = [...document.querySelectorAll('.filter-bar .filter-pill')];
+  const caseCards = [...document.querySelectorAll('#cases-grid .case-card')];
+  caseFilterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      caseFilterBtns.forEach(b => {
+        const on = b === btn;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', String(on));
+      });
+      caseCards.forEach((c, idx) => {
+        const show = f === 'all' || c.dataset.cat === f;
+        c.hidden = !show;
+        // Mantener estilo featured cuando se muestran todos o es el único visible
+        if (idx === 0) c.classList.toggle('featured', f === 'all' || f === 'banca');
+      });
+    });
+  });
+
+  const labBtns = [...document.querySelectorAll('.lab-tabs .filter-pill')];
+  const labItems = [...document.querySelectorAll('[data-lab-item]')];
+  labBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.lab;
+      labBtns.forEach(b => {
+        const on = b === btn;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', String(on));
+      });
+      labItems.forEach(el => {
+        el.hidden = !(f === 'all' || el.dataset.labItem === f);
+      });
+    });
+  });
+
+  /* ---------------------------------------------------------
+     7. TOAST + COPIAR CORREO (CON FALLBACK SANDBOX-SAFE)
+     --------------------------------------------------------- */
+  const toastEl = document.getElementById('toast');
+  let toastTimer = 0;
+  const showToast = msg => {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2400);
+  };
+
+  const copyBtn = document.getElementById('copy');
+  const mailEl = document.getElementById('mail');
+  copyBtn.addEventListener('click', () => {
+    const email = mailEl.textContent.trim();
+    const ok = () => {
+      copyBtn.textContent = 'Copiado ✓';
+      showToast('Correo copiado: ' + email);
+      setTimeout(() => { copyBtn.textContent = 'Copiar correo'; }, 2000);
+    };
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = email;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); ok(); } catch { showToast('Selecciona el correo para copiarlo'); }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(ok, fallback);
+    } else { fallback(); }
+  });
+
+  /* ---------------------------------------------------------
+     8. LECTOR COMPLETO DE CASOS + DEMOS INTERACTIVAS + CV
+     --------------------------------------------------------- */
+  const modal = document.getElementById('modal');
+  const modalBody = document.getElementById('modal-body');
+  const modalBarLabel = document.getElementById('modal-bar-label');
+  const modalPrint = document.getElementById('modal-print');
+  const modalPdf = document.getElementById('modal-pdf');
+  const modalClose = document.getElementById('modal-close');
+  let activeInterval = 0;
+
+  const closeModal = () => {
+    clearInterval(activeInterval);
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  };
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+  modalPrint.addEventListener('click', () => window.print());
+
+  const CASES_HTML = {
+    notificaciones: `
+      <div class="m-hero">
+        <p class="eyebrow">Caso de ingeniería · BBVA Technology en América</p>
+        <h2 id="modal-title">Notificaciones que <span class="hl">ya no se pierden</span></h2>
+        <p class="lead">Cómo pasé de envíos síncronos y de «mejor esfuerzo» a un sistema distribuido con patrón Outbox, colas de prioridad y self-healing.</p>
+        <div class="m-meta">
+          <span class="state prod">En producción</span>
+          <span class="m-chip">En parte de los módulos</span>
+          <span class="m-chip">México – España · revisiones asíncronas</span>
+          <span class="m-chip">Recreación ilustrativa</span>
+        </div>
+      </div>
+      <div class="m-stats">
+        <div class="m-stat"><b>12</b><span>semanas de implementación en paralelo a otro proyecto</span></div>
+        <div class="m-stat"><b>+7 h</b><span>diferencia horaria México – España</span></div>
+        <div class="m-stat"><b>4</b><span>colas de prioridad independientes</span></div>
+        <div class="m-stat"><b>5</b><span>piezas: de la fachada al self-healing</span></div>
+      </div>
+      <figure class="m-figure">
+        <img src="caso-notificaciones/diagrama.jpg" alt="Diagrama de arquitectura del sistema de notificaciones">
+        <figcaption>Recreación ilustrativa con nombres, flujos y datos ficticios para proteger la operación interna; no es el sistema original.</figcaption>
+      </figure>
+      <div class="m-chapter">
+        <div class="m-chap-n">01</div>
+        <div>
+          <p class="eyebrow">La necesidad</p>
+          <h3>Que cada aviso llegue, o que se sepa por qué no</h3>
+          <p>Varios módulos de negocio dependen de notificaciones por correo para avisar a los usuarios. Ese aviso tiene que llegar y, cuando no llega, el equipo necesita saber qué pasó con él en lugar de enterarse por una queja.</p>
+        </div>
+      </div>
+      <div class="m-chapter">
+        <div class="m-chap-n">02</div>
+        <div>
+          <p class="eyebrow">El problema</p>
+          <h3>«A veces los correos simplemente no llegan»</h3>
+          <p>Al revisar el sistema encontré la causa raíz: el envío era síncrono y de mejor esfuerzo. Si el proveedor respondía 429 (límite de cuota) o 5xx, la notificación se perdía sin rastro ni reintento. Además, el código pertenecía a otro equipo y estaba poco documentado.</p>
+          <div class="m-compare">
+            <div class="m-card before"><span class="k">Antes</span><b>Síncrono</b><p>Cada módulo llamaba directo al proveedor. Un 429 significaba un mensaje perdido.</p></div>
+            <div class="m-card after"><span class="k">Ahora</span><b>Asíncrono y trazable</b><p>Cada mensaje se guarda antes de enviarse y termina entregado o registrado.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="m-chapter">
+        <div class="m-chap-n">03</div>
+        <div>
+          <p class="eyebrow">Cómo lo solucioné</p>
+          <h3>Cinco piezas que se cuidan entre sí</h3>
+          <ol class="m-steps">
+            <li><div><h4>Eventos de negocio</h4><p>Los módulos llaman a una fachada única de envío, que filtra el entorno y prevalida dominios inválidos antes de tocar la red.</p></div></li>
+            <li><div><h4>Patrón Outbox</h4><p>Todo mensaje se persiste en <code>PENDING</code> antes de intentar enviarse. Si el proceso muere, no se pierde nada.</p></div></li>
+            <li><div><h4>Despacho HTTP y control de flujo</h4><p>El cliente sale hacia el API Gateway con rate limiter (token bucket) y exponential backoff a nivel transporte.</p></div></li>
+            <li><div><h4>Bifurcación inteligente</h4><p>Con <code>202 Accepted</code> y correlation ID, pasa a <code>QUEUED</code> y se cierra por webhook en <code>SENT</code> o <code>BOUNCED</code>. Los 422 van a dead letter sin reintento; los 429/5xx pasan a cuatro colas de prioridad (crítica, alta, normal y baja).</p></div></li>
+            <li><div><h4>Resiliencia y self-healing</h4><p>Un cron de reconciliación rescata mensajes huérfanos. El reproceso de dead letters reencola por lotes con staggering para evitar thundering herd.</p></div></li>
+          </ol>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--line)">
+        <a class="btn primary" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_ingenieriadesoftware-arquitecturadesoftware-activity-7527444412281311232-Ah0s" target="_blank" rel="noopener noreferrer">Ver publicación en LinkedIn ↗</a>
+        <a class="btn ghost" href="caso-notificaciones/">Abrir página completa →</a>
+        <a class="btn ghost" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_arquitecturadesoftware-sistemasdistribuidos-activity-7523962557322403840-8O1L" target="_blank" rel="noopener noreferrer">Historia en 37 s (LinkedIn) ↗</a>
+      </div>
+    `,
+
+    asignacion: `
+      <div class="m-hero">
+        <p class="eyebrow">Caso de ingeniería · izzi telecom</p>
+        <h2 id="modal-title">Cada actividad, a quien <span class="hl">sí puede atenderla</span></h2>
+        <p class="lead">Sistema que tomaba la carga de Inbound y la repartía entre los agentes del call center a nivel nacional según reglas por manager, con temporizador en tiempo real, estados del agente, bitácora y reportes.</p>
+        <div class="m-meta">
+          <span class="state prod">En producción</span>
+          <span class="m-chip">Usado a nivel nacional</span>
+          <span class="m-chip">Hecho solo, de punta a punta</span>
+        </div>
+      </div>
+      <div class="nexo-box">
+        <div><span class="k-pill">Recreación interactiva</span><h3>Prueba el panel: cambia tu estado o cierra una actividad</h3></div>
+        <div class="demo-app">
+          <div class="demo-bar"><b>Asignación · Call center</b><span style="font:500 12px var(--f-mono);color:var(--nx-muted)">carga Inbound: Excel · SQL Server</span></div>
+          <div class="demo-grid">
+            <div class="demo-pane">
+              <div class="demo-pane-t"><span>Mi bandeja</span><span id="asig-count" style="color:var(--nx-verde);background:var(--nx-alt);padding:2px 8px;border-radius:999px">3 de 3 activas</span></div>
+              <div class="status-btns" id="asig-status-btns">
+                <button type="button" class="status-btn on" data-st="Disponible">● Disponible</button>
+                <button type="button" class="status-btn" data-st="Comida">● Comida</button>
+                <button type="button" class="status-btn" data-st="Indispuesto">● Indispuesto</button>
+              </div>
+              <div id="asig-acts">
+                <div class="demo-act"><div><b>Actividad A</b><div style="font-size:12.5px;color:var(--nx-muted)">Regla del manager</div></div><span class="demo-timer long" data-t="1384">23:04</span></div>
+                <div class="demo-act"><div><b>Actividad B</b><div style="font-size:12.5px;color:var(--nx-muted)">Regla del manager</div></div><span class="demo-timer" data-t="512">08:32</span></div>
+                <div class="demo-act" id="asig-act-c">
+                  <div><b>Actividad C</b><div style="font-size:12.5px;color:var(--nx-muted)">Requiere ticket para cerrar</div></div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span class="demo-timer" data-t="41">00:41</span>
+                    <button type="button" id="asig-close-btn" style="border:0;border-radius:7px;padding:6px 10px;background:var(--nx-verde);color:#fff;font:600 12px var(--f-body);cursor:pointer">Cerrar #TK-402</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="demo-pane">
+                <div class="demo-pane-t">Reglas del manager</div>
+                <div style="font-size:13.5px;color:var(--nx-muted);display:grid;gap:5px">
+                  <div>→ Máximo 3 actividades activas por agente</div>
+                  <div>→ Solo se asigna a agentes disponibles</div>
+                  <div>→ Cierre obligatorio con número de ticket</div>
+                </div>
+              </div>
+              <div class="demo-pane">
+                <div class="demo-pane-t">Bitácora de estado (en vivo)</div>
+                <ul class="demo-log" id="asig-log">
+                  <li><b>13:02</b> Disponible → Comida</li>
+                  <li><b>13:47</b> Comida → Disponible</li>
                 </ul>
+              </div>
             </div>
-            <div class="footer-col">
-                <h3>Código</h3>
-                <ul>
-                    <li><a href="https://github.com" target="_blank">GitHub</a></li>
-                    <li><a href="https://github.com" target="_blank">Repositorios</a></li>
-                    <li><a href="https://github.com" target="_blank">Contribuciones</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h3>Perfil</h3>
-                <ul>
-                    <li><a href="https://linkedin.com/in/daniel-rodriguez-herrera" target="_blank">LinkedIn</a></li>
-                    <li><a href="mailto:daniel@example.com">Email</a></li>
-                </ul>
-            </div>
+          </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Daniel Rodriguez Herrera. Hecho con atención al detalle.</p>
+        <p style="margin:0;font:400 12.5px var(--f-mono);color:var(--nx-suave)">Recreación ilustrativa con datos ficticios; no es el sistema original.</p>
+      </div>
+      <div class="m-stats">
+        <div class="m-stat"><b>Nacional</b><span>agentes de call center en todo el país</span></div>
+        <div class="m-stat"><b>Por manager</b><span>reglas de asignación personalizadas</span></div>
+        <div class="m-stat"><b>Tiempo real</b><span>temporizador visible en cada actividad</span></div>
+        <div class="m-stat"><b>Solo</b><span>datos, back, front y reportes</span></div>
+      </div>
+      <div class="m-chapter">
+        <div class="m-chap-n">01</div>
+        <div>
+          <p class="eyebrow">Necesidad y problema</p>
+          <h3>Mucho trabajo, muchas reglas y un servidor limitado</h3>
+          <p>Inbound depositaba actividades en Excel o base de datos y cada manager las repartía a su manera sin medir tiempos ni disponibilidad. Además, el servidor tenía recursos muy limitados.</p>
+          <div class="m-compare">
+            <div class="m-card before"><span class="k">Antes</span><b>Reparto sin visibilidad</b><p>Sin control de tiempos, disponibilidad ni trazabilidad por ticket.</p></div>
+            <div class="m-card after"><span class="k">Ahora</span><b>Asignación por reglas</b><p>Motor de reglas por manager, temporizador en vivo, bitácora y reportes por correo.</p></div>
+          </div>
         </div>
-    </footer>
+      </div>
+      <div class="m-chapter">
+        <div class="m-chap-n">02</div>
+        <div>
+          <p class="eyebrow">Optimización</p>
+          <h3>Tres frentes para eliminar la lentitud</h3>
+          <ol class="m-steps">
+            <li><div><h4>Base de datos (SQL Server)</h4><p>Consultas optimizadas, índices y procedimientos almacenados para responder rápido con hardware limitado.</p></div></li>
+            <li><div><h4>Frontend ligero</h4><p>CSS y JavaScript minificados para acelerar la carga en cada pantalla.</p></div></li>
+            <li><div><h4>Procesamiento en el cliente</h4><p>Parte del trabajo se movió al navegador para descargar al servidor, y los reportes pesados se enviaban por correo en segundo plano.</p></div></li>
+          </ol>
+        </div>
+      </div>
+      <figure class="m-figure">
+        <img src="caso-asignacion/infografia.jpg" alt="Infografía del caso de asignación de actividades">
+        <figcaption>Infografía resumen publicada en LinkedIn (datos ficticios).</figcaption>
+      </figure>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn primary" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_softwareengineering-backenddevelopment-laravel-activity-7527465533567520768-_XPX" target="_blank" rel="noopener noreferrer">Ver publicación en LinkedIn ↗</a>
+        <a class="btn ghost" href="caso-asignacion/">Abrir página completa →</a>
+      </div>
+    `,
+
+    reconocimiento: `
+      <div class="m-hero">
+        <p class="eyebrow">Caso de ingeniería · izzi telecom</p>
+        <h2 id="modal-title">Reconocimiento que <span class="hl">se puede canjear</span></h2>
+        <p class="lead">De controlar pines y Coinx en Excel a una plataforma con estado de cuenta, marketplace de canje, eventos personalizados, álbum de fotos, inventario y panel administrativo.</p>
+        <div class="m-meta">
+          <span class="state prod">En producción</span>
+          <span class="m-chip">Recursos Humanos · empleados</span>
+          <span class="m-chip">Laravel · PHP · SQL Server</span>
+        </div>
+      </div>
+      <div class="nexo-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div><span class="k-pill">Marketplace interactivo</span><h3>Simula un canje de Coinx en vivo</h3></div>
+          <button type="button" id="rec-reset" style="border:1px solid var(--nx-linea);background:transparent;color:var(--nx-lima);border-radius:8px;padding:6px 12px;font:500 12px var(--f-mono);cursor:pointer">Reiniciar saldo</button>
+        </div>
+        <div class="demo-app">
+          <div class="demo-bar"><b>Reconocimiento · Panel</b><span style="font:500 12px var(--f-mono);color:var(--nx-muted)">Estado de cuenta · Marketplace · Inventario</span></div>
+          <div class="demo-grid">
+            <div class="demo-pane">
+              <div class="demo-pane-t">Estado de cuenta · Empleado de ejemplo</div>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px">
+                <b id="rec-saldo" style="font:800 34px/1 var(--f-display);color:var(--nx-verde)">1,250</b>
+                <span style="font:500 13px var(--f-mono);color:var(--nx-muted)">Coinx disponibles</span>
+              </div>
+              <ul class="demo-mov" id="rec-mov">
+                <li><span>Taller de capacitación (+1 pin)</span><b class="plus">+150</b></li>
+                <li><span>Jornada de voluntariado (+1 pin)</span><b class="plus">+200</b></li>
+                <li><span>Canje previo en marketplace</span><b class="minus">−300</b></li>
+              </ul>
+            </div>
+            <div class="demo-pane">
+              <div class="demo-pane-t">Marketplace</div>
+              <div class="demo-shop">
+                <div class="demo-item"><b>Audífonos</b><span style="font:500 12px var(--f-mono);color:var(--nx-muted)">600 Coinx</span><button type="button" class="rec-buy" data-name="Audífonos" data-cost="600">Canjear</button></div>
+                <div class="demo-item"><b>Termo</b><span style="font:500 12px var(--f-mono);color:var(--nx-muted)">250 Coinx</span><button type="button" class="rec-buy" data-name="Termo" data-cost="250">Canjear</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="margin:0;font:400 12.5px var(--f-mono);color:var(--nx-suave)">Recreación ilustrativa con datos ficticios; no es la plataforma original.</p>
+      </div>
+      <div class="m-chapter">
+        <div class="m-chap-n">01</div>
+        <div>
+          <p class="eyebrow">El problema</p>
+          <h3>Todo vivía en hojas de cálculo</h3>
+          <p>Las entregas de pines y Coinx, saldos, canjes e inventario se llevaban manualmente en Excel. Responder «¿cuántos Coinx tengo?» implicaba revisar varios archivos.</p>
+          <div class="m-compare">
+            <div class="m-card before"><span class="k">Antes</span><b>A mano y en Excel</b><p>Asignaciones, saldos, canjes e inventario en archivos separados.</p></div>
+            <div class="m-card after"><span class="k">Ahora</span><b>Una sola plataforma</b><p>Cada actividad, entrega y canje queda registrado y el saldo se calcula solo.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="m-chapter">
+        <div class="m-chap-n">02</div>
+        <div>
+          <p class="eyebrow">Módulos construidos</p>
+          <h3>Todo el ciclo del reconocimiento</h3>
+          <ol class="m-steps">
+            <li><div><h4>Actividades y entrega</h4><p>Registro de participación en actividades de RH y asignación automática de pines y Coinx.</p></div></li>
+            <li><div><h4>Estado de cuenta y Marketplace</h4><p>Saldo, historial y canje de productos descontando saldo e inventario en el mismo flujo.</p></div></li>
+            <li><div><h4>Eventos personalizados, álbum e inventario</h4><p>Campañas como tarjetas del 14 de febrero, galería de eventos y control de existencias desde el panel administrativo.</p></div></li>
+          </ol>
+        </div>
+      </div>
+      <figure class="m-figure">
+        <img src="caso-reconocimiento/infografia.jpg" alt="Infografía del caso de reconocimiento">
+        <figcaption>Infografía del caso publicada en LinkedIn (datos ficticios).</figcaption>
+      </figure>
+      <div><a class="btn primary" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_ingenieriadesoftware-laravel-desarrolloweb-activity-7527464117075550208-BEtP" target="_blank" rel="noopener noreferrer">Ver publicación en LinkedIn ↗</a>
+        <a class="btn ghost" href="caso-reconocimiento/" style="margin-left:10px">Abrir página completa →</a></div>
+    `,
+
+    cobranza: `
+      <div class="m-hero">
+        <p class="eyebrow">Caso de ingeniería · izzi telecom · Cobranza</p>
+        <h2 id="modal-title">Cada llamada, <span class="hl">a la hora y al destino correctos</span></h2>
+        <p class="lead">Optimización de reportes y asignación de llamadas de cobranza por zona horaria, seguimiento de promesas de pago y cálculo de bonos por cumplimiento.</p>
+        <div class="m-meta">
+          <span class="state prod">En producción</span>
+          <span class="m-chip">Enrutamiento IVR</span>
+          <span class="m-chip">Promesas de pago</span>
+        </div>
+      </div>
+      <div class="m-compare">
+        <div class="m-card before"><span class="k">Problema</span><b>Saturación en horas pico</b><p>Las consultas de reportes y la asignación de llamadas saturaban la infraestructura en los momentos de mayor demanda.</p></div>
+        <div class="m-card after"><span class="k">Solución y resultado</span><b>Operación estable con el mismo hardware</b><p>Optimicé ambos procesos: programación por zona horaria y área del cliente, seguimiento de promesas de pago y cálculo automático de bonos.</p></div>
+      </div>
+      <figure class="m-figure">
+        <img src="caso-cobranza/infografia.png" alt="Infografía técnica del sistema de cobranza en izzi">
+        <figcaption>Infografía del caso de cobranza en izzi telecom (datos ilustrativos).</figcaption>
+      </figure>
+    `,
+
+    datahub: `
+      <div class="m-hero">
+        <p class="eyebrow">Caso de ingeniería · Arquitectura y QA</p>
+        <h2 id="modal-title">Data Hub · <span class="hl">QA Ops Toolkit</span></h2>
+        <p class="lead">Cómo organicé control operativo, asistencia contextual, integración y validaciones E2E en una arquitectura conceptual de tres capas y nueve módulos.</p>
+        <div class="m-meta">
+          <span class="state exp">Exploración</span>
+          <span class="m-chip">Vista conceptual sanitizada</span>
+          <span class="m-chip">React · TypeScript · Python · Playwright</span>
+        </div>
+      </div>
+      <div class="m-stats">
+        <div class="m-stat"><b>3</b><span>capas de responsabilidad</span></div>
+        <div class="m-stat"><b>9</b><span>módulos en el diagrama</span></div>
+        <div class="m-stat"><b>E2E</b><span>pruebas automatizadas</span></div>
+        <div class="m-stat"><b>IA</b><span>asistencia y rutas de respaldo</span></div>
+      </div>
+      <figure class="m-figure">
+        <img src="caso-datahub/diagrama.jpg" alt="Diagrama técnico conceptual Data Hub">
+        <figcaption>Vista conceptual simplificada para presentación pública; sin rutas, credenciales ni datos operativos.</figcaption>
+      </figure>
+      <div class="m-chapter">
+        <div class="m-chap-n">01</div>
+        <div>
+          <p class="eyebrow">Arquitectura modular</p>
+          <h3>Nueve capacidades organizadas en tres capas</h3>
+          <ol class="m-steps">
+            <li><div><h4>I. Experiencia y control operativo</h4><p><strong>Daily Ops Studio</strong> (sesiones operativas), <strong>Contextual Smart Reply</strong> (borradores revisables) y <strong>Governance Analytics &amp; QA</strong> (indicadores y evidencia).</p></div></li>
+            <li><div><h4>II. Orquestación y asistencia</h4><p><strong>Zero-Trust Local Gateway</strong> (validaciones previas), <strong>Hybrid AI Router</strong> (respaldo con reglas locales) y <strong>Browser E2E Orchestrator</strong> (Playwright reproducible).</p></div></li>
+            <li><div><h4>III. Persistencia e integración</h4><p><strong>Protected Ops Store</strong> (trazabilidad controlada), <strong>Enterprise ITSM Bridge</strong> (incidencias estructuradas) y <strong>Multi-Env Cloud Workflows</strong> (coordinación multi-entorno).</p></div></li>
+          </ol>
+        </div>
+      </div>
+      <div><a class="btn primary" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_ingenieriadesoftware-ingenieriadedatos-arquitecturadesoftware-activity-7527422629218234368-RziW" target="_blank" rel="noopener noreferrer">Ver publicación en LinkedIn ↗</a>
+        <a class="btn ghost" href="caso-datahub/" style="margin-left:10px">Abrir página completa →</a></div>
+    `
+  };
+
+  const CV_HTML = `
+    <div class="cv-sheet">
+      <div class="cv-header">
+        <img src="retrato.webp" alt="Daniel Rodriguez Herrera">
+        <div>
+          <h2 id="modal-title">Daniel Rodriguez Herrera</h2>
+          <p style="font:600 16px var(--f-display);margin:4px 0 6px;color:var(--accent)">QA Automation &amp; Data Operations Engineer</p>
+          <p style="font:500 12.5px var(--f-mono);color:var(--muted);margin:0">Cuernavaca · CDMX · México · daniel199907@gmail.com · linkedin.com/in/daniel-rodriguez-herrera · github.com/danielherrodri</p>
+        </div>
+      </div>
+
+      <h3 class="cv-sec-t">Perfil</h3>
+      <p style="margin:0;font-size:15.5px">Ingeniero de software con más de cinco años en telecomunicaciones y banca. Automatizo pruebas de extremo a extremo y flujos de datos; antes construí sistemas backend que se usaron en producción a nivel nacional. Empiezo por entender el proceso y la causa del problema, y termino con algo que se puede verificar.</p>
+
+      <h3 class="cv-sec-t">Experiencia</h3>
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><b>BBVA Technology en América</b><span style="font:500 12.5px var(--f-mono);color:var(--muted)">oct. 2024 – actualidad · CDMX, híbrido</span></div>
+        <div style="font-weight:600;color:var(--fg);font-size:15px">Software Associate II — QA Automation &amp; Data Ops</div>
+        <ul class="cv-list">
+          <li>Diseño y mantengo flujos de prueba E2E automatizados y runners CLI en Python con Playwright para regresión y validación continua de entregas.</li>
+          <li>Automatizo la preparación, lectura e inyección de datos de prueba en archivos estructurados (OpenPyXL) y valido la integridad de los esquemas.</li>
+          <li>Construyo selectores robustos e inspección automatizada para aplicaciones en React, con controles pre-commit y configuración segura por variables de entorno.</li>
+          <li>Estructuro reportes y evidencias de ejecución por requerimiento para diagnosticar defectos con los equipos de desarrollo.</li>
+          <li>Diseñé la propuesta de rediseño de notificaciones —patrón Outbox, control de flujo, colas de prioridad y reconciliación—, aprobada por mi líder; ya opera en parte de los módulos.</li>
+          <li>Implementé un motor heurístico local que responde con reglas cuando el servicio de IA falla o llega a su límite de uso.</li>
+        </ul>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><b>izzi telecom</b><span style="font:500 12.5px var(--f-mono);color:var(--muted)">abr. 2021 – sept. 2024 · Cuernavaca, Morelos</span></div>
+        <div style="font-weight:600;color:var(--fg);font-size:15px">Desarrollador web</div>
+        <ul class="cv-list">
+          <li>Construí solo, de punta a punta, el sistema de asignación de actividades para agentes del call center, usado en producción a nivel nacional: reglas por manager, disponibilidad, temporizador, cierre con ticket y reportes.</li>
+          <li>Desarrollé la plataforma de reconocimiento con pines y Coinx para Recursos Humanos —estado de cuenta, marketplace de canje, eventos, inventario y panel administrativo—, usada en producción.</li>
+          <li>Desarrollé y mantuve aplicaciones web con Laravel (PHP), Node.js, JavaScript, Vue.js y Tailwind CSS, sobre MySQL y SQL Server, con Scrum.</li>
+        </ul>
+      </div>
+
+      <h3 class="cv-sec-t">Proyectos propios y herramientas</h3>
+      <p style="margin:0;font-size:14.5px;color:var(--muted)"><b>Shalom</b> (Django, React, Playwright) · <b>Plumazo</b> (JavaScript, FastAPI, MySQL) · <b>Nexo</b> (FastAPI, PostgreSQL, Cloud Run) · <b>Calculadora de precios y Limpiador de metadatos</b> (Tools for Pymes publicadas).</p>
+
+      <h3 class="cv-sec-t">Habilidades</h3>
+      <p style="margin:0;font-size:14.5px;color:var(--muted)"><b>QA:</b> Playwright, pytest, E2E, OpenPyXL · <b>Backend:</b> Java, Python, PHP / Laravel, FastAPI, Django, Node.js · <b>Datos:</b> SQL Server, PostgreSQL, MySQL, NoSQL · <b>Nube y CI:</b> Docker, Cloud Run, GitHub Actions · <b>Frontend:</b> JavaScript, TypeScript, React, Vue.js, Tailwind CSS.</p>
+
+      <h3 class="cv-sec-t">Formación</h3>
+      <p style="margin:0;font-size:14.5px"><b>Licenciatura en Ingeniería en Tecnologías de la Información</b> · UTEZ · 2021 · con cédula profesional</p>
+      <p style="margin:4px 0 0;font-size:14px;color:var(--muted)">Cursos: Harvard ManageMentor, Interacciones difíciles y Enfoque en el cliente.</p>
+    </div>
+  `;
+
+  const initAsignacionDemo = () => {
+    const fmt = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    const timers = [...modalBody.querySelectorAll('.demo-timer')].map(el => ({ el, t: Number(el.dataset.t) }));
+    activeInterval = setInterval(() => {
+      timers.forEach(x => { x.t++; x.el.textContent = fmt(x.t); });
+    }, 1000);
+
+    let prevState = 'Disponible';
+    const logEl = modalBody.querySelector('#asig-log');
+    const stBtns = [...modalBody.querySelectorAll('#asig-status-btns .status-btn')];
+    stBtns.forEach(b => {
+      b.addEventListener('click', () => {
+        const next = b.dataset.st;
+        if (next === prevState) return;
+        stBtns.forEach(x => x.classList.toggle('on', x === b));
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+        const li = document.createElement('li');
+        li.innerHTML = '<b>' + hh + '</b> ' + prevState + ' → ' + next;
+        logEl.appendChild(li);
+        prevState = next;
+      });
+    });
+
+    const closeBtn = modalBody.querySelector('#asig-close-btn');
+    const actC = modalBody.querySelector('#asig-act-c');
+    const countEl = modalBody.querySelector('#asig-count');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        actC.style.opacity = '.5';
+        closeBtn.textContent = 'Cerrada ✓';
+        closeBtn.disabled = true;
+        countEl.textContent = '2 de 3 activas';
+        showToast('Actividad C cerrada con ticket #TK-402');
+      });
+    }
+  };
+
+  const initReconocimientoDemo = () => {
+    let saldo = 1250;
+    const saldoEl = modalBody.querySelector('#rec-saldo');
+    const movEl = modalBody.querySelector('#rec-mov');
+    const buyBtns = [...modalBody.querySelectorAll('.rec-buy')];
+    const render = () => {
+      saldoEl.textContent = saldo.toLocaleString('es-MX');
+      buyBtns.forEach(b => { b.disabled = saldo < Number(b.dataset.cost); });
+    };
+    buyBtns.forEach(b => {
+      b.addEventListener('click', () => {
+        const cost = Number(b.dataset.cost);
+        if (saldo < cost) return;
+        saldo -= cost;
+        const li = document.createElement('li');
+        li.innerHTML = '<span>Canje: ' + b.dataset.name + '</span><b class="minus">−' + cost + '</b>';
+        movEl.prepend(li);
+        render();
+        showToast('Canjeado: ' + b.dataset.name + ' (−' + cost + ' Coinx)');
+      });
+    });
+    const resetBtn = modalBody.querySelector('#rec-reset');
+    resetBtn.addEventListener('click', () => {
+      saldo = 1250;
+      movEl.innerHTML = '<li><span>Taller de capacitación (+1 pin)</span><b class="plus">+150</b></li><li><span>Jornada de voluntariado (+1 pin)</span><b class="plus">+200</b></li><li><span>Canje previo en marketplace</span><b class="minus">−300</b></li>';
+      render();
+    });
+    render();
+  };
+
+  const openCase = key => {
+    clearInterval(activeInterval);
+    modalBarLabel.textContent = 'Caso de ingeniería · Vista detallada';
+    modalPrint.hidden = true; modalPdf.hidden = true;
+    modalBody.innerHTML = CASES_HTML[key] || '';
+    modal.hidden = false;
+    modal.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    if (key === 'asignacion') initAsignacionDemo();
+    if (key === 'reconocimiento') initReconocimientoDemo();
+  };
+
+  const openCV = () => {
+    closeMenu();
+    clearInterval(activeInterval);
+    modalBarLabel.textContent = 'Currículum Vitae · Formato imprimible';
+    modalPrint.hidden = false; modalPdf.hidden = false;
+    modalBody.innerHTML = CV_HTML;
+    modal.hidden = false;
+    modal.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  };
+
+  document.querySelectorAll('[data-open-case]').forEach(el => {
+    el.addEventListener('click', () => openCase(el.dataset.openCase));
+  });
+  ['open-cv-nav', 'open-cv-hero', 'open-cv-side', 'open-cv-footer', 'open-cv-mobile'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', openCV);
+  });
+})();
+</script>
 </body>
 </html>

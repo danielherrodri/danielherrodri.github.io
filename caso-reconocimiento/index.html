@@ -24,9 +24,6 @@
   --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --f-body:"Source Sans 3",ui-sans-serif,system-ui,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
-  /* Paleta de Nexo, solo para el bloque de la recreación */
-  --nx-verde:#1d3a30; --nx-texto:#eaf2e6; --nx-suave:#c9dfb4; --nx-linea:#3b5a4a; --nx-lima:#d5f88a; --nx-papel:#f8f8f3;
-  --nx-muted:#56665d; --nx-borde:#dce3d9; --nx-alt:#eef2e9; --nx-ok:#14684f; --nx-okbg:#ddf2e8;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0f15;--surface:#131a23;--fg:#eaf0f6;--muted:#9aa7b6;--line:#253040;--accent:#7ca4ff;--accent-2:#4fd6c2;--accent-soft:#18284a;--ok:#5fd39a;--wip:#f0b35c;--err:#f09a92;color-scheme:dark}}
@@ -55,7 +52,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .state.ok{color:var(--ok)}
 .state.co{color:var(--muted)}
 
-/* Bloque de la recreación con los colores de Nexo */
+/* Bloque de la recreación (colores en casos.css) */
 .nexo{background:var(--nx-verde);color:var(--nx-texto);border-radius:28px;padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:20px}
 .nexo-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
 .nexo .k{display:inline-block;font:500 12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--nx-verde);background:var(--nx-lima);border-radius:6px;padding:3px 9px}
@@ -69,7 +66,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .app-bar b{font:800 16px var(--f-display);letter-spacing:-.01em}
 .tabs{display:flex;gap:6px;flex-wrap:wrap}
 .tabs span{font:500 12px var(--f-mono);padding:6px 10px;border-radius:8px;color:var(--nx-muted)}
-.tabs span.on{background:#e3eedb;color:var(--nx-verde)}
+.tabs span.on{background:var(--nx-alt);color:var(--nx-verde)}
 .app-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;padding:16px}
 .pane{background:#fff;border:1px solid var(--nx-borde);border-radius:14px;padding:16px}
 .pane-t{font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--nx-muted);margin:0 0 10px}
@@ -101,7 +98,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .inv .row span{font:500 12px var(--f-mono);color:var(--nx-muted)}
 .lvl{height:7px;border-radius:4px;background:var(--nx-alt);overflow:hidden;margin-top:5px}
 .lvl i{display:block;height:100%;width:var(--v);background:var(--nx-verde);border-radius:4px}
-.lvl i.low{background:#c98a1a}
+.lvl i.low{background:var(--nx-dif)}
 .disclaimer{font:400 13px var(--f-mono);color:var(--nx-suave)}
 
 /* Animación de la recreación */
@@ -129,7 +126,7 @@ h3{font:800 22px/1.2 var(--f-display);letter-spacing:-.02em;margin:0 0 6px}
 .card.before .k{color:var(--err)}.card.after .k{color:var(--ok)}
 .card h3{margin:6px 0}
 .card p{margin:0;color:var(--muted);font-size:16px}
-.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:30px 0 12px}
+.sub{font:600 13px var(--f-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2-text);margin:30px 0 12px}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
 .steps li::before{content:counter(s,decimal-leading-zero);font:500 14px var(--f-mono);color:var(--accent);background:var(--accent-soft);border-radius:8px;height:30px;display:flex;align-items:center;justify-content:center}
@@ -153,20 +150,22 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}.js .reveal,.js .app .mov li,.js .app .item,.js .app .inv li,.js .app .pin{opacity:1;transform:none}.js .app .lvl i{transform:none}}
 </style>
 <script>try { const t = localStorage.getItem('tema'); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+<link rel="stylesheet" href="../casos.css">
 </head>
 <body>
 <div class="wrap">
   <nav>
     <a class="logo" href="../">daniel<span>.dev</span></a>
-    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#caso">← Volver</a></div>
+    <div class="nav-links"><a href="#necesidad">Necesidad</a><a href="#problema">Problema</a><a href="#solucion">Solución</a><a href="../#casos">← Volver a casos</a></div>
   </nav>
 
   <header>
-    <p class="eyebrow reveal">Caso de producto · izzi telecom</p>
+    <p class="eyebrow reveal">Caso de ingeniería · izzi telecom</p>
     <h1 class="reveal" style="--d:.06s">Reconocimiento que <span class="hl">se puede canjear</span></h1>
     <p class="lead reveal" style="--d:.12s">Cómo pasé de controlar pines y Coinx en Excel a una plataforma con estado de cuenta, marketplace de canje, eventos personalizados, álbum de fotos, inventario y panel administrativo.</p>
     <div class="meta reveal" style="--d:.18s">
-      <span class="state ok">se usó en producción</span>
+      <span class="state prod">En producción</span>
+      <span class="state co">Se usó en Recursos Humanos</span>
       <span class="state co">Recursos Humanos · empleados</span>
     </div>
   </header>
@@ -270,7 +269,20 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
     </div>
   </section>
 
-  <p class="credit">La recreación del panel la hice con ayuda de Claude (IA) y usa datos ficticios; la plataforma original la desarrollé en izzi.</p>
+  <section class="pieza reveal" aria-labelledby="pieza-t">
+    <div class="pieza-media">
+      <a href="infografia.jpg"><img src="infografia.jpg" width="1080" height="1350" loading="lazy" alt="Infografía del caso de reconocimiento: marketplace con canje de Coins, el antes y el ahora del control en hojas de cálculo, el flujo de actividad, asignación de Coins, saldo, canje, inventario y reportes, la arquitectura API REST con servicios de negocio, cola de procesos y tareas programadas, los módulos principales, el stack y los resultados."></a>
+    </div>
+    <div class="pieza-body">
+      <p class="eyebrow">Resumen visual</p>
+      <h2 id="pieza-t">Reconocimiento, en una sola lámina</h2>
+      <p>La infografía resume el caso para LinkedIn: problema, solución, flujo del proceso de la actividad al canje, arquitectura API REST, módulos principales, stack y resultados.</p>
+      <p class="disclaimer">Recreación ilustrativa, no el sistema original.</p>
+      <a class="more" href="https://www.linkedin.com/posts/daniel-rodriguez-herrera_ingenieriadesoftware-laravel-desarrolloweb-activity-7527464117075550208-BEtP">Ver la publicación en LinkedIn <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <p class="credit">La recreación del panel y la infografía las hice con ayuda de Claude (IA) con el sistema de diseño Herrodri y datos ficticios; la plataforma original la desarrollé en izzi.</p>
 
   <section class="cta" aria-label="Siguientes pasos">
     <a class="btn primary" href="https://www.linkedin.com/in/daniel-rodriguez-herrera">Conversemos en LinkedIn</a>
