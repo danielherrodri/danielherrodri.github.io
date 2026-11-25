@@ -358,40 +358,6 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
         <a class="btn primary" href="#casos">Ver casos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
         <a class="btn ghost" href="cv.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Descargar CV</a>
       </div>
-
-      <!-- Tarjeta-diagrama interactiva del caso flagship -->
-      <aside class="flow" id="hero-flow" aria-labelledby="flow-title">
-        <div class="flow-head">
-          <b>Caso destacado · BBVA Technology en América</b>
-          <span class="state prod">En producción</span>
-        </div>
-        <h2 class="flow-title" id="flow-title">Notificaciones que ya no se pierden</h2>
-        <div class="steps-wrap">
-          <span class="packet" aria-hidden="true"></span>
-          <ol class="steps" aria-label="Pasos del flujo">
-            <li data-goto="1"><span class="n" aria-hidden="true">01</span><div><strong>Evento de negocio</strong><span>Una fachada única filtra el entorno y prevalida dominios.</span></div></li>
-            <li data-goto="2"><span class="n" aria-hidden="true">02</span><div><strong>Outbox · <code>PENDING</code></strong><span>El mensaje se guarda antes de intentar enviarse.</span></div></li>
-            <li data-goto="3"><span class="n" aria-hidden="true">03</span><div><strong>Despacho con control de flujo</strong><span>Token bucket y backoff exponencial hacia el proveedor.</span></div></li>
-            <li data-goto="4"><span class="n" aria-hidden="true">04</span><div><strong>Webhook · <code>SENT</code></strong><span>El resultado se confirma de forma asíncrona.</span></div></li>
-          </ol>
-        </div>
-        <div class="forks">
-          <p class="fork r"><code>429 · 5xx</code>4 colas de prioridad con reintento</p>
-          <p class="fork"><code>422</code>Cola de errores, sin reintento</p>
-        </div>
-        <p class="heal">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4h-4"/></svg>
-          Una reconciliación periódica rescata los mensajes huérfanos.
-        </p>
-        <p class="flow-note">Recreación ilustrativa, no el sistema original. Haz clic en cualquier paso para enfocarlo.</p>
-        <div class="flow-foot">
-          <button type="button" class="more-btn" data-open-case="notificaciones">Leer caso completo <span aria-hidden="true">→</span></button>
-          <button type="button" class="pause" id="pause" aria-pressed="false">
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg>
-            <span>Pausar</span>
-          </button>
-        </div>
-      </aside>
     </div>
 
     <aside class="flow" aria-labelledby="flow-title">
@@ -710,16 +676,7 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
           <p>Quita GPS, modelo del teléfono, fechas y marcas de IA de tus fotos antes de publicarlas.</p>
           <div class="links"><a class="more" href="https://danielherrodri.github.io/limpiador-metadatos/">Abrir limpiador <span class="arr" aria-hidden="true">→</span></a><a class="more" href="https://github.com/danielherrodri/limpiador-metadatos">Código <span class="arr" aria-hidden="true">→</span></a></div>
         </div>
-
-        <div class="edu-card">
-          <p class="eyebrow">Currículum</p>
-          <h3>Versión ejecutiva lista para imprimir</h3>
-          <p>Consulta el resumen completo en formato hoja carta o guárdalo como PDF directo desde el navegador.</p>
-          <div style="margin-top:14px">
-            <button type="button" class="btn ghost" id="open-cv-side" style="width:100%">Abrir CV interactivo →</button>
-          </div>
-        </div>
-      </aside>
+      </article>
     </div>
   </section>
 
@@ -742,12 +699,14 @@ footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:4
       <code id="mail" translate="no">daniel199907@gmail.com</code>
       <button type="button" id="copy" class="btn ghost" aria-live="polite">Copiar correo</button>
     </div>
+    <div class="cta">
+      <a class="btn ghost" href="https://github.com/danielherrodri">github.com/danielherrodri</a>
+      <a class="btn ghost" href="cv.html">Ver CV</a>
+    </div>
   </section>
 
   <footer><span>© 2026 Daniel Rodriguez Herrera</span><span>Cuernavaca · CDMX · México</span></footer>
 </main>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
